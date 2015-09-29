@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=guh-ubuntu
+Exec=guh-ubuntu
+Icon=guh-ubuntu/guh-ubuntu.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true

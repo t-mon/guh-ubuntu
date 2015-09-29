@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="">
+        <file>app/Main.qml</file>
+        <file>app/MainMenu.qml</file>
+        <file>app/DiscoveryPage.qml</file>
+    </qresource>
+</RCC>

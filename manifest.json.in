@@ -1,0 +1,15 @@
+{
+    "name": "guh-ubuntu.stuerz-simon",
+    "description": "Ubuntu client for the guh home automation system",
+    "architecture": "@CLICK_ARCH@",
+    "title": "guh-ubuntu",
+    "hooks": {
+        "app": {
+            "apparmor": "guh-ubuntu.apparmor",
+            "desktop": "guh-ubuntu.desktop"
+        }
+    },
+    "version": "0.1.0",
+    "maintainer": "Simon Stürz <simon.stuerz@guh.guru>",
+    "framework": "ubuntu-sdk-15.04"
+}
