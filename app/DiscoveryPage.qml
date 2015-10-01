@@ -25,7 +25,7 @@ import Guh 1.0
 
 Page {
     id: root
-    title: i18n.tr("Discovering guh")
+    title: i18n.tr("Connection")
 
     head.actions: Action {
         id: reloadAction
@@ -36,13 +36,7 @@ Page {
 
     ListView {
         id: discoveryList
-        anchors {
-            top: parent.top
-            right: parent.right
-            left: parent.left
-            bottom: discoverIndicator.top
-        }
-
+        anchors.fill: parent
         model: Core.discovery.discoveryModel;
         delegate: ListItem.SingleValue {
             text: model.name + " (" + model.hostAddress + ")"
@@ -52,16 +46,6 @@ Page {
                 selected = !selected
             }
         }
-    }
-
-    Item {
-        id: discoverIndicator
-        height: units.gu(6)
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
 
         ActivityIndicator {
             anchors.centerIn: parent
@@ -69,6 +53,4 @@ Page {
             running: Core.discovery.discovering
         }
     }
-
-
 }

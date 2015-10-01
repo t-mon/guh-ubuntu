@@ -24,7 +24,6 @@ Vendor::Vendor(const QUuid &id, const QString &name):
     m_id(id),
     m_name(name)
 {
-
 }
 
 QUuid Vendor::id() const

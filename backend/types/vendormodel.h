@@ -51,9 +51,6 @@ protected:
 private:
     QList<Vendor> m_vendors;
 
-//signals:
-//    void vendorsChanged();
-
 };
 
 #endif // VENDORMODEL_H

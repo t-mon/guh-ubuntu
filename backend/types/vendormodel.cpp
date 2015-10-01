@@ -55,10 +55,9 @@ QVariant VendorModel::data(const QModelIndex &index, int role) const
 void VendorModel::addVendor(Vendor vendor)
 {
     beginInsertRows(QModelIndex(), m_vendors.count(), m_vendors.count());
-    qDebug() << "add vendor" << vendor.name();
+    qDebug() << "Vendors: add vendor" << vendor.name();
     m_vendors.append(vendor);
     endInsertRows();
-    //emit vendorsChanged();
 }
 
 void VendorModel::clearModel()
@@ -66,7 +65,6 @@ void VendorModel::clearModel()
     beginResetModel();
     m_vendors.clear();
     endResetModel();
-    //emit vendorsChanged();
 }
 
 QHash<int, QByteArray> VendorModel::roleNames() const

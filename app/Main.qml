@@ -42,24 +42,47 @@ MainView {
 
     PageStack {
         id: pageStack
+        anchors.fill: parent
         Component.onCompleted: push(discoveryPage)
-    }
 
-    MainMenu { id: mainMenuPage }
-    DiscoveryPage { id: discoveryPage }
+        MainMenuPage {
+            id: mainMenuPage
+            visible: false
+        }
 
-    Connections {
-        target: Core
-        onConnectedChanged: {
-            if (Core.connected) {
-                pageStack.pop()
-                pageStack.push(mainMenuPage)
-            } else {
-                pageStack.pop()
-                Core.discovery.discover()
-                pageStack.push(discoveryPage)
+        DiscoveryPage {
+            id: discoveryPage
+            visible: false
+        }
+
+        VendorsPage {
+            id: vendorsPage
+            visible: false
+        }
+
+        DeviceClassesPage {
+            id: deviceClassesPage
+            visible: false
+        }
+
+        Connections {
+            target: Core
+            onConnectedChanged: {
+                if (Core.connected) {
+                    console.log("connected")
+                    pageStack.pop()
+                    pageStack.push(mainMenuPage)
+                } else {
+                    console.log("disconnected")
+                    pageStack.pop()
+                    Core.discovery.discover()
+                    pageStack.push(discoveryPage)
+                }
             }
         }
     }
+
+
+
 }
 

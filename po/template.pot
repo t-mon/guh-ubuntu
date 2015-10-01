@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-01 15:03+0200\n"
+"POT-Creation-Date: 2015-10-01 16:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceClassesPage.qml:28
+msgid "Supported devices"
+msgstr ""
+
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DiscoveryPage.qml:28
-msgid "Discovering guh"
+msgid "Connection"
 msgstr ""
 
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DiscoveryPage.qml:33
 msgid "Reload"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenu.qml:28
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:28
+msgid "Devices"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:33
+msgid "Add device"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/VendorsPage.qml:28
 msgid "Vendors"
 msgstr ""

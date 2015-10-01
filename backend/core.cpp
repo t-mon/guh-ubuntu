@@ -42,7 +42,8 @@ Core::Core(QObject *parent) :
     m_deviceManager(new DeviceManager(this)),
     m_interface(new GuhInterface(this)),
     m_jsonRpcClient(new JsonRpcClient(this)),
-    m_discovery(new UpnpDiscovery(this))
+    m_discovery(new UpnpDiscovery(this)),
+    m_connected(false)
 {
     connect(m_interface, &GuhInterface::connectedChanged, this, &Core::connectedChanged);
     connect(m_interface, &GuhInterface::dataReady, m_jsonRpcClient, &JsonRpcClient::dataReceived);

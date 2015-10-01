@@ -21,7 +21,7 @@ UBUNTU_TRANSLATION_SOURCES+= \
 UBUNTU_PO_FILES+=$$files(po/*.po)
 
 TEMPLATE = app
-TARGET = guh-ubutnu
+TARGET = guh-ubuntu
 
 load(ubuntu-click)
 
@@ -40,9 +40,9 @@ HEADERS += backend/core.h \
            backend/types/vendormodel.h \
            backend/jsonrpc/jsontypes.h \
            backend/jsonrpc/jsonrpcclient.h \
-    backend/types/deviceclass.h \
-    backend/jsonrpc/devicehandler.h \
-    backend/jsonrpc/jsonhandler.h
+           backend/types/deviceclass.h \
+           backend/jsonrpc/devicehandler.h \
+           backend/jsonrpc/jsonhandler.h
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -55,9 +55,9 @@ SOURCES += backend/main.cpp \
            backend/types/vendormodel.cpp \
            backend/jsonrpc/jsontypes.cpp \
            backend/jsonrpc/jsonrpcclient.cpp \
-    backend/types/deviceclass.cpp \
-    backend/jsonrpc/devicehandler.cpp \
-    backend/jsonrpc/jsonhandler.cpp
+           backend/types/deviceclass.cpp \
+           backend/jsonrpc/devicehandler.cpp \
+           backend/jsonrpc/jsonhandler.cpp
 
 RESOURCES += app.qrc
 
