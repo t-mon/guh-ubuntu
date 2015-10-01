@@ -4,9 +4,9 @@
     "architecture": "@CLICK_ARCH@",
     "title": "guh-ubuntu",
     "hooks": {
-        "app": {
-            "apparmor": "guh-ubuntu.apparmor",
-            "desktop": "guh-ubuntu.desktop"
+        "guh-ubuntu": {
+            "apparmor": "guh-ubuntu/guh-ubuntu.apparmor",
+            "desktop": "guh-ubuntu/guh-ubuntu.desktop"
         }
     },
     "version": "0.1.0",

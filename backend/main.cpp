@@ -27,22 +27,17 @@
 
 #include "core.h"
 
-static QObject *provider(QQmlEngine *qmlEngine, QJSEngine *jsEngine) {
-    Q_UNUSED(qmlEngine)
-    Q_UNUSED(jsEngine)
-
-    return Core::instance();
-}
-
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     app.setApplicationVersion("0.1.0");
 
-    qmlRegisterSingletonType<Core>("Guh", 1, 0, "Core", provider);
+    qmlRegisterSingletonType<Core>("Guh", 1, 0, "Core", Core::qmlInstance);
+    qmlRegisterUncreatableType<DeviceManager>("Guh", 1, 0, "DeviceManager", "Can't create this in QML. Get it from the Core.");
+    qmlRegisterUncreatableType<GuhInterface>("Guh", 1, 0, "GuhInterface", "Can't create this in QML. Get it from the Core.");
     qmlRegisterUncreatableType<UpnpDiscovery>("Guh", 1, 0, "UpnpDiscovery", "Can't create this in QML. Get it from the Core.");
     qmlRegisterUncreatableType<UpnpDiscoveryModel>("Guh", 1, 0, "UpnpDiscoveryModel", "Can't create this in QML. Get it from the Core.");
-    qmlRegisterUncreatableType<GuhInterface>("Guh", 1, 0, "GuhInterface", "Can't create this in QML. Get it from the Core.");
+    qmlRegisterUncreatableType<VendorModel>("Guh", 1, 0, "VendorModel", "Can't create this in QML. Get it from the DeviceManager.");
 
     QQuickView view;
     view.setSource(QUrl(QStringLiteral("qrc:///app/Main.qml")));

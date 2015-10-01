@@ -60,8 +60,6 @@ MainView {
                 pageStack.push(discoveryPage)
             }
         }
-
     }
-
 }
 

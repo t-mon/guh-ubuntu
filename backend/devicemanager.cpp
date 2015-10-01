@@ -21,6 +21,13 @@
 #include "devicemanager.h"
 
 DeviceManager::DeviceManager(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_vendorModel(new VendorModel(this))
 {
+    //  connect(m_vendorModel, &VendorModel::vendorsChanged, this, &DeviceManager::vendorsChanged);
+}
+
+VendorModel *DeviceManager::vendors()
+{
+    return m_vendorModel;
 }

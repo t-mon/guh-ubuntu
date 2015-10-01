@@ -47,9 +47,13 @@ Page {
         delegate: ListItem.SingleValue {
             text: model.name + " (" + model.hostAddress + ")"
             value: model.version
-            onClicked: Core.interface.connectGuh(model.hostAddress)
+            onClicked: {
+                Core.interface.connectGuh(model.hostAddress)
+                selected = !selected
+            }
         }
     }
+
     Item {
         id: discoverIndicator
         height: units.gu(6)

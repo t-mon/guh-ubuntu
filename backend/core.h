@@ -22,22 +22,31 @@
 #define CORE_H
 
 #include <QObject>
+#include <QQmlEngine>
+#include <QJSEngine>
 
-#include "upnpdiscovery.h"
 #include "guhinterface.h"
+#include "jsonrpc/jsonrpcclient.h"
+#include "devicemanager.h"
+#include "discovery/upnpdiscovery.h"
 
 class Core : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(UpnpDiscovery *discovery READ discovery CONSTANT)
     Q_PROPERTY(GuhInterface *interface READ interface CONSTANT)
+    Q_PROPERTY(UpnpDiscovery *discovery READ discovery CONSTANT)
+    Q_PROPERTY(DeviceManager *deviceManager READ deviceManager CONSTANT)
     Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
 
 public:
     static Core* instance();
+    static QObject *qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
 
-    UpnpDiscovery *discovery();
+
+    DeviceManager *deviceManager();
     GuhInterface *interface();
+    JsonRpcClient *jsonRpcClient();
+    UpnpDiscovery *discovery();
 
     bool connected() const;
 
@@ -45,8 +54,10 @@ private:
     explicit Core(QObject *parent = 0);
     static Core *s_instance;
 
-    UpnpDiscovery *m_discovery;
+    DeviceManager *m_deviceManager;
     GuhInterface *m_interface;
+    JsonRpcClient *m_jsonRpcClient;
+    UpnpDiscovery *m_discovery;
 
     bool m_connected;
 

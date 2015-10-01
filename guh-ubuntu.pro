@@ -1,6 +1,6 @@
 # specify the manifest file, this file is required for click
 # packaging and for the IDE to create runconfigurations
-UBUNTU_MANIFEST_FILE = manifest.json.in
+UBUNTU_MANIFEST_FILE=manifest.json.in
 
 # specify translation domain, this must be equal with the
 # app name in the manifest file
@@ -31,25 +31,33 @@ QMAKE_CXXFLAGS += -Werror
 CONFIG += c++11
 
 HEADERS += backend/core.h \
-           backend/upnpdiscovery.h \
-           backend/upnpdiscoverymodel.h \
-           backend/upnpdevice.h \
            backend/guhinterface.h \
-    backend/vendor.h \
-    backend/vendormodel.h \
-    backend/jsontypes.h \
-    backend/devicemanager.h
+           backend/devicemanager.h \
+           backend/discovery/upnpdiscovery.h \
+           backend/discovery/upnpdiscoverymodel.h \
+           backend/discovery/upnpdevice.h \
+           backend/types/vendor.h \
+           backend/types/vendormodel.h \
+           backend/jsonrpc/jsontypes.h \
+           backend/jsonrpc/jsonrpcclient.h \
+    backend/types/deviceclass.h \
+    backend/jsonrpc/devicehandler.h \
+    backend/jsonrpc/jsonhandler.h
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
-           backend/upnpdiscovery.cpp \
-           backend/upnpdiscoverymodel.cpp \
-           backend/upnpdevice.cpp \
            backend/guhinterface.cpp \
-    backend/vendor.cpp \
-    backend/vendormodel.cpp \
-    backend/jsontypes.cpp \
-    backend/devicemanager.cpp
+           backend/devicemanager.cpp \
+           backend/discovery/upnpdiscovery.cpp \
+           backend/discovery/upnpdiscoverymodel.cpp \
+           backend/discovery/upnpdevice.cpp \
+           backend/types/vendor.cpp \
+           backend/types/vendormodel.cpp \
+           backend/jsonrpc/jsontypes.cpp \
+           backend/jsonrpc/jsonrpcclient.cpp \
+    backend/types/deviceclass.cpp \
+    backend/jsonrpc/devicehandler.cpp \
+    backend/jsonrpc/jsonhandler.cpp
 
 RESOURCES += app.qrc
 
@@ -59,12 +67,12 @@ OTHER_FILES += guh-ubuntu.apparmor \
                guh-ubuntu.png
 
 # specify where the config files are installed to
-config_files.path = /guh-ubuntu
-config_files.files += $${OTHER_FILES}
+configs.path = /guh-ubuntu
+configs.files += $${OTHER_FILES}
 
 target.path = $${UBUNTU_CLICK_BINARY_PATH}
 
-INSTALLS += target config_files
+INSTALLS += target configs
 
 
 

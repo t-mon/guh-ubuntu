@@ -18,39 +18,16 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef VENDORMODEL_H
-#define VENDORMODEL_H
+#include "jsontypes.h"
 
-#include <QAbstractListModel>
-
-#include "vendor.h"
-
-class VendorModel : public QAbstractListModel
+JsonTypes::JsonTypes(QObject *parent) :
+    QObject(parent)
 {
-    Q_OBJECT
-public:
-    enum VendorRole {
-        NameRole,
-        IdRole
-    };
+}
 
-    explicit VendorModel(QObject *parent = 0);
-
-    QList<Vendor> vendors();
-
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-
-    void addVendor(Vendor vendor);
-
-    void clearModel();
-
-protected:
-    QHash<int, QByteArray> roleNames() const;
-
-private:
-    QList<Vendor> m_vendors;
-
-};
-
-#endif // VENDORMODEL_H
+Vendor JsonTypes::unpackVendor(const QVariantMap &vendorMap)
+{
+    QString name = vendorMap.value("name").toString();
+    QUuid id = vendorMap.value("id").toUuid();
+    return Vendor(id, name);
+}

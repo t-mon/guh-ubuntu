@@ -25,8 +25,15 @@ import Guh 1.0
 
 Page {
     id: root
-    title: i18n.tr("Main")
+    title: i18n.tr("Vendors")
 
-
-
+    UbuntuListView {
+        id: vendorList
+        anchors.fill: parent
+        model: Core.deviceManager.vendors
+        delegate: ListItem.Standard {
+            width: ListView.view.width
+            text: model.name
+        }
+    }
 }

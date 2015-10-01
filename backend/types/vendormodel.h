@@ -18,21 +18,42 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef JSONTYPES_H
-#define JSONTYPES_H
+#ifndef VENDORMODEL_H
+#define VENDORMODEL_H
 
-#include <QObject>
+#include <QAbstractListModel>
 
-class JsonTypes : public QObject
+#include "vendor.h"
+
+class VendorModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit JsonTypes(QObject *parent = 0);
+    enum VendorRole {
+        NameRole,
+        IdRole
+    };
 
-signals:
+    explicit VendorModel(QObject *parent = 0);
 
-public slots:
+    QList<Vendor> vendors();
+
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+
+    void addVendor(Vendor vendor);
+
+    void clearModel();
+
+protected:
+    QHash<int, QByteArray> roleNames() const;
+
+private:
+    QList<Vendor> m_vendors;
+
+//signals:
+//    void vendorsChanged();
 
 };
 
-#endif // JSONTYPES_H
+#endif // VENDORMODEL_H

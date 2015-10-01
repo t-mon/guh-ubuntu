@@ -18,30 +18,61 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "vendor.h"
+#include "vendormodel.h"
 
-Vendor::Vendor(const QUuid &id, const QString &name):
-    m_id(id),
-    m_name(name)
+#include <QDebug>
+
+VendorModel::VendorModel(QObject *parent) :
+    QAbstractListModel(parent)
 {
 }
 
-QUuid Vendor::id() const
+QList<Vendor> VendorModel::vendors()
 {
-    return m_id;
+    return m_vendors;
 }
 
-void Vendor::setId(const QUuid &id)
+int VendorModel::rowCount(const QModelIndex &parent) const
 {
-    m_id = id;
+    Q_UNUSED(parent)
+    return m_vendors.count();
 }
 
-QString Vendor::name() const
+QVariant VendorModel::data(const QModelIndex &index, int role) const
 {
-    return m_name;
+    if (index.row() < 0 || index.row() >= m_vendors.count())
+        return QVariant();
+
+    Vendor vendor = m_vendors.at(index.row());
+    if (role == NameRole) {
+        return vendor.name();
+    } else if (role == IdRole) {
+        return vendor.id().toString();
+    }
+    return QVariant();
 }
 
-void Vendor::setName(const QString &name)
+void VendorModel::addVendor(Vendor vendor)
 {
-    m_name = name;
+    beginInsertRows(QModelIndex(), m_vendors.count(), m_vendors.count());
+    qDebug() << "add vendor" << vendor.name();
+    m_vendors.append(vendor);
+    endInsertRows();
+    //emit vendorsChanged();
+}
+
+void VendorModel::clearModel()
+{
+    beginResetModel();
+    m_vendors.clear();
+    endResetModel();
+    //emit vendorsChanged();
+}
+
+QHash<int, QByteArray> VendorModel::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[NameRole] = "name";
+    roles[IdRole] = "id";
+    return roles;
 }

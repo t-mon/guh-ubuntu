@@ -31,21 +31,24 @@ public:
     explicit GuhInterface(QObject *parent = 0);
 
     Q_INVOKABLE void connectGuh(const QString &hostAddress);
+
+    void sendData(const QByteArray &data);
+    void sendRequest(const QVariantMap &request);
+
     bool connected() const;
 
 private:
     QWebSocket *m_socket;
-
     bool m_connected;
 
 signals:
     void connectedChanged();
     void disconnected();
+    void dataReady(const QVariantMap &data);
 
 private slots:
     void onConnected();
     void onDisconnected();
-    void onBinaryMessageReceived(const QByteArray &data);
     void onTextMessageReceived(const QString &data);
     void onError(QAbstractSocket::SocketError error);
 };

@@ -23,13 +23,23 @@
 
 #include <QObject>
 
+#include "types/vendormodel.h"
+
 class DeviceManager : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(VendorModel *vendors READ vendors NOTIFY vendorsChanged)
+
 public:
     explicit DeviceManager(QObject *parent = 0);
 
+    VendorModel *vendors();
+
+private:
+    VendorModel *m_vendorModel;
+
 signals:
+    void vendorsChanged();
 
 public slots:
 

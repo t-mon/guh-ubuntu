@@ -30,12 +30,27 @@ Core *Core::instance()
     return s_instance;
 }
 
+QObject *Core::qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine)
+{
+    Q_UNUSED(qmlEngine)
+    Q_UNUSED(jsEngine)
+    return Core::instance();
+}
+
 Core::Core(QObject *parent) :
     QObject(parent),
-    m_discovery(new UpnpDiscovery(this)),
-    m_interface(new GuhInterface(this))
+    m_deviceManager(new DeviceManager(this)),
+    m_interface(new GuhInterface(this)),
+    m_jsonRpcClient(new JsonRpcClient(this)),
+    m_discovery(new UpnpDiscovery(this))
 {
     connect(m_interface, &GuhInterface::connectedChanged, this, &Core::connectedChanged);
+    connect(m_interface, &GuhInterface::dataReady, m_jsonRpcClient, &JsonRpcClient::dataReceived);
+}
+
+DeviceManager *Core::deviceManager()
+{
+    return m_deviceManager;
 }
 
 UpnpDiscovery *Core::discovery()
@@ -46,6 +61,11 @@ UpnpDiscovery *Core::discovery()
 GuhInterface *Core::interface()
 {
     return m_interface;
+}
+
+JsonRpcClient *Core::jsonRpcClient()
+{
+    return m_jsonRpcClient;
 }
 
 bool Core::connected() const

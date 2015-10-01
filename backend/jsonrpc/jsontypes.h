@@ -18,56 +18,30 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "vendormodel.h"
+#ifndef JSONTYPES_H
+#define JSONTYPES_H
 
-VendorModel::VendorModel(QObject *parent) :
-    QAbstractListModel(parent)
+#include <QObject>
+#include <QJsonDocument>
+#include <QVariant>
+#include <QUuid>
+
+#include "../types/vendor.h"
+#include "../types/deviceclass.h"
+
+class JsonTypes : public QObject
 {
-}
+    Q_OBJECT
+public:
+    explicit JsonTypes(QObject *parent = 0);
 
-QList<Vendor> VendorModel::vendors()
-{
-    return m_vendors;
-}
+    static Vendor unpackVendor(const QVariantMap &vendorMap);
+    static DeviceClass unpackDeviceClass(const QVariantMap &deviceClassMap);
 
-int VendorModel::rowCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent)
-    return m_vendors.count();
-}
+signals:
 
-QVariant VendorModel::data(const QModelIndex &index, int role) const
-{
-    if (index.row() < 0 || index.row() >= m_vendors.count())
-        return QVariant();
+public slots:
 
-    Vendor vendor = m_vendors.at(index.row());
-    if (role == NameRole) {
-        return vendor.name();
-    } else if (role == IdRole) {
-        return vendor.id().toString();
-    }
-    return QVariant();
-}
+};
 
-void VendorModel::addVendor(Vendor vendor)
-{
-    beginInsertRows(QModelIndex(), m_vendors.count(), m_vendors.count());
-    m_vendors.append(vendor);
-    endInsertRows();
-}
-
-void VendorModel::clearModel()
-{
-    beginResetModel();
-    m_vendors.clear();
-    endResetModel();
-}
-
-QHash<int, QByteArray> VendorModel::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[NameRole] = "name";
-    roles[IdRole] = "id";
-    return roles;
-}
+#endif // JSONTYPES_H
