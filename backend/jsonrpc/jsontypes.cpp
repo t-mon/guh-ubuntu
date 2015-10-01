@@ -31,3 +31,12 @@ Vendor JsonTypes::unpackVendor(const QVariantMap &vendorMap)
     QUuid id = vendorMap.value("id").toUuid();
     return Vendor(id, name);
 }
+
+DeviceClass JsonTypes::unpackDeviceClass(const QVariantMap &deviceClassMap)
+{
+    DeviceClass deviceClass;
+    deviceClass.setName(deviceClassMap.value("name").toString());
+    deviceClass.setId(deviceClassMap.value("id").toUuid());
+    deviceClass.setVendorId(deviceClassMap.value("vendorId").toUuid());
+    return deviceClass;
+}

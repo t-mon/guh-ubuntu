@@ -12,14 +12,20 @@ JsonRpcClient::JsonRpcClient(QObject *parent) :
     m_deviceHandler = new DeviceHandler(this);
 
     m_handlers.insert(m_deviceHandler->nameSpace(), m_deviceHandler);
-
-
 }
 
 void JsonRpcClient::getVendors()
 {
     qDebug() << "JsonRpc: get vendors";
     JsonRpcReply *reply = createReply("Devices", "GetSupportedVendors");
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+}
+
+void JsonRpcClient::getDeviceClasses()
+{
+    qDebug() << "JsonRpc: get supported devices";
+    JsonRpcReply *reply = createReply("Devices", "GetSupportedDevices");
     m_replies.insert(reply->commandId(), reply);
     Core::instance()->interface()->sendRequest(reply->requestMap());
 }

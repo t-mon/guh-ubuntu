@@ -37,12 +37,14 @@ HEADERS += backend/core.h \
            backend/discovery/upnpdiscoverymodel.h \
            backend/discovery/upnpdevice.h \
            backend/types/vendor.h \
-           backend/types/vendormodel.h \
+           backend/types/vendors.h \
            backend/jsonrpc/jsontypes.h \
            backend/jsonrpc/jsonrpcclient.h \
            backend/types/deviceclass.h \
+           backend/types/deviceclasses.h \
+           backend/types/deviceclassesfiltermodel.h \
            backend/jsonrpc/devicehandler.h \
-           backend/jsonrpc/jsonhandler.h
+           backend/jsonrpc/jsonhandler.h \
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -52,12 +54,14 @@ SOURCES += backend/main.cpp \
            backend/discovery/upnpdiscoverymodel.cpp \
            backend/discovery/upnpdevice.cpp \
            backend/types/vendor.cpp \
-           backend/types/vendormodel.cpp \
+           backend/types/vendors.cpp \
            backend/jsonrpc/jsontypes.cpp \
            backend/jsonrpc/jsonrpcclient.cpp \
            backend/types/deviceclass.cpp \
+           backend/types/deviceclasses.cpp \
+           backend/types/deviceclassesfiltermodel.cpp \
            backend/jsonrpc/devicehandler.cpp \
-           backend/jsonrpc/jsonhandler.cpp
+           backend/jsonrpc/jsonhandler.cpp \
 
 RESOURCES += app.qrc
 

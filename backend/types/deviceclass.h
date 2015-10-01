@@ -25,17 +25,17 @@ public:
 
     DeviceClass();
 
-//    QUuid id() const;
-//    void setId(const QUuid &id);
+    QUuid id() const;
+    void setId(const QUuid &id);
 
-//    QUuid vendorId() const;
-//    void setVendorId(const QUuid &vendorId);
+    QUuid vendorId() const;
+    void setVendorId(const QUuid &vendorId);
 
-//    QUuid pluginId() const;
-//    void setPluginId(const QUuid &pluginId);
+    QUuid pluginId() const;
+    void setPluginId(const QUuid &pluginId);
 
-//    QString name() const;
-//    void setName(const QString &name);
+    QString name() const;
+    void setName(const QString &name);
 
 //    QList<StateType> stateTypes() const;
 //    void setStateTypes(const QList<StateType> &stateTypes);
@@ -63,11 +63,11 @@ public:
 
 //    bool operator==(const DeviceClass &device) const;
 
-//private:
-//    QUuid m_id;
-//    QUuid m_vendorId;
-//    QUuid m_pluginId;
-//    QString m_name;
+private:
+    QUuid m_id;
+    QUuid m_vendorId;
+    QUuid m_pluginId;
+    QString m_name;
 //    QList<StateType> m_stateTypes;
 //    QList<EventType> m_eventTypes;
 //    QList<EventType> m_allEventTypes;

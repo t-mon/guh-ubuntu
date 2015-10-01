@@ -16,6 +16,7 @@ public:
     explicit JsonRpcClient(QObject *parent = 0);
 
     void getVendors();
+    void getDeviceClasses();
 
 private:
     int m_id;

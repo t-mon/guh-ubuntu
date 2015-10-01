@@ -43,27 +43,27 @@ MainView {
     PageStack {
         id: pageStack
         anchors.fill: parent
-        Component.onCompleted: push(discoveryPage)
+        Component.onCompleted: push(Qt.resolvedUrl("DiscoveryPage.qml"))
 
-        MainMenuPage {
-            id: mainMenuPage
-            visible: false
-        }
+//        MainMenuPage {
+//            id: mainMenuPage
+//            visible: false
+//        }
 
-        DiscoveryPage {
-            id: discoveryPage
-            visible: false
-        }
+//        DiscoveryPage {
+//            id: discoveryPage
+//            visible: false
+//        }
 
-        VendorsPage {
-            id: vendorsPage
-            visible: false
-        }
+//        VendorsPage {
+//            id: vendorsPage
+//            visible: false
+//        }
 
-        DeviceClassesPage {
-            id: deviceClassesPage
-            visible: false
-        }
+//        DeviceClassesPage {
+//            id: deviceClassesPage
+//            visible: false
+//        }
 
         Connections {
             target: Core
@@ -71,10 +71,9 @@ MainView {
                 if (Core.connected) {
                     console.log("connected")
                     pageStack.pop()
-                    pageStack.push(mainMenuPage)
+                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
                 } else {
                     console.log("disconnected")
-                    pageStack.pop()
                     Core.discovery.discover()
                     pageStack.push(discoveryPage)
                 }

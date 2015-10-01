@@ -25,7 +25,7 @@
 
 #include "vendor.h"
 
-class VendorModel : public QAbstractListModel
+class Vendors : public QAbstractListModel
 {
     Q_OBJECT
 public:
@@ -34,7 +34,7 @@ public:
         IdRole
     };
 
-    explicit VendorModel(QObject *parent = 0);
+    explicit Vendors(QObject *parent = 0);
 
     QList<Vendor> vendors();
 

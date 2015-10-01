@@ -22,12 +22,25 @@
 
 DeviceManager::DeviceManager(QObject *parent) :
     QObject(parent),
-    m_vendorModel(new VendorModel(this))
+    m_vendors(new Vendors(this)),
+    m_deviceClasses(new DeviceClasses(this)),
+    m_deviceClassesFilter(new DeviceClassesFilterModel(this))
+
 {
-    //  connect(m_vendorModel, &VendorModel::vendorsChanged, this, &DeviceManager::vendorsChanged);
+    m_deviceClassesFilter->setDeviceClasses(m_deviceClasses);
 }
 
-VendorModel *DeviceManager::vendors()
+Vendors *DeviceManager::vendors()
 {
-    return m_vendorModel;
+    return m_vendors;
+}
+
+DeviceClasses *DeviceManager::deviceClasses()
+{
+    return m_deviceClasses;
+}
+
+DeviceClassesFilterModel *DeviceManager::deviceClassesFilter()
+{
+    return m_deviceClassesFilter;
 }
