@@ -42,6 +42,14 @@ void JsonRpcClient::getVendors()
     Core::instance()->interface()->sendRequest(reply->requestMap());
 }
 
+void JsonRpcClient::getDevices()
+{
+    qDebug() << "JsonRpc: get devices";
+    JsonRpcReply *reply = createReply("Devices", "GetConfiguredDevices");
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+}
+
 void JsonRpcClient::getDeviceClasses()
 {
     qDebug() << "JsonRpc: get supported devices";
@@ -58,7 +66,7 @@ JsonRpcReply *JsonRpcClient::createReply(QString nameSpace, QString method, QVar
 
 void JsonRpcClient::dataReceived(const QVariantMap &data)
 {
-    qDebug() << "data: " << QJsonDocument::fromVariant(data).toJson();
+    //qDebug() << "data: " << QJsonDocument::fromVariant(data).toJson();
     int commandId = data.value("id").toInt();
     JsonRpcReply *reply = m_replies.take(commandId);
 
@@ -71,10 +79,6 @@ void JsonRpcClient::dataReceived(const QVariantMap &data)
 
         return;
     }
-
-
-
-
 }
 
 

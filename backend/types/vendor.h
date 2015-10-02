@@ -27,7 +27,7 @@
 class Vendor
 {
 public:
-    Vendor(const QUuid &id, const QString &name = QString());
+    Vendor(const QUuid &id = QUuid(), const QString &name = QString());
 
     QUuid id() const;
     void setId(const QUuid &id);

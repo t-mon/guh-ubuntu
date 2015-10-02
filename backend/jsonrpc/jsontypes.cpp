@@ -23,6 +23,8 @@
 #include "../types/vendor.h"
 #include "../types/deviceclass.h"
 
+#include "../core.h"
+
 #include <QMetaEnum>
 
 JsonTypes::JsonTypes(QObject *parent) :
@@ -67,6 +69,11 @@ DeviceClass JsonTypes::unpackDeviceClass(const QVariantMap &deviceClassMap)
     return deviceClass;
 }
 
+Param JsonTypes::unpackParam(const QVariantMap &paramMap)
+{
+    return Param(paramMap.value("name").toString(), paramMap.value("value"));
+}
+
 ParamType JsonTypes::unpackParamType(const QVariantMap &paramTypeMap)
 {
     ParamType paramType;
@@ -83,6 +90,22 @@ ParamType JsonTypes::unpackParamType(const QVariantMap &paramTypeMap)
     paramType.setUnitString(unit.second);
 
     return paramType;
+}
+
+Device *JsonTypes::unpackDevice(const QVariantMap &deviceMap)
+{
+    Device *device = new Device(Core::instance()->deviceManager());
+    device->setName(deviceMap.value("name").toString());
+    device->setId(deviceMap.value("id").toUuid());
+    device->setDeviceClassId(deviceMap.value("deviceClassId").toUuid());
+    device->setSetupComplete(deviceMap.value("setupComplete").toBool());
+
+    QList<Param> params;
+    foreach (QVariant param, deviceMap.value("params").toList()) {
+        params.append(JsonTypes::unpackParam(param.toMap()));
+    }
+    device->setSetupComplete(deviceMap.value("setupComplete").toBool());
+    return device;
 }
 
 DeviceClass::SetupMethod JsonTypes::stringToSetupMethod(const QString &setupMethodString)

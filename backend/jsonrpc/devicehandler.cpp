@@ -53,4 +53,16 @@ void DeviceHandler::processGetSupportedDevices(const QVariantMap &params)
             Core::instance()->deviceManager()->deviceClasses()->addDeviceClass(deviceClass);
         }
     }
+    Core::instance()->jsonRpcClient()->getDevices();
+}
+
+void DeviceHandler::processGetConfiguredDevices(const QVariantMap &params)
+{
+    if (params.value("params").toMap().keys().contains("devices")) {
+        QVariantList deviceList = params.value("params").toMap().value("devices").toList();
+        foreach (QVariant deviceVariant, deviceList) {
+            Device *device = JsonTypes::unpackDevice(deviceVariant.toMap());
+            Core::instance()->deviceManager()->devices()->addDevice(device);
+        }
+    }
 }

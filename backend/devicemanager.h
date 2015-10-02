@@ -24,6 +24,7 @@
 #include <QObject>
 
 #include "types/vendors.h"
+#include "types/devices.h"
 #include "types/deviceclasses.h"
 #include "types/deviceclassesfiltermodel.h"
 
@@ -31,18 +32,22 @@ class DeviceManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Vendors *vendors READ vendors CONSTANT)
+    Q_PROPERTY(Devices *devices READ devices CONSTANT)
     Q_PROPERTY(DeviceClasses *deviceClasses READ deviceClasses CONSTANT)
     Q_PROPERTY(DeviceClassesFilterModel *deviceClassesFilter READ deviceClassesFilter CONSTANT)
+
 
 public:
     explicit DeviceManager(QObject *parent = 0);
 
     Vendors *vendors();
+    Devices *devices();
     DeviceClasses *deviceClasses();
     DeviceClassesFilterModel *deviceClassesFilter();
 
 private:
     Vendors *m_vendors;
+    Devices *m_devices;
     DeviceClasses *m_deviceClasses;
     DeviceClassesFilterModel *m_deviceClassesFilter;
 

@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<UpnpDiscovery>("Guh", 1, 0, "UpnpDiscovery", "Can't create this in QML. Get it from the Core.");
     qmlRegisterUncreatableType<UpnpDiscoveryModel>("Guh", 1, 0, "UpnpDiscoveryModel", "Can't create this in QML. Get it from the Core.");
     qmlRegisterUncreatableType<Vendors>("Guh", 1, 0, "Vendors", "Can't create this in QML. Get it from the DeviceManager.");
+    qmlRegisterUncreatableType<Devices>("Guh", 1, 0, "Devices", "Can't create this in QML. Get it from the DeviceManager.");
     qmlRegisterUncreatableType<DeviceClasses>("Guh", 1, 0, "DeviceClasses", "Can't create this in QML. Get it from the DeviceManager.");
     qmlRegisterUncreatableType<DeviceClassesFilterModel>("Guh", 1, 0, "DeviceClassesFilterModel", "Can't create this in QML. Get it from the DeviceManager.");
 

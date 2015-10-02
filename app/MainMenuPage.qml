@@ -19,7 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.2
-import Ubuntu.Components 1.1
+import Ubuntu.Components 1.2
 import Ubuntu.Components.ListItems 1.0 as ListItem
 import Guh 1.0
 
@@ -33,4 +33,33 @@ Page {
         text: i18n.tr("Add device")
         onTriggered: pageStack.push(Qt.resolvedUrl("VendorsPage.qml"))
     }
+
+    UbuntuListView {
+        id: deviceList
+        anchors.fill: parent
+        model: Core.deviceManager.devices
+        delegate: ListItem.Subtitled {
+            text: model.name
+            subText: Core.deviceManager.vendors.getVendorName(model.vendorId)
+//            leadingActions: ListItemActions {
+//                actions: [
+//                    Action {
+//                        iconName: "delete"
+//                        onTriggered: listItem.destroy()
+//                    }
+//                ]
+//            }
+//            trailingActions: ListItemActions {
+//                actions: [
+//                    Action {
+//                        iconName: "search"
+//                        onTriggered: {
+//                            // do some search
+//                        }
+//                    }
+//                ]
+//            }
+        }
+    }
 }
+

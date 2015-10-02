@@ -32,6 +32,16 @@ QList<Vendor> Vendors::vendors()
     return m_vendors;
 }
 
+QString Vendors::getVendorName(const QUuid &vendorId)
+{
+    foreach (const Vendor &vendor, m_vendors) {
+        if (vendor.id() == vendorId) {
+            return vendor.name();
+        }
+    }
+    return QString();
+}
+
 int Vendors::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)

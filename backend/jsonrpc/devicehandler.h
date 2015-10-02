@@ -35,6 +35,7 @@ public:
 
     Q_INVOKABLE void processGetSupportedVendors(const QVariantMap &params);
     Q_INVOKABLE void processGetSupportedDevices(const QVariantMap &params);
+    Q_INVOKABLE void processGetConfiguredDevices(const QVariantMap &params);
 
 signals:
 

@@ -27,6 +27,7 @@
 #include <QUuid>
 
 #include "../types/types.h"
+#include "../types/device.h"
 #include "../types/deviceclass.h"
 #include "../types/paramtype.h"
 
@@ -40,7 +41,10 @@ public:
 
     static Vendor unpackVendor(const QVariantMap &vendorMap);
     static DeviceClass unpackDeviceClass(const QVariantMap &deviceClassMap);
+    static Param unpackParam(const QVariantMap &paramMap);
     static ParamType unpackParamType(const QVariantMap &paramTypeMap);
+
+    static Device *unpackDevice(const QVariantMap &deviceMap);
 
 
 private:

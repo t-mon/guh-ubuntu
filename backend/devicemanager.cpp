@@ -20,9 +20,12 @@
 
 #include "devicemanager.h"
 
+
+
 DeviceManager::DeviceManager(QObject *parent) :
     QObject(parent),
     m_vendors(new Vendors(this)),
+    m_devices(new Devices(this)),
     m_deviceClasses(new DeviceClasses(this)),
     m_deviceClassesFilter(new DeviceClassesFilterModel(this))
 
@@ -33,6 +36,11 @@ DeviceManager::DeviceManager(QObject *parent) :
 Vendors *DeviceManager::vendors()
 {
     return m_vendors;
+}
+
+Devices *DeviceManager::devices()
+{
+    return m_devices;
 }
 
 DeviceClasses *DeviceManager::deviceClasses()
