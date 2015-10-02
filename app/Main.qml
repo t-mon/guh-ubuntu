@@ -45,26 +45,6 @@ MainView {
         anchors.fill: parent
         Component.onCompleted: push(Qt.resolvedUrl("DiscoveryPage.qml"))
 
-//        MainMenuPage {
-//            id: mainMenuPage
-//            visible: false
-//        }
-
-//        DiscoveryPage {
-//            id: discoveryPage
-//            visible: false
-//        }
-
-//        VendorsPage {
-//            id: vendorsPage
-//            visible: false
-//        }
-
-//        DeviceClassesPage {
-//            id: deviceClassesPage
-//            visible: false
-//        }
-
         Connections {
             target: Core
             onConnectedChanged: {
@@ -80,8 +60,5 @@ MainView {
             }
         }
     }
-
-
-
 }
 

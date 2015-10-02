@@ -1,3 +1,23 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                         *
+ *  Copyright (C) 2015 Simon Stuerz <stuerz.simon@gmail.com>               *
+ *                                                                         *
+ *  This file is part of guh-ubuntu.                                       *
+ *                                                                         *
+ *  guh-ubuntu is free software: you can redistribute it and/or modify     *
+ *  it under the terms of the GNU General Public License as published by   *
+ *  the Free Software Foundation, version 3 of the License.                *
+ *                                                                         *
+ *  guh-ubuntu is distributed in the hope that it will be useful,          *
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of         *
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the           *
+ *  GNU General Public License for more details.                           *
+ *                                                                         *
+ *  You should have received a copy of the GNU General Public License      *
+ *  along with guh-ubuntu. If not, see <http://www.gnu.org/licenses/>.     *
+ *                                                                         *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 #include "deviceclass.h"
 
 #include <QDebug>
@@ -44,4 +64,44 @@ QString DeviceClass::name() const
 void DeviceClass::setName(const QString &name)
 {
     m_name = name;
+}
+
+QList<DeviceClass::CreateMethod> DeviceClass::createMethods() const
+{
+    return m_createMethods;
+}
+
+void DeviceClass::setCreateMethods(QList<CreateMethod> createMethods)
+{
+    m_createMethods = createMethods;
+}
+
+DeviceClass::SetupMethod DeviceClass::setupMethod() const
+{
+    return m_setupMethod;
+}
+
+void DeviceClass::setSetupMethod(DeviceClass::SetupMethod setupMethod)
+{
+    m_setupMethod = setupMethod;
+}
+
+QList<ParamType> DeviceClass::paramTypes() const
+{
+    return m_paramTypes;
+}
+
+void DeviceClass::setParamTypes(const QList<ParamType> &paramTypes)
+{
+    m_paramTypes = paramTypes;
+}
+
+QList<ParamType> DeviceClass::discoveryParamTypes() const
+{
+    return m_discoveryParamTypes;
+}
+
+void DeviceClass::setDiscoveryParamTypes(const QList<ParamType> &paramTypes)
+{
+    m_discoveryParamTypes = paramTypes;
 }

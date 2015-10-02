@@ -26,8 +26,11 @@
 #include <QVariant>
 #include <QUuid>
 
-#include "../types/vendor.h"
+#include "../types/types.h"
 #include "../types/deviceclass.h"
+#include "../types/paramtype.h"
+
+class Vendor;
 
 class JsonTypes : public QObject
 {
@@ -37,6 +40,16 @@ public:
 
     static Vendor unpackVendor(const QVariantMap &vendorMap);
     static DeviceClass unpackDeviceClass(const QVariantMap &deviceClassMap);
+    static ParamType unpackParamType(const QVariantMap &paramTypeMap);
+
+
+private:
+    static DeviceClass::SetupMethod stringToSetupMethod(const QString &setupMethodString);
+    static DeviceClass::CreateMethod stringToCreateMethod(const QString &createMethodString);
+    static QPair<Types::Unit, QString> stringToUnit(const QString &unitString);
+    static Types::InputType stringToInputType(const QString &inputTypeString);
+
+
 
 signals:
 

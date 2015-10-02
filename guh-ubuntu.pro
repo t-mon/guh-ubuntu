@@ -45,6 +45,11 @@ HEADERS += backend/core.h \
            backend/types/deviceclassesfiltermodel.h \
            backend/jsonrpc/devicehandler.h \
            backend/jsonrpc/jsonhandler.h \
+           backend/types/paramtype.h \
+           backend/types/types.h \
+    backend/types/device.h \
+    backend/types/param.h \
+    backend/types/devices.h
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -62,6 +67,10 @@ SOURCES += backend/main.cpp \
            backend/types/deviceclassesfiltermodel.cpp \
            backend/jsonrpc/devicehandler.cpp \
            backend/jsonrpc/jsonhandler.cpp \
+           backend/types/paramtype.cpp \
+    backend/types/device.cpp \
+    backend/types/param.cpp \
+    backend/types/devices.cpp
 
 RESOURCES += app.qrc
 
