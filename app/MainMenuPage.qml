@@ -18,9 +18,9 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import QtQuick 2.2
+import QtQuick 2.4
 import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0 as ListItem
+import Ubuntu.Components.ListItems 1.0
 import Guh 1.0
 
 Page {
@@ -34,31 +34,56 @@ Page {
         onTriggered: pageStack.push(Qt.resolvedUrl("VendorsPage.qml"))
     }
 
-    UbuntuListView {
+    ListView {
         id: deviceList
         anchors.fill: parent
         model: Core.deviceManager.devices
-        delegate: ListItem.Subtitled {
-            text: model.name
-            subText: Core.deviceManager.vendors.getVendorName(model.vendorId)
-//            leadingActions: ListItemActions {
-//                actions: [
-//                    Action {
-//                        iconName: "delete"
-//                        onTriggered: listItem.destroy()
-//                    }
-//                ]
-//            }
-//            trailingActions: ListItemActions {
-//                actions: [
-//                    Action {
-//                        iconName: "search"
-//                        onTriggered: {
-//                            // do some search
-//                        }
-//                    }
-//                ]
-//            }
+        clip: true
+        delegate: ListItem {
+            id: deviceItem
+            leadingActions: ListItemActions {
+                actions: [
+                    Action {
+                        iconName: "delete"
+                        onTriggered: Core.deviceManager.removeDevice(model.id)
+                    }
+                ]
+            }
+            trailingActions: ListItemActions {
+                actions: [
+                    Action {
+                        iconName: "info"
+                        onTriggered: pageStack.push(Qt.resolvedUrl("DeviceParamPage.qml"), {
+                                                        deviceName: model.name,
+                                                        params: model.params
+                                                    })
+                    }
+                ]
+            }
+
+            Column {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: units.gu(2)
+
+                Label {
+                    text: model.name
+                    fontSize: "large"
+                }
+                Label {
+                    text: {
+                        var vendorId = Core.deviceManager.deviceClasses.getDeviceClass(model.deviceClassId).vendorId
+                        Core.deviceManager.vendors.getVendor(vendorId).name
+                    }
+                }
+            }
+
+            onClicked: {
+                var d = deviceList.model.get(index)
+                console.log("device details for " + d.name)
+                pageStack.push(Qt.resolvedUrl("DeviceDetailsPage.qml"),
+                               { device: d })
+            }
         }
     }
 }

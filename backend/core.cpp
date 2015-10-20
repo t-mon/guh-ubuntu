@@ -46,6 +46,7 @@ Core::Core(QObject *parent) :
     m_connected(false)
 {
     connect(m_interface, &GuhInterface::connectedChanged, this, &Core::connectedChanged);
+    connect(m_interface, &GuhInterface::connectedChanged, this, &Core::onConnectionChanged);
     connect(m_interface, &GuhInterface::dataReady, m_jsonRpcClient, &JsonRpcClient::dataReceived);
 }
 
@@ -72,5 +73,15 @@ JsonRpcClient *Core::jsonRpcClient()
 bool Core::connected() const
 {
     return m_interface->connected();
+}
+
+void Core::onConnectionChanged()
+{
+    // delete all data
+    if (!connected()) {
+        deviceManager()->devices()->clearModel();
+        deviceManager()->deviceClasses()->clearModel();
+        deviceManager()->vendors()->clearModel();
+    }
 }
 

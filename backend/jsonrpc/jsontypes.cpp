@@ -20,10 +20,10 @@
 
 #include "jsontypes.h"
 
-#include "../types/vendor.h"
-#include "../types/deviceclass.h"
-
-#include "../core.h"
+#include "../types/vendors.h"
+#include "../types/deviceclasses.h"
+#include "../types/params.h"
+#include "../types/paramtypes.h"
 
 #include <QMetaEnum>
 
@@ -32,79 +32,76 @@ JsonTypes::JsonTypes(QObject *parent) :
 {
 }
 
-Vendor JsonTypes::unpackVendor(const QVariantMap &vendorMap)
+Vendor *JsonTypes::unpackVendor(const QVariantMap &vendorMap, QObject *parent)
 {
-    QString name = vendorMap.value("name").toString();
-    QUuid id = vendorMap.value("id").toUuid();
-    return Vendor(id, name);
+    return new Vendor(vendorMap.value("id").toUuid(), vendorMap.value("name").toString(), parent);
 }
 
-DeviceClass JsonTypes::unpackDeviceClass(const QVariantMap &deviceClassMap)
+DeviceClass *JsonTypes::unpackDeviceClass(const QVariantMap &deviceClassMap, QObject *parent)
 {
-    DeviceClass deviceClass;
-    deviceClass.setName(deviceClassMap.value("name").toString());
-    deviceClass.setId(deviceClassMap.value("id").toUuid());
-    deviceClass.setVendorId(deviceClassMap.value("vendorId").toUuid());
+    DeviceClass *deviceClass = new DeviceClass(parent);
+    deviceClass->setName(deviceClassMap.value("name").toString());
+    deviceClass->setId(deviceClassMap.value("id").toUuid());
+    deviceClass->setVendorId(deviceClassMap.value("vendorId").toUuid());
     QVariantList createMethodsList = deviceClassMap.value("createMethods").toList();
     QList<DeviceClass::CreateMethod> createMethods;
     foreach (QVariant createMethod, createMethodsList) {
         createMethods.append(JsonTypes::stringToCreateMethod(createMethod.toString()));
     }
-    deviceClass.setCreateMethods(createMethods);
-    deviceClass.setSetupMethod(stringToSetupMethod(deviceClassMap.value("setupMethod").toString()));
+    deviceClass->setCreateMethods(createMethods);
+    deviceClass->setSetupMethod(stringToSetupMethod(deviceClassMap.value("setupMethod").toString()));
 
     // ParamTypes
-    QList<ParamType> paramTypes;
+    ParamTypes *paramTypes = new ParamTypes(deviceClass);
     foreach (QVariant paramType, deviceClassMap.value("paramTypes").toList()) {
-        paramTypes.append(JsonTypes::unpackParamType(paramType.toMap()));
+        paramTypes->addParamType(JsonTypes::unpackParamType(paramType.toMap(), paramTypes));
     }
-    deviceClass.setParamTypes(paramTypes);
+    deviceClass->setParamTypes(paramTypes);
 
     // discovery ParamTypes
-    QList<ParamType> discoveryParamTypes;
+    ParamTypes *discoveryParamTypes = new ParamTypes(deviceClass);
     foreach (QVariant paramType, deviceClassMap.value("discoveryParamTypes").toList()) {
-        discoveryParamTypes.append(JsonTypes::unpackParamType(paramType.toMap()));
+        discoveryParamTypes->addParamType(JsonTypes::unpackParamType(paramType.toMap(), discoveryParamTypes));
     }
-    deviceClass.setDiscoveryParamTypes(discoveryParamTypes);
+    deviceClass->setDiscoveryParamTypes(discoveryParamTypes);
     return deviceClass;
 }
 
-Param JsonTypes::unpackParam(const QVariantMap &paramMap)
+Param *JsonTypes::unpackParam(const QVariantMap &paramMap, QObject *parent)
 {
-    return Param(paramMap.value("name").toString(), paramMap.value("value"));
+    return new Param(paramMap.value("name").toString(), paramMap.value("value"), parent);
 }
 
-ParamType JsonTypes::unpackParamType(const QVariantMap &paramTypeMap)
+ParamType *JsonTypes::unpackParamType(const QVariantMap &paramTypeMap, QObject *parent)
 {
-    ParamType paramType;
-    paramType.setName(paramTypeMap.value("name").toString());
-    paramType.setType(QVariant::nameToType(paramTypeMap.value("type").toString().toLatin1().data()));
-    paramType.setDefaultValue(paramTypeMap.value("defaultValue"));
-    paramType.setMinValue(paramTypeMap.value("minValue"));
-    paramType.setMaxValue(paramTypeMap.value("maxValue"));
-    paramType.setAllowedValues(paramTypeMap.value("allowedValues").toList());
-    paramType.setInputType(stringToInputType(paramTypeMap.value("inputType").toString()));
-    paramType.setReadOnly(paramTypeMap.value("readOnly").toBool());
+    ParamType *paramType = new ParamType(parent);
+    paramType->setName(paramTypeMap.value("name").toString());
+    paramType->setType(paramTypeMap.value("type").toString());
+    paramType->setDefaultValue(paramTypeMap.value("defaultValue"));
+    paramType->setMinValue(paramTypeMap.value("minValue"));
+    paramType->setMaxValue(paramTypeMap.value("maxValue"));
+    paramType->setAllowedValues(paramTypeMap.value("allowedValues").toList());
+    paramType->setInputType(stringToInputType(paramTypeMap.value("inputType").toString()));
+    paramType->setReadOnly(paramTypeMap.value("readOnly").toBool());
     QPair<Types::Unit, QString> unit = stringToUnit(paramTypeMap.value("unit").toString());
-    paramType.setUnit(unit.first);
-    paramType.setUnitString(unit.second);
-
+    paramType->setUnit(unit.first);
+    paramType->setUnitString(unit.second);
     return paramType;
 }
 
-Device *JsonTypes::unpackDevice(const QVariantMap &deviceMap)
+Device *JsonTypes::unpackDevice(const QVariantMap &deviceMap, QObject *parent)
 {
-    Device *device = new Device(Core::instance()->deviceManager());
+    Device *device = new Device(parent);
     device->setName(deviceMap.value("name").toString());
     device->setId(deviceMap.value("id").toUuid());
     device->setDeviceClassId(deviceMap.value("deviceClassId").toUuid());
     device->setSetupComplete(deviceMap.value("setupComplete").toBool());
 
-    QList<Param> params;
+    Params *params = new Params(device);
     foreach (QVariant param, deviceMap.value("params").toList()) {
-        params.append(JsonTypes::unpackParam(param.toMap()));
+        params->addParam(JsonTypes::unpackParam(param.toMap(), params));
     }
-    device->setSetupComplete(deviceMap.value("setupComplete").toBool());
+    device->setParams(params);
     return device;
 }
 

@@ -18,46 +18,23 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "devicemanager.h"
-#include "core.h"
+import QtQuick 2.4
+import Ubuntu.Components 1.2
+import Ubuntu.Components.ListItems 1.0
+import Guh 1.0
 
-DeviceManager::DeviceManager(QObject *parent) :
-    QObject(parent),
-    m_vendors(new Vendors(this)),
-    m_devices(new Devices(this)),
-    m_deviceClasses(new DeviceClasses(this)),
-    m_deviceClassesFilter(new DeviceClassesFilterModel(this))
+Component {
+    id: root
+    Rectangle {
+        id: mainRectangle
+        anchors.fill: parent
+        color: "transparent"
 
-{
-    m_deviceClassesFilter->setDeviceClasses(m_deviceClasses);
+        ValueSelector {
+            text: paramType.name
+            values: paramType.allowedValues
+        }
+    }
 }
 
-Vendors *DeviceManager::vendors() const
-{
-    return m_vendors;
-}
 
-Devices *DeviceManager::devices() const
-{
-    return m_devices;
-}
-
-DeviceClasses *DeviceManager::deviceClasses() const
-{
-    return m_deviceClasses;
-}
-
-DeviceClassesFilterModel *DeviceManager::deviceClassesFilter() const
-{
-    return m_deviceClassesFilter;
-}
-
-void DeviceManager::removeDevice(QUuid deviceId)
-{
-    Core::instance()->jsonRpcClient()->deleteDevice(deviceId);
-}
-
-void DeviceManager::addDevice(QUuid deviceClassId, Params *params)
-{
-    Core::instance()->jsonRpcClient()->addDevice(deviceClassId, params);
-}

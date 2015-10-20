@@ -49,7 +49,9 @@ HEADERS += backend/core.h \
            backend/types/types.h \
     backend/types/device.h \
     backend/types/param.h \
-    backend/types/devices.h
+    backend/types/devices.h \
+    backend/types/params.h \
+    backend/types/paramtypes.h
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -70,7 +72,9 @@ SOURCES += backend/main.cpp \
            backend/types/paramtype.cpp \
     backend/types/device.cpp \
     backend/types/param.cpp \
-    backend/types/devices.cpp
+    backend/types/devices.cpp \
+    backend/types/params.cpp \
+    backend/types/paramtypes.cpp
 
 RESOURCES += app.qrc
 

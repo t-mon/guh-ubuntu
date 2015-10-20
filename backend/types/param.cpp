@@ -20,7 +20,8 @@
 
 #include "param.h"
 
-Param::Param(const QString &name, const QVariant &value):
+Param::Param(const QString &name, const QVariant &value, QObject *parent) :
+    QObject(parent),
     m_name(name),
     m_value(value)
 {
@@ -34,6 +35,7 @@ QString Param::name() const
 void Param::setName(const QString &name)
 {
     m_name = name;
+    emit nameChanged();
 }
 
 QVariant Param::value() const
@@ -44,4 +46,5 @@ QVariant Param::value() const
 void Param::setValue(const QVariant &value)
 {
     m_value = value;
+    emit valueChanged();
 }

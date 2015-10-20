@@ -18,9 +18,9 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import QtQuick 2.2
-import Ubuntu.Components 1.1
-import Ubuntu.Components.ListItems 1.0 as ListItem
+import QtQuick 2.4
+import Ubuntu.Components 1.2
+import Ubuntu.Components.ListItems 1.0
 import Guh 1.0
 
 MainView {
@@ -28,7 +28,6 @@ MainView {
     objectName: "mainView"
     applicationName: "guh-ubuntu.stuerz-simon"
     automaticOrientation: false
-    useDeprecatedToolbar: false
 
     width: units.gu(40)
     height: units.gu(70)
@@ -38,12 +37,13 @@ MainView {
     Component.onCompleted: {
         i18n.domain = "guh-ubuntu.stuerz-simon"
         Core.discovery.discover()
+        Theme.name = "Ubuntu.Components.Themes.SuruDark"
     }
 
     PageStack {
         id: pageStack
         anchors.fill: parent
-        Component.onCompleted: push(Qt.resolvedUrl("DiscoveryPage.qml"))
+        Component.onCompleted: push(Qt.resolvedUrl("ConnectionPage.qml"))
 
         Connections {
             target: Core
@@ -55,7 +55,7 @@ MainView {
                 } else {
                     console.log("disconnected")
                     Core.discovery.discover()
-                    pageStack.push(discoveryPage)
+                    pageStack.push(Qt.resolvedUrl("ConnectionPage.qml"))
                 }
             }
         }

@@ -20,6 +20,8 @@
 
 #include "jsonrpcclient.h"
 #include "../core.h"
+#include "../types/param.h"
+#include "../types/params.h"
 
 #include <QJsonDocument>
 #include <QVariantMap>
@@ -58,6 +60,25 @@ void JsonRpcClient::getDeviceClasses()
     Core::instance()->interface()->sendRequest(reply->requestMap());
 }
 
+void JsonRpcClient::addDevice(const QUuid &deviceClassId, Params *params)
+{
+    qDebug() << "JsonRpc: add device " << deviceClassId.toString() << "with params";
+    foreach (Param *param, params->params()) {
+        qDebug() << "    -> " << param->name() << param->value();
+    }
+
+}
+
+void JsonRpcClient::deleteDevice(const QUuid &deviceId)
+{
+    qDebug() << "JsonRpc: delete device" << deviceId.toString();
+    QVariantMap params;
+    params.insert("deviceId", deviceId.toString());
+    JsonRpcReply *reply = createReply("Devices", "RemoveConfiguredDevice", params);
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+}
+
 JsonRpcReply *JsonRpcClient::createReply(QString nameSpace, QString method, QVariantMap params)
 {
     m_id++;
@@ -66,18 +87,35 @@ JsonRpcReply *JsonRpcClient::createReply(QString nameSpace, QString method, QVar
 
 void JsonRpcClient::dataReceived(const QVariantMap &data)
 {
-    //qDebug() << "data: " << QJsonDocument::fromVariant(data).toJson();
     int commandId = data.value("id").toInt();
     JsonRpcReply *reply = m_replies.take(commandId);
 
+    // check if this is a reply to a request
     if (reply) {
-        qDebug() << "got response for" << QString("%1.%2").arg(reply->nameSpace(), reply->method());
+        qDebug() << "JsonRpc: got response for" << QString("%1.%2").arg(reply->nameSpace(), reply->method());
         JsonHandler *handler = m_handlers.value(reply->nameSpace());
 
         if (!QMetaObject::invokeMethod(handler, QString("process" + reply->method()).toLatin1().data(), Q_ARG(QVariantMap, data)))
-            qWarning() << "method not implemented";
+            qWarning() << "JsonRpc: method not implemented:" << reply->method();
 
         return;
+    }
+
+    // check if this is a notification
+    if (data.contains("notification")) {
+        QStringList notification = data.value("notification").toString().split(".");
+        QString nameSpace = notification.first();
+        QString method = notification.last();
+        JsonHandler *handler = m_handlers.value(nameSpace);
+
+        if (!handler) {
+            qWarning() << "JsonRpc: handler not implemented:" << nameSpace;
+            return;
+        }
+
+        if (!QMetaObject::invokeMethod(handler, QString("process" + method).toLatin1().data(), Q_ARG(QVariantMap, data)))
+            qWarning() << "method not implemented";
+
     }
 }
 

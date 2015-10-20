@@ -39,13 +39,11 @@ class JsonTypes : public QObject
 public:
     explicit JsonTypes(QObject *parent = 0);
 
-    static Vendor unpackVendor(const QVariantMap &vendorMap);
-    static DeviceClass unpackDeviceClass(const QVariantMap &deviceClassMap);
-    static Param unpackParam(const QVariantMap &paramMap);
-    static ParamType unpackParamType(const QVariantMap &paramTypeMap);
-
-    static Device *unpackDevice(const QVariantMap &deviceMap);
-
+    static Vendor *unpackVendor(const QVariantMap &vendorMap, QObject *parent);
+    static DeviceClass *unpackDeviceClass(const QVariantMap &deviceClassMap, QObject *parent);
+    static Param *unpackParam(const QVariantMap &paramMap, QObject *parent);
+    static ParamType *unpackParamType(const QVariantMap &paramTypeMap, QObject *parent);
+    static Device *unpackDevice(const QVariantMap &deviceMap, QObject *parent);
 
 private:
     static DeviceClass::SetupMethod stringToSetupMethod(const QString &setupMethodString);

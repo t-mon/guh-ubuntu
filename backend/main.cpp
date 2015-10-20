@@ -32,13 +32,21 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     app.setApplicationVersion("0.1.0");
 
+    qmlRegisterType<Param>("Guh", 1, 0, "Param");
+    qmlRegisterType<Params>("Guh", 1, 0, "Params");
     qmlRegisterSingletonType<Core>("Guh", 1, 0, "Core", Core::qmlInstance);
     qmlRegisterUncreatableType<DeviceManager>("Guh", 1, 0, "DeviceManager", "Can't create this in QML. Get it from the Core.");
     qmlRegisterUncreatableType<GuhInterface>("Guh", 1, 0, "GuhInterface", "Can't create this in QML. Get it from the Core.");
     qmlRegisterUncreatableType<UpnpDiscovery>("Guh", 1, 0, "UpnpDiscovery", "Can't create this in QML. Get it from the Core.");
     qmlRegisterUncreatableType<UpnpDiscoveryModel>("Guh", 1, 0, "UpnpDiscoveryModel", "Can't create this in QML. Get it from the Core.");
+    qmlRegisterUncreatableType<Types>("Guh", 1, 0, "Types", "Can't create this in QML. Get it from the Core.");
+    qmlRegisterUncreatableType<ParamType>("Guh", 1, 0, "ParamType", "Can't create this in QML. Get it from the ParamType.");
+    qmlRegisterUncreatableType<ParamTypes>("Guh", 1, 0, "ParamTypes", "Can't create this in QML. Get it from the DeviceClass.");
+    qmlRegisterUncreatableType<Vendor>("Guh", 1, 0, "Vendor", "Can't create this in QML. Get it from the Vendors.");
     qmlRegisterUncreatableType<Vendors>("Guh", 1, 0, "Vendors", "Can't create this in QML. Get it from the DeviceManager.");
+    qmlRegisterUncreatableType<Device>("Guh", 1, 0, "Device", "Can't create this in QML. Get it from the Devices.");
     qmlRegisterUncreatableType<Devices>("Guh", 1, 0, "Devices", "Can't create this in QML. Get it from the DeviceManager.");
+    qmlRegisterUncreatableType<DeviceClass>("Guh", 1, 0, "DeviceClass", "Can't create this in QML. Get it from the DeviceClasses.");
     qmlRegisterUncreatableType<DeviceClasses>("Guh", 1, 0, "DeviceClasses", "Can't create this in QML. Get it from the DeviceManager.");
     qmlRegisterUncreatableType<DeviceClassesFilterModel>("Guh", 1, 0, "DeviceClassesFilterModel", "Can't create this in QML. Get it from the DeviceManager.");
 

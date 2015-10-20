@@ -23,21 +23,56 @@ import Ubuntu.Components 1.2
 import Ubuntu.Components.ListItems 1.0
 import Guh 1.0
 
-Page {
+Component {
     id: root
-    title: i18n.tr("Supported devices")
 
-    UbuntuListView {
-        id: deviceClassesList
+    Rectangle {
+        id: mainRectangle
         anchors.fill: parent
-        model: Core.deviceManager.deviceClassesFilter
-        delegate: Standard {
-            text: model.name
-            onClicked: {
-                var dc = Core.deviceManager.deviceClasses.getDeviceClass(model.id)
-                console.log("add device \"" + dc.name + "\"")
-                pageStack.push(Qt.resolvedUrl("AddDevicePage.qml"), { deviceClass: dc })
+        color: "transparent"
+
+        Column {
+            anchors.fill: parent
+            anchors.margins: units.gu(1)
+            spacing: units.gu(1)
+
+            Label {
+                anchors.left: parent.left
+                anchors.leftMargin: units.gu(2)
+                font.capitalization: Font.Capitalize
+                text: paramType.name
+            }
+
+            Loader {
+                id: inputLoader
+
+                anchors.left: parent.left
+                anchors.leftMargin: units.gu(2)
+                anchors.right: parent.right
+                anchors.rightMargin: units.gu(2)
+
+                sourceComponent: textInputLine
+            }
+
+            Component {
+                id: textInputLine
+                TextField {
+                    id: textField
+                    inputMask: {
+                        if (paramType.inputType == Types.InputTypeIPv4Address)
+                            return "000.000.000.000;_"
+                        else if (paramType.inputType == Types.InputTypeMacAddress)
+                            return "HH:HH:HH:HH:HH:HH;_"
+                        else
+                            return ""
+                    }
+                    echoMode: paramType.inputType == Types.InputTypePassword ? TextInput.Password : TextInput.Normal
+                    onTextChanged: {
+                        value =  textField.text
+                    }
+                }
             }
         }
     }
 }
+

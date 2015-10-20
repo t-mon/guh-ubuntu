@@ -37,7 +37,7 @@ void DeviceHandler::processGetSupportedVendors(const QVariantMap &params)
     if (params.value("params").toMap().keys().contains("vendors")) {
         QVariantList vendorList = params.value("params").toMap().value("vendors").toList();
         foreach (QVariant vendorVariant, vendorList) {
-            Vendor vendor = JsonTypes::unpackVendor(vendorVariant.toMap());
+            Vendor *vendor = JsonTypes::unpackVendor(vendorVariant.toMap(), Core::instance()->deviceManager()->vendors());
             Core::instance()->deviceManager()->vendors()->addVendor(vendor);
         }
     }
@@ -49,7 +49,7 @@ void DeviceHandler::processGetSupportedDevices(const QVariantMap &params)
     if (params.value("params").toMap().keys().contains("deviceClasses")) {
         QVariantList deviceClassList = params.value("params").toMap().value("deviceClasses").toList();
         foreach (QVariant deviceClassVariant, deviceClassList) {
-            DeviceClass deviceClass = JsonTypes::unpackDeviceClass(deviceClassVariant.toMap());
+            DeviceClass *deviceClass = JsonTypes::unpackDeviceClass(deviceClassVariant.toMap(), Core::instance()->deviceManager()->deviceClasses());
             Core::instance()->deviceManager()->deviceClasses()->addDeviceClass(deviceClass);
         }
     }
@@ -61,8 +61,38 @@ void DeviceHandler::processGetConfiguredDevices(const QVariantMap &params)
     if (params.value("params").toMap().keys().contains("devices")) {
         QVariantList deviceList = params.value("params").toMap().value("devices").toList();
         foreach (QVariant deviceVariant, deviceList) {
-            Device *device = JsonTypes::unpackDevice(deviceVariant.toMap());
+            Device *device = JsonTypes::unpackDevice(deviceVariant.toMap(), Core::instance()->deviceManager()->devices());
             Core::instance()->deviceManager()->devices()->addDevice(device);
         }
     }
+}
+
+void DeviceHandler::processRemoveConfiguredDevice(const QVariantMap &params)
+{
+    qDebug() << params;
+}
+
+void DeviceHandler::processAddConfiguredDevice(const QVariantMap &params)
+{
+    qDebug() << params;
+}
+
+void DeviceHandler::processDeviceRemoved(const QVariantMap &params)
+{
+    QUuid deviceId = params.value("params").toMap().value("deviceId").toUuid();
+    qDebug() << "JsonRpc: Notification: Device removed" << deviceId.toString();
+    Device *device = Core::instance()->deviceManager()->devices()->getDevice(deviceId);
+    Core::instance()->deviceManager()->devices()->removeDevice(device);
+    device->deleteLater();
+}
+
+void DeviceHandler::processDeviceAdded(const QVariantMap &params)
+{
+    if (params.value("params").toMap().keys().contains("device")) {
+        QVariantMap deviceVariant = params.value("params").toMap().value("device").toMap();
+        Device *device = JsonTypes::unpackDevice(deviceVariant, Core::instance()->deviceManager()->devices());
+        qDebug() << "JsonRpc: Notification: Device added" << device->id().toString();
+        Core::instance()->deviceManager()->devices()->addDevice(device);
+    }
+
 }

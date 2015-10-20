@@ -21,28 +21,28 @@
 #ifndef DEVICECLASS_H
 #define DEVICECLASS_H
 
+#include <QObject>
 #include <QUuid>
 #include <QList>
 #include <QString>
 
-#include <QMetaEnum>
+#include "paramtypes.h"
 
-#include "paramtype.h"
-
-class DeviceClass
+class DeviceClass : public QObject
 {
+    Q_OBJECT
     Q_ENUMS(CreateMethod)
     Q_ENUMS(SetupMethod)
+
+    Q_PROPERTY(QString name READ name CONSTANT)
     Q_PROPERTY(QUuid id READ id CONSTANT)
     Q_PROPERTY(QUuid vendorId READ vendorId CONSTANT)
-    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(ParamTypes *paramTypes READ paramTypes NOTIFY paramTypesChanged)
+    Q_PROPERTY(ParamTypes *discoveryParamTypes READ discoveryParamTypes NOTIFY discoveryParamTypesChanged)
     Q_PROPERTY(QList<CreateMethod> createMethods READ createMethods CONSTANT)
     Q_PROPERTY(SetupMethod setupMethod READ setupMethod CONSTANT)
-    Q_PROPERTY(SetupMethod setupMethod READ setupMethod CONSTANT)
-
 
 public:
-
     enum CreateMethod {
         CreateMethodUser,
         CreateMethodAuto,
@@ -56,7 +56,10 @@ public:
         SetupMethodPushButton
     };
 
-    DeviceClass();
+    DeviceClass(QObject *parent = 0);
+
+    QString name() const;
+    void setName(const QString &name);
 
     QUuid id() const;
     void setId(const QUuid &id);
@@ -67,20 +70,17 @@ public:
     QUuid pluginId() const;
     void setPluginId(const QUuid &pluginId);
 
-    QString name() const;
-    void setName(const QString &name);
-
     QList<CreateMethod> createMethods() const;
     void setCreateMethods(QList<CreateMethod> createMethods);
 
     SetupMethod setupMethod() const;
     void setSetupMethod(SetupMethod setupMethod);
 
-    QList<ParamType> paramTypes() const;
-    void setParamTypes(const QList<ParamType> &paramTypes);
+    ParamTypes *paramTypes() const;
+    void setParamTypes(ParamTypes *paramTypes);
 
-    QList<ParamType> discoveryParamTypes() const;
-    void setDiscoveryParamTypes(const QList<ParamType> &paramTypes);
+    ParamTypes *discoveryParamTypes() const;
+    void setDiscoveryParamTypes(ParamTypes *paramTypes);
 
 //    QList<StateType> stateTypes() const;
 //    void setStateTypes(const QList<StateType> &stateTypes);
@@ -98,12 +98,18 @@ private:
     QString m_name;
     QList<CreateMethod> m_createMethods;
     SetupMethod m_setupMethod;
-    QList<ParamType> m_paramTypes;
-    QList<ParamType> m_discoveryParamTypes;
+
+    ParamTypes *m_paramTypes;
+    ParamTypes *m_discoveryParamTypes;
+
 //    QList<StateType> m_stateTypes;
 //    QList<EventType> m_eventTypes;
-//    QList<EventType> m_allEventTypes;
 //    QList<ActionType> m_actionTypes;
+
+signals:
+    void paramTypesChanged();
+    void discoveryParamTypesChanged();
+
 };
 
 #endif // DEVICECLASS_H

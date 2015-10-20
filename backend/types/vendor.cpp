@@ -20,7 +20,8 @@
 
 #include "vendor.h"
 
-Vendor::Vendor(const QUuid &id, const QString &name):
+Vendor::Vendor(const QUuid &id, const QString &name, QObject *parent) :
+    QObject(parent),
     m_id(id),
     m_name(name)
 {

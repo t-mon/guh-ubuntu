@@ -2,8 +2,17 @@
     <qresource prefix="">
         <file>app/Main.qml</file>
         <file>app/MainMenuPage.qml</file>
-        <file>app/DiscoveryPage.qml</file>
+        <file>app/ConnectionPage.qml</file>
+        <file>app/ManualConnectionPage.qml</file>
         <file>app/VendorsPage.qml</file>
         <file>app/DeviceClassesPage.qml</file>
+        <file>app/DeviceDetailsPage.qml</file>
+        <file>app/AddDevicePage.qml</file>
+        <file>app/ParamInput.qml</file>
+        <file>app/DeviceParamPage.qml</file>
+        <file>app/StringInputComponent.qml</file>
+        <file>app/BoolInputComponent.qml</file>
+        <file>app/AllowedValuesInputComponent.qml</file>
+        <file>app/NumberInputComponent.qml</file>
     </qresource>
 </RCC>

@@ -42,7 +42,6 @@ public:
     static Core* instance();
     static QObject *qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
 
-
     DeviceManager *deviceManager();
     GuhInterface *interface();
     JsonRpcClient *jsonRpcClient();
@@ -64,7 +63,8 @@ private:
 signals:
     void connectedChanged();
 
-public slots:
+private slots:
+    void onConnectionChanged();
 
 };
 

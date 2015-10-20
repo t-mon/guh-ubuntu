@@ -18,46 +18,53 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "devicemanager.h"
-#include "core.h"
+import QtQuick 2.4
+import Ubuntu.Components 1.2
+import Ubuntu.Components.ListItems 1.0
+import Guh 1.0
 
-DeviceManager::DeviceManager(QObject *parent) :
-    QObject(parent),
-    m_vendors(new Vendors(this)),
-    m_devices(new Devices(this)),
-    m_deviceClasses(new DeviceClasses(this)),
-    m_deviceClassesFilter(new DeviceClassesFilterModel(this))
 
-{
-    m_deviceClassesFilter->setDeviceClasses(m_deviceClasses);
-}
+Standard {
+    id: root
+    property var paramType: null
+    property var name: paramType.name
+    property var value: null
 
-Vendors *DeviceManager::vendors() const
-{
-    return m_vendors;
-}
+    height: {
+        if (inputLoader.sourceComponent == stringInput)
+            return units.gu(10)
+        else if (inputLoader.sourceComponent == allowedValuesInput)
+            return units.gu(6)
+        else if (inputLoader.sourceComponent == numberInput)
+            return units.gu(6)
+        else
+            return units.gu(6)
+    }
 
-Devices *DeviceManager::devices() const
-{
-    return m_devices;
-}
+    AllowedValuesInputComponent {
+        id: allowedValuesInput
+    }
 
-DeviceClasses *DeviceManager::deviceClasses() const
-{
-    return m_deviceClasses;
-}
+    StringInputComponent {
+        id: stringInput
+    }
 
-DeviceClassesFilterModel *DeviceManager::deviceClassesFilter() const
-{
-    return m_deviceClassesFilter;
-}
+    NumberInputComponent {
+        id: numberInput
+    }
 
-void DeviceManager::removeDevice(QUuid deviceId)
-{
-    Core::instance()->jsonRpcClient()->deleteDevice(deviceId);
-}
+    BoolInputComponent {
+        id: boolInput
+    }
 
-void DeviceManager::addDevice(QUuid deviceClassId, Params *params)
-{
-    Core::instance()->jsonRpcClient()->addDevice(deviceClassId, params);
+    Loader {
+        id: inputLoader
+        anchors.fill: parent
+        sourceComponent: paramType.type == "QString" && paramType.allowedValues.length == 0
+                         ? stringInput : paramType.allowedValues.length > 0
+                           ? allowedValuesInput : (paramType.type == "int" ||
+                                                   paramType.type == "double" ||
+                                                   paramType.type == "uint") &&
+                             paramType.allowedValues.length == 0 ? numberInput : boolInput
+    }
 }

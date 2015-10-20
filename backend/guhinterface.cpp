@@ -36,9 +36,9 @@ GuhInterface::GuhInterface(QObject *parent) :
     connect(m_socket, SIGNAL(textMessageReceived(QString)), this, SLOT(onTextMessageReceived(QString)));
 }
 
-void GuhInterface::connectGuh(const QString &hostAddress)
+void GuhInterface::connectGuh(const QString &urlString)
 {
-    m_socket->open(QUrl("ws://" + hostAddress + ":4444"));
+    m_socket->open(QUrl(urlString));
 }
 
 void GuhInterface::sendData(const QByteArray &data)

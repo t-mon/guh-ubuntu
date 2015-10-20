@@ -20,12 +20,14 @@
 
 #include "paramtype.h"
 
-ParamType::ParamType()
+ParamType::ParamType(QObject *parent) :
+    QObject(parent)
 {
     m_readOnly = false;
 }
 
-ParamType::ParamType(const QString &name, const QVariant::Type type, const QVariant &defaultValue) :
+ParamType::ParamType(const QString &name, const QVariant::Type type, const QVariant &defaultValue, QObject *parent) :
+    QObject(parent),
     m_name(name),
     m_type(type),
     m_defaultValue(defaultValue),
@@ -43,12 +45,12 @@ void ParamType::setName(const QString &name)
     m_name = name;
 }
 
-QVariant::Type ParamType::type() const
+QString ParamType::type() const
 {
     return m_type;
 }
 
-void ParamType::setType(QVariant::Type type)
+void ParamType::setType(const QString &type)
 {
     m_type = type;
 }

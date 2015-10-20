@@ -32,6 +32,21 @@ QList<Device *> Devices::devices()
     return m_devices;
 }
 
+Device *Devices::get(int index) const
+{
+    return m_devices.at(index);
+}
+
+Device *Devices::getDevice(const QUuid &deviceId) const
+{
+    foreach (Device *device, m_devices) {
+        if (device->id() == deviceId) {
+            return device;
+        }
+    }
+    return 0;
+}
+
 int Devices::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
@@ -76,6 +91,8 @@ void Devices::removeDevice(Device *device)
 void Devices::clearModel()
 {
     beginResetModel();
+    qDebug() << "Devices: delete all devices";
+    qDeleteAll(m_devices);
     m_devices.clear();
     endResetModel();
 }
@@ -88,9 +105,4 @@ QHash<int, QByteArray> Devices::roleNames() const
     roles[DeviceClassRole] = "deviceClassId";
     roles[SetupComplete] = "setupComplete";
     return roles;
-}
-
-int Devices::indexOf(Device *device)
-{
-    return m_devices.indexOf(device);
 }

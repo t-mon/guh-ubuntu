@@ -54,6 +54,7 @@ void DeviceClassesFilterModel::setDeviceClasses(DeviceClasses *deviceClasses)
     emit deviceClassesChanged();
 }
 
+
 void DeviceClassesFilterModel::resetFilter()
 {
     setVendorId(QUuid());
@@ -64,9 +65,9 @@ bool DeviceClassesFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
 {
     Q_UNUSED(sourceParent)
 
-    DeviceClass deviceClass = m_deviceClasses->get(sourceRow);
-    if (!m_vendorId.isNull() && deviceClass.vendorId() == m_vendorId) {
-        qDebug() << "filter match" << deviceClass.name();
+    DeviceClass *deviceClass = m_deviceClasses->get(sourceRow);
+    if (!m_vendorId.isNull() && deviceClass->vendorId() == m_vendorId) {
+        qDebug() << "filter match" << deviceClass->name();
         return true;
     }
 

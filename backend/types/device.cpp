@@ -56,14 +56,15 @@ void Device::setDeviceClassId(const QUuid &deviceClassId)
     m_deviceClassId = deviceClassId;
 }
 
-QList<Param> Device::params() const
+Params *Device::params() const
 {
     return m_params;
 }
 
-void Device::setParams(const QList<Param> params)
+void Device::setParams(Params *params)
 {
     m_params = params;
+    emit paramsChanged();
 }
 
 bool Device::setupComplete()

@@ -21,13 +21,18 @@
 #ifndef VENDOR_H
 #define VENDOR_H
 
+#include <QObject>
 #include <QString>
 #include <QUuid>
 
-class Vendor
+class Vendor : public QObject
 {
+    Q_OBJECT
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(QUuid id READ id CONSTANT)
+
 public:
-    Vendor(const QUuid &id = QUuid(), const QString &name = QString());
+    Vendor(const QUuid &id = QUuid(), const QString &name = QString(), QObject *parent = 0);
 
     QUuid id() const;
     void setId(const QUuid &id);

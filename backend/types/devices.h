@@ -30,7 +30,7 @@ class Devices : public QAbstractListModel
     Q_OBJECT
 public:
     enum DeviceRole {
-        NameRole,
+        NameRole = Qt::DisplayRole,
         IdRole,
         DeviceClassRole,
         SetupComplete
@@ -39,6 +39,9 @@ public:
     explicit Devices(QObject *parent = 0);
 
     QList<Device *> devices();
+
+    Q_INVOKABLE Device *get(int index) const;
+    Q_INVOKABLE Device *getDevice(const QUuid &deviceId) const;
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
@@ -54,7 +57,6 @@ protected:
 private:
     QList<Device *> m_devices;
 
-    int indexOf(Device *device);
 };
 
 #endif // DEVICES_H

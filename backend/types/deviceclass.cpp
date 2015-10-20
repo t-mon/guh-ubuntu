@@ -22,7 +22,8 @@
 
 #include <QDebug>
 
-DeviceClass::DeviceClass()
+DeviceClass::DeviceClass(QObject *parent) :
+    QObject(parent)
 {
 }
 
@@ -86,22 +87,22 @@ void DeviceClass::setSetupMethod(DeviceClass::SetupMethod setupMethod)
     m_setupMethod = setupMethod;
 }
 
-QList<ParamType> DeviceClass::paramTypes() const
+ParamTypes *DeviceClass::paramTypes() const
 {
     return m_paramTypes;
 }
 
-void DeviceClass::setParamTypes(const QList<ParamType> &paramTypes)
+void DeviceClass::setParamTypes(ParamTypes *paramTypes)
 {
     m_paramTypes = paramTypes;
 }
 
-QList<ParamType> DeviceClass::discoveryParamTypes() const
+ParamTypes *DeviceClass::discoveryParamTypes() const
 {
     return m_discoveryParamTypes;
 }
 
-void DeviceClass::setDiscoveryParamTypes(const QList<ParamType> &paramTypes)
+void DeviceClass::setDiscoveryParamTypes(ParamTypes *paramTypes)
 {
     m_discoveryParamTypes = paramTypes;
 }

@@ -30,7 +30,7 @@ class GuhInterface : public QObject
 public:
     explicit GuhInterface(QObject *parent = 0);
 
-    Q_INVOKABLE void connectGuh(const QString &hostAddress);
+    Q_INVOKABLE void connectGuh(const QString &urlString);
 
     void sendData(const QByteArray &data);
     void sendRequest(const QVariantMap &request);

@@ -28,7 +28,7 @@ DeviceClasses::DeviceClasses(QObject *parent) :
 
 }
 
-QList<DeviceClass> DeviceClasses::deviceClasses()
+QList<DeviceClass *> DeviceClasses::deviceClasses()
 {
     return m_deviceClasses;
 }
@@ -44,31 +44,38 @@ QVariant DeviceClasses::data(const QModelIndex &index, int role) const
     if (index.row() < 0 || index.row() >= m_deviceClasses.count())
         return QVariant();
 
-    DeviceClass deviceClass = m_deviceClasses.at(index.row());
+    DeviceClass *deviceClass = m_deviceClasses.at(index.row());
     if (role == NameRole) {
-        return deviceClass.name();
+        return deviceClass->name();
     } else if (role == IdRole) {
-        return deviceClass.id().toString();
+        return deviceClass->id().toString();
     } else if (role == PluginIdRole) {
-        return deviceClass.pluginId().toString();
+        return deviceClass->pluginId().toString();
     } else if (role == VendorIdRole) {
-        return deviceClass.vendorId().toString();
+        return deviceClass->vendorId().toString();
     }
     return QVariant();
 }
 
-DeviceClass DeviceClasses::get(int index)
+DeviceClass *DeviceClasses::get(int index) const
 {
-    if (index > -1 && index < m_deviceClasses.count()) {
-        return m_deviceClasses.at(index);
-    }
-    return DeviceClass();
+    return m_deviceClasses.at(index);
 }
 
-void DeviceClasses::addDeviceClass(DeviceClass deviceClass)
+DeviceClass *DeviceClasses::getDeviceClass(QUuid deviceClassId) const
+{
+    foreach (DeviceClass *deviceClass, m_deviceClasses) {
+        if (deviceClass->id() == deviceClassId) {
+            return deviceClass;
+        }
+    }
+    return 0;
+}
+
+void DeviceClasses::addDeviceClass(DeviceClass *deviceClass)
 {
     beginInsertRows(QModelIndex(), m_deviceClasses.count(), m_deviceClasses.count());
-    qDebug() << "DeviceClasses: loaded deviceClass" << deviceClass.name();    
+    qDebug() << "DeviceClasses: loaded deviceClass" << deviceClass->name();
     m_deviceClasses.append(deviceClass);
     endInsertRows();
 }
@@ -76,6 +83,8 @@ void DeviceClasses::addDeviceClass(DeviceClass deviceClass)
 void DeviceClasses::clearModel()
 {
     beginResetModel();
+    qDebug() << "Devices: delete all deviceClasses";
+    qDeleteAll(m_deviceClasses);
     m_deviceClasses.clear();
     endResetModel();
 }

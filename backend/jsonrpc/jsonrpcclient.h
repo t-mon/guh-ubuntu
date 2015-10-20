@@ -28,6 +28,8 @@
 
 class JsonRpcReply;
 class JsonHandler;
+class Param;
+class Params;
 
 class JsonRpcClient : public QObject
 {
@@ -38,6 +40,9 @@ public:
     void getVendors();
     void getDevices();
     void getDeviceClasses();
+
+    void addDevice(const QUuid &deviceClassId, Params *params);
+    void deleteDevice(const QUuid &deviceId);
 
 private:
     int m_id;

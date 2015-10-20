@@ -30,7 +30,7 @@ class DeviceClasses : public QAbstractListModel
     Q_OBJECT
 public:
     enum DeviceClassRole {
-        NameRole,
+        NameRole = Qt::DisplayRole,
         IdRole,
         PluginIdRole,
         VendorIdRole
@@ -38,14 +38,15 @@ public:
 
     explicit DeviceClasses(QObject *parent = 0);
 
-    QList<DeviceClass> deviceClasses();
+    QList<DeviceClass *> deviceClasses();
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 
-    Q_INVOKABLE DeviceClass get(int index);
+    Q_INVOKABLE DeviceClass *get(int index) const;
+    Q_INVOKABLE DeviceClass *getDeviceClass(QUuid deviceClassId) const;
 
-    void addDeviceClass(DeviceClass deviceClass);
+    void addDeviceClass(DeviceClass *deviceClass);
 
     void clearModel();
 
@@ -53,7 +54,7 @@ protected:
     QHash<int, QByteArray> roleNames() const;
 
 private:
-    QList<DeviceClass> m_deviceClasses;
+    QList<DeviceClass *> m_deviceClasses;
 
 };
 

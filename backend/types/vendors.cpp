@@ -27,19 +27,19 @@ Vendors::Vendors(QObject *parent) :
 {
 }
 
-QList<Vendor> Vendors::vendors()
+QList<Vendor *> Vendors::vendors()
 {
     return m_vendors;
 }
 
-QString Vendors::getVendorName(const QUuid &vendorId)
+Vendor *Vendors::getVendor(const QUuid &vendorId) const
 {
-    foreach (const Vendor &vendor, m_vendors) {
-        if (vendor.id() == vendorId) {
-            return vendor.name();
+    foreach (Vendor *vendor, m_vendors) {
+        if (vendor->id() == vendorId) {
+            return vendor;
         }
     }
-    return QString();
+    return 0;
 }
 
 int Vendors::rowCount(const QModelIndex &parent) const
@@ -53,19 +53,19 @@ QVariant Vendors::data(const QModelIndex &index, int role) const
     if (index.row() < 0 || index.row() >= m_vendors.count())
         return QVariant();
 
-    Vendor vendor = m_vendors.at(index.row());
+    Vendor *vendor = m_vendors.at(index.row());
     if (role == NameRole) {
-        return vendor.name();
+        return vendor->name();
     } else if (role == IdRole) {
-        return vendor.id().toString();
+        return vendor->id().toString();
     }
     return QVariant();
 }
 
-void Vendors::addVendor(Vendor vendor)
+void Vendors::addVendor(Vendor *vendor)
 {
     beginInsertRows(QModelIndex(), m_vendors.count(), m_vendors.count());
-    qDebug() << "Vendors: loaded vendor" << vendor.name();
+    qDebug() << "Vendors: loaded vendor" << vendor->name();
     m_vendors.append(vendor);
     endInsertRows();
 }
@@ -73,6 +73,8 @@ void Vendors::addVendor(Vendor vendor)
 void Vendors::clearModel()
 {
     beginResetModel();
+    qDebug() << "Vendors: delete all vendors";
+    qDeleteAll(m_vendors);
     m_vendors.clear();
     endResetModel();
 }

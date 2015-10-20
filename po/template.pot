@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-02 20:44+0200\n"
+"POT-Creation-Date: 2015-10-17 21:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,24 +17,41 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceClassesPage.qml:28
-msgid "Supported devices"
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:28
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:33
+msgid "Add device"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DiscoveryPage.qml:28
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:28
 msgid "Connection"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DiscoveryPage.qml:33
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:34
+msgid "Manual"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:40
 msgid "Reload"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceClassesPage.qml:28
+msgid "Supported devices"
 msgstr ""
 
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:28
 msgid "Devices"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:33
-msgid "Add device"
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ManualConnectionPage.qml:28
+msgid "Manual Connection"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ManualConnectionPage.qml:36
+msgid "Please enter the websocket URL of guh"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ManualConnectionPage.qml:49
+msgid "Connect"
 msgstr ""
 
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/VendorsPage.qml:28

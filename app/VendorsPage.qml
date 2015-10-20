@@ -18,9 +18,9 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import QtQuick 2.2
-import Ubuntu.Components 1.1
-import Ubuntu.Components.ListItems 1.0 as ListItem
+import QtQuick 2.4
+import Ubuntu.Components 1.2
+import Ubuntu.Components.ListItems 1.0
 import Guh 1.0
 
 Page {
@@ -31,14 +31,13 @@ Page {
         id: vendorList
         anchors.fill: parent
         model: Core.deviceManager.vendors
-        delegate: ListItem.Standard {
-            width: ListView.view.width
+        delegate: Standard {
             text: model.name
+            progression: true
             onClicked: {
                 Core.deviceManager.deviceClassesFilter.vendorId = model.id
                 pageStack.push(Qt.resolvedUrl("DeviceClassesPage.qml"))
             }
-            progression: true
         }
     }
 }

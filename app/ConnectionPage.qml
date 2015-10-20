@@ -18,30 +18,38 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import QtQuick 2.2
-import Ubuntu.Components 1.1
-import Ubuntu.Components.ListItems 1.0 as ListItem
+import QtQuick 2.4
+import Ubuntu.Components 1.2
+import Ubuntu.Components.ListItems 1.0
 import Guh 1.0
 
 Page {
     id: root
     title: i18n.tr("Connection")
 
-    head.actions: Action {
-        id: reloadAction
-        iconName: "reload"
-        text: i18n.tr("Reload")
-        onTriggered: Core.discovery.discover()
-    }
+    head.actions:[
+        Action {
+            id: manualConnectionAction
+            iconName: "edit"
+            text: i18n.tr("Manual")
+            onTriggered: pageStack.push(Qt.resolvedUrl("ManualConnectionPage.qml"))
+        },
+        Action {
+            id: reloadAction
+            iconName: "reload"
+            text: i18n.tr("Reload")
+            onTriggered: Core.discovery.discover()
+        }
+    ]
 
     ListView {
         id: discoveryList
         anchors.fill: parent
         model: Core.discovery.discoveryModel;
-        delegate: ListItem.SingleValue {
+        delegate: SingleValue {
             text: model.name + " (" + model.hostAddress + ")"
             value: model.version
-            onClicked: Core.interface.connectGuh(model.hostAddress)
+            onClicked: Core.interface.connectGuh("ws://" + model.hostAddress + ":4444")
         }
 
         ActivityIndicator {

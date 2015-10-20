@@ -1,4 +1,4 @@
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
  *  Copyright (C) 2015 Simon Stuerz <stuerz.simon@gmail.com>               *
  *                                                                         *
@@ -21,22 +21,34 @@
 #ifndef PARAMTYPE_H
 #define PARAMTYPE_H
 
+#include <QObject>
 #include <QVariant>
 #include <QDebug>
 
 #include "types.h"
 
-class ParamType
+class ParamType : public QObject
 {
+    Q_OBJECT
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(QString type READ type CONSTANT)
+    Q_PROPERTY(QVariant defaultValue READ defaultValue CONSTANT)
+    Q_PROPERTY(QVariant minValue READ minValue CONSTANT)
+    Q_PROPERTY(QVariant maxValue READ maxValue CONSTANT)
+    Q_PROPERTY(Types::InputType inputType READ inputType CONSTANT)
+    Q_PROPERTY(QString unitString READ unitString CONSTANT)
+    Q_PROPERTY(QVariantList allowedValues READ allowedValues CONSTANT)
+    Q_PROPERTY(bool readOnly READ readOnly CONSTANT)
+
 public:
-    ParamType();
-    ParamType(const QString &name, const QVariant::Type type, const QVariant &defaultValue = QVariant());
+    ParamType(QObject *parent = 0);
+    ParamType(const QString &name, const QVariant::Type type, const QVariant &defaultValue = QVariant(), QObject *parent = 0);
 
     QString name() const;
     void setName(const QString &name);
 
-    QVariant::Type type() const;
-    void setType(QVariant::Type type);
+    QString type() const;
+    void setType(const QString &type);
 
     QVariant defaultValue() const;
     void setDefaultValue(const QVariant &defaultValue);
@@ -64,7 +76,7 @@ public:
 
 private:
     QString m_name;
-    QVariant::Type m_type;
+    QString m_type;
     QVariant m_defaultValue;
     QVariant m_minValue;
     QVariant m_maxValue;

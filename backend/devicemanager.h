@@ -36,14 +36,17 @@ class DeviceManager : public QObject
     Q_PROPERTY(DeviceClasses *deviceClasses READ deviceClasses CONSTANT)
     Q_PROPERTY(DeviceClassesFilterModel *deviceClassesFilter READ deviceClassesFilter CONSTANT)
 
-
 public:
     explicit DeviceManager(QObject *parent = 0);
 
-    Vendors *vendors();
-    Devices *devices();
-    DeviceClasses *deviceClasses();
-    DeviceClassesFilterModel *deviceClassesFilter();
+    Vendors *vendors() const;
+    Devices *devices() const;
+    DeviceClasses *deviceClasses() const;
+    DeviceClassesFilterModel *deviceClassesFilter() const;
+
+    Q_INVOKABLE void removeDevice(QUuid deviceId);
+    Q_INVOKABLE void addDevice(QUuid deviceClassId, Params *params);
+
 
 private:
     Vendors *m_vendors;

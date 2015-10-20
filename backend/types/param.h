@@ -25,13 +25,14 @@
 #include <QString>
 #include <QVariant>
 
-class Param
+class Param : public QObject
 {
-    Q_PROPERTY(QString name READ name CONSTANT)
-    Q_PROPERTY(QVariant value READ value CONSTANT)
+    Q_OBJECT
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QVariant value READ value WRITE setValue NOTIFY valueChanged)
 
 public:
-    Param(const QString &name = QString(), const QVariant &value = QVariant());
+    Param(const QString &name = QString(), const QVariant &value = QVariant(), QObject *parent = 0);
 
     QString name() const;
     void setName(const QString &name);
@@ -42,6 +43,10 @@ public:
 private:
     QString m_name;
     QVariant m_value;
+
+signals:
+    void nameChanged();
+    void valueChanged();
 
 };
 

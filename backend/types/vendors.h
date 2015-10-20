@@ -30,19 +30,19 @@ class Vendors : public QAbstractListModel
     Q_OBJECT
 public:
     enum VendorRole {
-        NameRole,
+        NameRole = Qt::DisplayRole,
         IdRole
     };
 
     explicit Vendors(QObject *parent = 0);
 
-    QList<Vendor> vendors();
-    Q_INVOKABLE QString getVendorName(const QUuid &vendorId);
+    QList<Vendor *> vendors();
+    Q_INVOKABLE Vendor *getVendor(const QUuid &vendorId) const;
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 
-    void addVendor(Vendor vendor);
+    void addVendor(Vendor *vendor);
 
     void clearModel();
 
@@ -50,7 +50,7 @@ protected:
     QHash<int, QByteArray> roleNames() const;
 
 private:
-    QList<Vendor> m_vendors;
+    QList<Vendor *> m_vendors;
 
 };
 
