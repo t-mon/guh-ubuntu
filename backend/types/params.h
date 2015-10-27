@@ -18,6 +18,7 @@ public:
 
     QList<Param *> params();
 
+    Q_INVOKABLE int count() const;
     Q_INVOKABLE Param *get(int index) const;
     Q_INVOKABLE Param *getParam(QString name) const;
 

@@ -9,7 +9,8 @@
         <file>app/AddDevicePage.qml</file>
         <file>app/AddDiscoveredDevicePage.qml</file>
         <file>app/ParamInput.qml</file>
-        <file>app/DeviceParamPage.qml</file>
+        <file>app/DeviceStates.qml</file>
+        <file>app/DeviceActions.qml</file>
         <file>app/inputTypes/StringInputComponent.qml</file>
         <file>app/inputTypes/BoolInputComponent.qml</file>
         <file>app/inputTypes/AllowedValuesInputComponent.qml</file>

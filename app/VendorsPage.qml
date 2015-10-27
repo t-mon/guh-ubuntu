@@ -35,7 +35,7 @@ Page {
             text: model.name
             progression: true
             onClicked: {
-                Core.deviceManager.deviceClassesFilter.vendorId = model.id
+                Core.deviceManager.deviceClassesProxy.vendorId = model.id
                 pageStack.push(Qt.resolvedUrl("DeviceClassesPage.qml"))
             }
         }

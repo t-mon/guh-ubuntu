@@ -32,6 +32,11 @@ QList<EventType *> EventTypes::eventTypes()
     return m_eventTypes;
 }
 
+int EventTypes::count() const
+{
+    return m_eventTypes.count();
+}
+
 EventType *EventTypes::get(int index) const
 {
     return m_eventTypes.at(index);

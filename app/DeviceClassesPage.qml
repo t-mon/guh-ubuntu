@@ -30,7 +30,7 @@ Page {
     UbuntuListView {
         id: deviceClassesList
         anchors.fill: parent
-        model: Core.deviceManager.deviceClassesFilter
+        model: Core.deviceManager.deviceClassesProxy
         delegate: Standard {
             text: model.name
             onClicked: {

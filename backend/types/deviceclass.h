@@ -34,26 +34,20 @@
 class DeviceClass : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(CreateMethod)
     Q_ENUMS(SetupMethod)
 
     Q_PROPERTY(QString name READ name CONSTANT)
     Q_PROPERTY(QUuid id READ id CONSTANT)
     Q_PROPERTY(QUuid vendorId READ vendorId CONSTANT)
+    Q_PROPERTY(QStringList createMethods READ createMethods CONSTANT)
+    Q_PROPERTY(SetupMethod setupMethod READ setupMethod CONSTANT)
     Q_PROPERTY(ParamTypes *paramTypes READ paramTypes NOTIFY paramTypesChanged)
     Q_PROPERTY(ParamTypes *discoveryParamTypes READ discoveryParamTypes NOTIFY discoveryParamTypesChanged)
     Q_PROPERTY(StateTypes *stateTypes READ stateTypes NOTIFY stateTypesChanged)
     Q_PROPERTY(EventTypes *eventTypes READ eventTypes NOTIFY eventTypesChanged)
     Q_PROPERTY(ActionTypes *actionTypes READ actionTypes NOTIFY actionTypesChanged)
-    Q_PROPERTY(QStringList createMethods READ createMethods CONSTANT)
-    Q_PROPERTY(SetupMethod setupMethod READ setupMethod CONSTANT)
 
 public:
-    enum CreateMethod {
-        CreateMethodUser,
-        CreateMethodAuto,
-        CreateMethodDiscovery
-    };
 
     enum SetupMethod {
         SetupMethodJustAdd,
@@ -107,7 +101,6 @@ private:
 
     ParamTypes *m_paramTypes;
     ParamTypes *m_discoveryParamTypes;
-
     StateTypes *m_stateTypes;
     EventTypes *m_eventTypes;
     ActionTypes *m_actionTypes;

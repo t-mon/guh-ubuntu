@@ -18,43 +18,41 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef DEVICECLASSFILERMODEL_H
-#define DEVICECLASSFILERMODEL_H
+#ifndef STATES_H
+#define STATES_H
 
-#include <QSortFilterProxyModel>
-#include <QUuid>
+#include <QObject>
+#include <QAbstractListModel>
 
-#include "deviceclasses.h"
-#include "deviceclass.h"
+#include "state.h"
 
-class DeviceClassesFilterModel : public QSortFilterProxyModel
+class States : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(QUuid vendorId READ vendorId WRITE setVendorId NOTIFY vendorIdChanged)
-    Q_PROPERTY(DeviceClasses *deviceClasses READ deviceClasses CONSTANT)
-
 public:
-    explicit DeviceClassesFilterModel(QObject *parent = 0);
+    enum StateRole {
+        ValueRole = Qt::DisplayRole,
+        StateTypeIdRole
+    };
 
-    QUuid vendorId() const;
-    void setVendorId(const QUuid &vendorId);
+    explicit States(QObject *parent = 0);
 
-    DeviceClasses *deviceClasses();
-    void setDeviceClasses(DeviceClasses *deviceClasses);
+    QList<State *> states();
 
-    Q_INVOKABLE void resetFilter();
+    Q_INVOKABLE int count() const;
+    Q_INVOKABLE State *get(int index) const;
+    Q_INVOKABLE State *getState(const QUuid &stateTypeId) const;
+
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+
+    void addState(State *state);
 
 protected:
-    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
+    QHash<int, QByteArray> roleNames() const;
 
 private:
-    QUuid m_vendorId;
-    DeviceClasses *m_deviceClasses;
-
-signals:
-    void vendorIdChanged();
-    void deviceClassesChanged();
-
+    QList<State *> m_states;
 };
 
-#endif // DEVICECLASSFILERMODEL_H
+#endif // STATES_H

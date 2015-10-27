@@ -60,6 +60,16 @@ void JsonRpcClient::getDeviceClasses()
     Core::instance()->interface()->sendRequest(reply->requestMap());
 }
 
+void JsonRpcClient::getStateValues(const QUuid &deviceId)
+{
+    qDebug() << "JsonRpc: get state values " << deviceId.toString();
+    QVariantMap params;
+    params.insert("deviceId", deviceId.toString());
+    JsonRpcReply *reply = createReply("Devices", "GetStateValues", params);
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+}
+
 int JsonRpcClient::addDevice(const QUuid &deviceClassId, const QVariantList &deviceParams)
 {
     qDebug() << "JsonRpc: add device " << deviceClassId.toString();

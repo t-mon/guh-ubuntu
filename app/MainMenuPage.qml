@@ -58,18 +58,17 @@ Page {
                 actions: [
                     Action {
                         iconName: "info"
-                        onTriggered: pageStack.push(Qt.resolvedUrl("DeviceParamPage.qml"), { device: deviceList.model.get(index) } )
+                        onTriggered: PopupUtils.open(deviceParamsComponent)
                     }
                 ]
             }
-
 
             Component {
                 id: removeComponent
                 Dialog {
                     id: removeDialog
                     title: i18n.tr("Remove device")
-                    text: i18n.tr("Are you sure you want to remove \"" + model.name + "\"?")
+                    text: i18n.tr("Are you sure you want to remove") + " \"" + model.name + "\"?"
 
                     property int commandId
 
@@ -91,13 +90,47 @@ Page {
                 }
             }
 
+            Component {
+                id: deviceParamsComponent
+                Dialog {
+                    id: deviceParamsDialog
+                    title: i18n.tr("Device parameters")
+
+                    Flickable {
+                        width: parent.width
+                        height: units.gu(35)
+
+                        contentHeight: paramsColumn.height
+
+                        Column {
+                            id: paramsColumn
+                            width: parent.width
+                            Repeater {
+                                id: paramRepeater
+                                model: deviceList.model.get(index).params
+                                delegate: SingleValue {
+                                    width: parent.width
+                                    height: units.gu(5)
+
+                                    text: model.name
+                                    value: model.value
+                                }
+                            }
+                        }
+                    }
+
+                    Button {
+                        text: i18n.tr("Close")
+                        onClicked: PopupUtils.close(deviceParamsDialog)
+                    }
+                }
+            }
 
             Label {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: units.gu(2)
                 text: model.name
-                //fontSize: "large"
             }
 
             Label {
@@ -123,7 +156,6 @@ Page {
 
             onClicked: {
                 var d = deviceList.model.get(index)
-                console.log("device details for " + d.name)
                 pageStack.push(Qt.resolvedUrl("DeviceDetailsPage.qml"), { device: d } )
             }
         }
@@ -156,7 +188,7 @@ Page {
         Dialog {
             id: deviceErrorDialog
             title: i18n.tr("Error occured")
-            text: "Could not remove device \n" + deviceError
+            text: i18n.tr("Could not remove device") + "\n" + deviceError
 
             Button {
                 text: i18n.tr("Cancel")

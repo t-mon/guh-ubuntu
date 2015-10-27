@@ -19,7 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "jsontypes.h"
-
+#include "../core.h"
 #include "../types/vendors.h"
 #include "../types/deviceclasses.h"
 #include "../types/params.h"
@@ -64,7 +64,6 @@ DeviceClass *JsonTypes::unpackDeviceClass(const QVariantMap &deviceClassMap, QOb
         discoveryParamTypes->addParamType(JsonTypes::unpackParamType(paramType.toMap(), discoveryParamTypes));
     }
     deviceClass->setDiscoveryParamTypes(discoveryParamTypes);
-
 
     // StateTypes
     StateTypes *stateTypes = new StateTypes(deviceClass);
@@ -164,6 +163,15 @@ Device *JsonTypes::unpackDevice(const QVariantMap &deviceMap, QObject *parent)
         params->addParam(JsonTypes::unpackParam(param.toMap(), params));
     }
     device->setParams(params);
+
+    DeviceClass *deviceClass = Core::instance()->deviceManager()->deviceClasses()->getDeviceClass(device->deviceClassId());
+    States *states = new States(device);
+    foreach (StateType *stateType, deviceClass->stateTypes()->stateTypes()) {
+        State *state = new State(device->id(), stateType->id(), stateType->defaultValue(), states);
+        states->addState(state);
+    }
+    device->setStates(states);
+
     return device;
 }
 
@@ -179,18 +187,6 @@ DeviceClass::SetupMethod JsonTypes::stringToSetupMethod(const QString &setupMeth
         return DeviceClass::SetupMethodPushButton;
     }
     return DeviceClass::SetupMethodJustAdd;
-}
-
-DeviceClass::CreateMethod JsonTypes::stringToCreateMethod(const QString &createMethodString)
-{
-    if (createMethodString == "CreateMethodUser") {
-        return DeviceClass::CreateMethodUser;
-    } else if (createMethodString == "CreateMethodAuto") {
-        return DeviceClass::CreateMethodAuto;
-    } else if (createMethodString == "CreateMethodDiscovery") {
-        return DeviceClass::CreateMethodDiscovery;
-    }
-    return DeviceClass::CreateMethodUser;
 }
 
 QPair<Types::Unit, QString> JsonTypes::stringToUnit(const QString &unitString)

@@ -32,7 +32,7 @@ class ActionTypes : public QAbstractListModel
 
 public:
     enum ActionTypeRole {
-        NameRole,
+        NameRole = Qt::DisplayRole,
         IdRole
     };
 
@@ -40,6 +40,7 @@ public:
 
     QList<ActionType *> actionTypes();
 
+    Q_INVOKABLE int count() const;
     Q_INVOKABLE ActionType *get(int index) const;
     Q_INVOKABLE ActionType *getActionType(const QUuid &actionTypeId) const;
 

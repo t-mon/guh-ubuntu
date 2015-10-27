@@ -18,23 +18,44 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import QtQuick 2.4
-import Ubuntu.Components 1.3
-import Ubuntu.Components.ListItems 1.3
-import Guh 1.0
+#ifndef DEVICECLASSFILERMODEL_H
+#define DEVICECLASSFILERMODEL_H
 
-Page {
-    id: root
-    title: device.name
-    property var device: null
+#include <QUuid>
+#include <QObject>
+#include <QSortFilterProxyModel>
 
-    UbuntuListView {
-        id: paramList
-        anchors.fill: parent
-        model: root.device.params
-        delegate: SingleValue {
-            text: model.name
-            value: model.value
-        }
-    }
-}
+#include "deviceclasses.h"
+#include "deviceclass.h"
+
+class DeviceClassesProxy : public QSortFilterProxyModel
+{
+    Q_OBJECT
+    Q_PROPERTY(QUuid vendorId READ vendorId WRITE setVendorId NOTIFY vendorIdChanged)
+    Q_PROPERTY(DeviceClasses *deviceClasses READ deviceClasses CONSTANT)
+
+public:
+    explicit DeviceClassesProxy(QObject *parent = 0);
+
+    QUuid vendorId() const;
+    void setVendorId(const QUuid &vendorId);
+
+    DeviceClasses *deviceClasses();
+    void setDeviceClasses(DeviceClasses *deviceClasses);
+
+    Q_INVOKABLE void resetFilter();
+
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
+
+private:
+    QUuid m_vendorId;
+    DeviceClasses *m_deviceClasses;
+
+signals:
+    void vendorIdChanged();
+    void deviceClassesChanged();
+
+};
+
+#endif // DEVICECLASSFILERMODEL_H

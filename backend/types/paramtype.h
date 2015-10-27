@@ -21,8 +21,8 @@
 #ifndef PARAMTYPE_H
 #define PARAMTYPE_H
 
-#include <QObject>
 #include <QVariant>
+#include <QObject>
 #include <QDebug>
 
 #include "types.h"

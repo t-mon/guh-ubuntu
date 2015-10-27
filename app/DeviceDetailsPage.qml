@@ -26,15 +26,37 @@ import Guh 1.0
 Page {
     id: root
     title: device.name
-    property var device: null
+    head.sections.model: ["Actions", "States"]
 
-    UbuntuListView {
-        id: paramList
+    property var device: null
+    property var deviceClass: Core.deviceManager.deviceClasses.getDeviceClass(device.deviceClassId)
+
+    ListView {
+        id: tabView
+        model: tabs
+        interactive: false
         anchors.fill: parent
-        model: root.device.params
-        delegate: SingleValue {
-            text: model.name
-            value: model.value
+        orientation: Qt.Horizontal
+        snapMode: ListView.SnapOneItem
+        currentIndex: root.head.sections.selectedIndex
+        highlightMoveDuration: UbuntuAnimation.SlowDuration
+    }
+
+    VisualItemModel {
+        id: tabs
+
+        DeviceActions {
+            width: tabView.width
+            height: tabView.height
+            device: root.device
+            deviceClass: root.deviceClass
+        }
+
+        DeviceStates {
+            width: tabView.width
+            height: tabView.height
+            device: root.device
+            deviceClass: root.deviceClass
         }
     }
 }

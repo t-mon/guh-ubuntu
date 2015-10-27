@@ -24,8 +24,8 @@
 #include <QObject>
 #include <QUuid>
 
-#include "param.h"
 #include "params.h"
+#include "states.h"
 
 class Device : public QObject
 {
@@ -33,9 +33,10 @@ class Device : public QObject
     Q_PROPERTY(QUuid id READ id CONSTANT)
     Q_PROPERTY(QUuid deviceClassId READ deviceClassId CONSTANT)
     Q_PROPERTY(QString name READ name NOTIFY nameChanged)
-    Q_PROPERTY(QString deviceName READ deviceName WRITE setDeviceName NOTIFY nameChanged)
+    Q_PROPERTY(QString deviceName READ deviceName NOTIFY nameChanged)
     Q_PROPERTY(bool setupComplete READ setupComplete NOTIFY setupCompleteChanged)
     Q_PROPERTY(Params *params READ params NOTIFY paramsChanged)
+    Q_PROPERTY(States *states READ states NOTIFY statesChanged)
 
 public:
     explicit Device(QObject *parent = 0);
@@ -51,11 +52,19 @@ public:
     QUuid deviceClassId() const;
     void setDeviceClassId(const QUuid &deviceClassId);
 
+    bool setupComplete();
+    void setSetupComplete(const bool &setupComplete);
+
     Params *params() const;
     void setParams(Params *params);
 
-    bool setupComplete();
-    void setSetupComplete(const bool &setupComplete);
+    States *states() const;
+    void setStates(States *states);
+
+    bool hasState(const QUuid &stateTypeId);
+
+    Q_INVOKABLE QVariant stateValue(const QUuid &stateTypeId);
+    void setStateValue(const QUuid &stateTypeId, const QVariant &value);
 
 private:
     QString m_name;
@@ -63,11 +72,13 @@ private:
     QUuid m_deviceClassId;
     bool m_setupComplete;
     Params *m_params;
+    States *m_states;
 
 signals:
     void nameChanged();
-    void paramsChanged();
     void setupCompleteChanged();
+    void paramsChanged();
+    void statesChanged();
 
 };
 

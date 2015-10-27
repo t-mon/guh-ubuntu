@@ -18,76 +18,73 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "vendors.h"
+#include "states.h"
 
 #include <QDebug>
 
-Vendors::Vendors(QObject *parent) :
+States::States(QObject *parent) :
     QAbstractListModel(parent)
 {
 }
 
-QList<Vendor *> Vendors::vendors()
+QList<State *> States::states()
 {
-    return m_vendors;
+    return m_states;
 }
 
-int Vendors::count() const
+int States::count() const
 {
-    return m_vendors.count();
+    return m_states.count();
 }
 
-Vendor *Vendors::getVendor(const QUuid &vendorId) const
+State *States::get(int index) const
 {
-    foreach (Vendor *vendor, m_vendors) {
-        if (vendor->id() == vendorId) {
-            return vendor;
+    return m_states.at(index);
+}
+
+State *States::getState(const QUuid &stateTypeId) const
+{
+    foreach (State *state, m_states) {
+        if (state->stateTypeId() == stateTypeId) {
+            return state;
         }
     }
     return 0;
 }
 
-int Vendors::rowCount(const QModelIndex &parent) const
+int States::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return m_vendors.count();
+    return m_states.count();
 }
 
-QVariant Vendors::data(const QModelIndex &index, int role) const
+QVariant States::data(const QModelIndex &index, int role) const
 {
-    if (index.row() < 0 || index.row() >= m_vendors.count())
+    if (index.row() < 0 || index.row() >= m_states.count())
         return QVariant();
 
-    Vendor *vendor = m_vendors.at(index.row());
-    if (role == NameRole) {
-        return vendor->name();
-    } else if (role == IdRole) {
-        return vendor->id().toString();
+    State *state = m_states.at(index.row());
+    if (role == ValueRole) {
+        return state->value();
+    } else if (role == StateTypeIdRole) {
+        return state->stateTypeId().toString();
     }
     return QVariant();
 }
 
-void Vendors::addVendor(Vendor *vendor)
+void States::addState(State *state)
 {
-    beginInsertRows(QModelIndex(), m_vendors.count(), m_vendors.count());
-    //qDebug() << "Vendors: loaded vendor" << vendor->name();
-    m_vendors.append(vendor);
+    beginInsertRows(QModelIndex(), m_states.count(), m_states.count());
+    qDebug() << "States: loaded state" << state->stateTypeId();
+    m_states.append(state);
     endInsertRows();
 }
 
-void Vendors::clearModel()
-{
-    beginResetModel();
-    qDebug() << "Vendors: delete all vendors";
-    qDeleteAll(m_vendors);
-    m_vendors.clear();
-    endResetModel();
-}
-
-QHash<int, QByteArray> Vendors::roleNames() const
+QHash<int, QByteArray> States::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles[NameRole] = "name";
-    roles[IdRole] = "id";
+    roles[StateTypeIdRole] = "stateTypeId";
+    roles[ValueRole] = "value";
     return roles;
 }
+

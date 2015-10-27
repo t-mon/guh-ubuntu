@@ -30,6 +30,11 @@ QList<ActionType *> ActionTypes::actionTypes()
     return m_actionTypes;
 }
 
+int ActionTypes::count() const
+{
+    return m_actionTypes.count();
+}
+
 ActionType *ActionTypes::get(int index) const
 {
     return m_actionTypes.at(index);

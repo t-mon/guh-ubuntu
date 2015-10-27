@@ -50,11 +50,12 @@ MainView {
             onConnectedChanged: {
                 if (Core.connected) {
                     console.log("connected")
-                    pageStack.pop()
+                    pageStack.clear()
                     pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
                 } else {
                     console.log("disconnected")
                     Core.discovery.discover()
+                    pageStack.clear()
                     pageStack.push(Qt.resolvedUrl("ConnectionPage.qml"))
                 }
             }

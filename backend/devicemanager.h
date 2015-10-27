@@ -25,32 +25,34 @@
 
 #include "types/vendors.h"
 #include "types/devices.h"
+#include "types/devicesproxy.h"
 #include "types/deviceclasses.h"
-#include "types/deviceclassesfiltermodel.h"
+#include "types/deviceclassesproxy.h"
 
 class DeviceManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Vendors *vendors READ vendors CONSTANT)
     Q_PROPERTY(Devices *devices READ devices CONSTANT)
+    Q_PROPERTY(DevicesProxy *devicesProxy READ devicesProxy CONSTANT)
     Q_PROPERTY(DeviceClasses *deviceClasses READ deviceClasses CONSTANT)
-    Q_PROPERTY(DeviceClassesFilterModel *deviceClassesFilter READ deviceClassesFilter CONSTANT)
+    Q_PROPERTY(DeviceClassesProxy *deviceClassesProxy READ deviceClassesProxy CONSTANT)
 
 public:
     explicit DeviceManager(QObject *parent = 0);
 
     Vendors *vendors() const;
     Devices *devices() const;
+    DevicesProxy *devicesProxy() const;
     DeviceClasses *deviceClasses() const;
-    DeviceClassesFilterModel *deviceClassesFilter() const;
+    DeviceClassesProxy *deviceClassesProxy() const;
 
 private:
     Vendors *m_vendors;
     Devices *m_devices;
+    DevicesProxy *m_devicesProxy;
     DeviceClasses *m_deviceClasses;
-    DeviceClassesFilterModel *m_deviceClassesFilter;
-
-public slots:
+    DeviceClassesProxy *m_deviceClassesProxy;
 
 };
 

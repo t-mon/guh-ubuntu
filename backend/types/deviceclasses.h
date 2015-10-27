@@ -43,6 +43,7 @@ public:
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 
+    Q_INVOKABLE int count() const;
     Q_INVOKABLE DeviceClass *get(int index) const;
     Q_INVOKABLE DeviceClass *getDeviceClass(QUuid deviceClassId) const;
 

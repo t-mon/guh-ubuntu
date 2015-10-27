@@ -18,45 +18,37 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "devicemanager.h"
-#include "core.h"
+#ifndef STATE_H
+#define STATE_H
 
-DeviceManager::DeviceManager(QObject *parent) :
-    QObject(parent),
-    m_vendors(new Vendors(this)),
-    m_devices(new Devices(this)),
-    m_devicesProxy(new DevicesProxy(this)),
-    m_deviceClasses(new DeviceClasses(this)),
-    m_deviceClassesProxy(new DeviceClassesProxy(this))
+#include <QUuid>
+#include <QObject>
+#include <QVariant>
 
+class State : public QObject
 {
-    m_devicesProxy->setDevices(m_devices);
-    m_deviceClassesProxy->setDeviceClasses(m_deviceClasses);
-}
+    Q_OBJECT
+    Q_PROPERTY(QUuid deviceId READ deviceId CONSTANT)
+    Q_PROPERTY(QUuid stateTypeId READ stateTypeId CONSTANT)
+    Q_PROPERTY(QVariant value READ value NOTIFY valueChanged)
 
-Vendors *DeviceManager::vendors() const
-{
-    return m_vendors;
-}
+public:
+    explicit State(const QUuid &deviceId, const QUuid &stateTypeId, const QVariant &value, QObject *parent = 0);
 
-Devices *DeviceManager::devices() const
-{
-    return m_devices;
-}
+    QUuid deviceId() const;
+    QUuid stateTypeId() const;
 
-DevicesProxy *DeviceManager::devicesProxy() const
-{
-    return m_devicesProxy;
-}
+    QVariant value() const;
+    void setValue(const QVariant &value);
 
-DeviceClasses *DeviceManager::deviceClasses() const
-{
-    return m_deviceClasses;
-}
+private:
+    QUuid m_deviceId;
+    QUuid m_stateTypeId;
+    QVariant m_value;
 
-DeviceClassesProxy *DeviceManager::deviceClassesProxy() const
-{
-    return m_deviceClassesProxy;
-}
+signals:
+    void valueChanged();
 
+};
 
+#endif // STATE_H

@@ -20,9 +20,9 @@
 
 #include "statetype.h"
 
-StateType::StateType(QObject *parent) : QObject(parent)
+StateType::StateType(QObject *parent) :
+    QObject(parent)
 {
-
 }
 
 QUuid StateType::id() const

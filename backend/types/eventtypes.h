@@ -32,7 +32,7 @@ class EventTypes : public QAbstractListModel
 
 public:
     enum EventTypeRole {
-        NameRole,
+        NameRole = Qt::DisplayRole,
         IdRole
     };
 
@@ -40,6 +40,7 @@ public:
 
     QList<EventType *> eventTypes();
 
+    Q_INVOKABLE int count() const;
     Q_INVOKABLE EventType *get(int index) const;
     Q_INVOKABLE EventType *getEventType(const QUuid &eventTypeId) const;
 

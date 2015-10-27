@@ -18,45 +18,35 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "devicemanager.h"
-#include "core.h"
+#ifndef DEVICESPROXY_H
+#define DEVICESPROXY_H
 
-DeviceManager::DeviceManager(QObject *parent) :
-    QObject(parent),
-    m_vendors(new Vendors(this)),
-    m_devices(new Devices(this)),
-    m_devicesProxy(new DevicesProxy(this)),
-    m_deviceClasses(new DeviceClasses(this)),
-    m_deviceClassesProxy(new DeviceClassesProxy(this))
+#include <QUuid>
+#include <QObject>
+#include <QSortFilterProxyModel>
 
+#include "devices.h"
+
+class DevicesProxy : public QSortFilterProxyModel
 {
-    m_devicesProxy->setDevices(m_devices);
-    m_deviceClassesProxy->setDeviceClasses(m_deviceClasses);
-}
+    Q_OBJECT
+    Q_PROPERTY(Devices *devices READ devices CONSTANT)
 
-Vendors *DeviceManager::vendors() const
-{
-    return m_vendors;
-}
+public:
+    explicit DevicesProxy(QObject *parent = 0);
 
-Devices *DeviceManager::devices() const
-{
-    return m_devices;
-}
+    Devices *devices();
+    void setDevices(Devices *devices);
 
-DevicesProxy *DeviceManager::devicesProxy() const
-{
-    return m_devicesProxy;
-}
+private:
+    Devices *m_devices;
 
-DeviceClasses *DeviceManager::deviceClasses() const
-{
-    return m_deviceClasses;
-}
+protected:
+    bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const Q_DECL_OVERRIDE;
 
-DeviceClassesProxy *DeviceManager::deviceClassesProxy() const
-{
-    return m_deviceClassesProxy;
-}
+signals:
+    void devicesChanged();
 
+};
 
+#endif // DEVICESPROXY_H

@@ -28,12 +28,15 @@
 
 class StateTypes : public QAbstractListModel
 {
+    Q_OBJECT
+
 public:
     enum StateTypeRole {
-        NameRole,
+        NameRole = Qt::DisplayRole,
         IdRole,
         TypeRole,
         DefaultValueRole,
+        UnitRole,
         UnitStringRole
     };
 
@@ -41,6 +44,7 @@ public:
 
     QList<StateType *> stateTypes();
 
+    Q_INVOKABLE int count() const;
     Q_INVOKABLE StateType *get(int index) const;
     Q_INVOKABLE StateType *getStateType(const QUuid &stateTypeId) const;
 

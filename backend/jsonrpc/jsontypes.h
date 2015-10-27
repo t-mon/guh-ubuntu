@@ -31,6 +31,7 @@
 #include "../types/deviceclass.h"
 #include "../types/paramtype.h"
 #include "../types/statetype.h"
+#include "../types/state.h"
 #include "../types/eventtype.h"
 #include "../types/actiontype.h"
 
@@ -53,7 +54,6 @@ public:
 
 private:
     static DeviceClass::SetupMethod stringToSetupMethod(const QString &setupMethodString);
-    static DeviceClass::CreateMethod stringToCreateMethod(const QString &createMethodString);
     static QPair<Types::Unit, QString> stringToUnit(const QString &unitString);
     static Types::InputType stringToInputType(const QString &inputTypeString);
 

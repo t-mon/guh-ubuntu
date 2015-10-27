@@ -56,6 +56,11 @@ QVariant DeviceClasses::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+int DeviceClasses::count() const
+{
+    return m_deviceClasses.count();
+}
+
 DeviceClass *DeviceClasses::get(int index) const
 {
     return m_deviceClasses.at(index);

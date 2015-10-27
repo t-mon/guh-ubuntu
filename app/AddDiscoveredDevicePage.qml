@@ -107,9 +107,8 @@ Page {
                 if (deviceError !== "DeviceErrorNoError") {
                     PopupUtils.open(deviceErrorComponent)
                 } else {
-                    pageStack.pop()
-                    pageStack.pop()
-                    pageStack.pop()
+                    pageStack.clear()
+                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
                 }
             }
         }
@@ -120,7 +119,7 @@ Page {
         Dialog {
             id: deviceErrorDialog
             title: i18n.tr("Error occured")
-            text: "Could not add device\n" + deviceError
+            text: i18n.tr("Could not add device") + "\n" + deviceError
 
             Button {
                 text: i18n.tr("Cancel")

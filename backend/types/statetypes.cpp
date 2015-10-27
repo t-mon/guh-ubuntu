@@ -32,6 +32,11 @@ QList<StateType *> StateTypes::stateTypes()
     return m_stateTypes;
 }
 
+int StateTypes::count() const
+{
+    return m_stateTypes.count();
+}
+
 StateType *StateTypes::get(int index) const
 {
     return m_stateTypes.at(index);
@@ -69,6 +74,8 @@ QVariant StateTypes::data(const QModelIndex &index, int role) const
         return stateType->defaultValue();
     } else if (role == UnitStringRole) {
         return stateType->unitString();
+    } else if (role == UnitRole) {
+        return stateType->unit();
     }
     return QVariant();
 }
@@ -98,6 +105,7 @@ QHash<int, QByteArray> StateTypes::roleNames() const
     roles[TypeRole] = "type";
     roles[DefaultValueRole] = "defaultValue";
     roles[UnitStringRole] = "unitString";
+    roles[UnitRole] = "unit";
     return roles;
 }
 

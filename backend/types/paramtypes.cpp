@@ -10,6 +10,11 @@ QList<ParamType *> ParamTypes::paramTypes()
     return m_paramTypes;
 }
 
+int ParamTypes::count() const
+{
+    return m_paramTypes.count();
+}
+
 ParamType *ParamTypes::get(int index) const
 {
     return m_paramTypes.at(index);

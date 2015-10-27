@@ -37,6 +37,8 @@ public:
     explicit Vendors(QObject *parent = 0);
 
     QList<Vendor *> vendors();
+
+    Q_INVOKABLE int count() const;
     Q_INVOKABLE Vendor *getVendor(const QUuid &vendorId) const;
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;

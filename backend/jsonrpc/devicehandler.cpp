@@ -19,8 +19,10 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 #include "devicehandler.h"
-#include "../core.h"
 #include "jsontypes.h"
+#include "../core.h"
+#include "../types/states.h"
+#include "../types/deviceclass.h"
 
 DeviceHandler::DeviceHandler(QObject *parent) :
     JsonHandler(parent)
@@ -63,6 +65,28 @@ void DeviceHandler::processGetConfiguredDevices(const QVariantMap &params)
         foreach (QVariant deviceVariant, deviceList) {
             Device *device = JsonTypes::unpackDevice(deviceVariant.toMap(), Core::instance()->deviceManager()->devices());
             Core::instance()->deviceManager()->devices()->addDevice(device);
+
+            // get state values
+            Core::instance()->jsonRpcClient()->getStateValues(device->id());
+        }
+    }
+}
+
+void DeviceHandler::processGetStateValues(const QVariantMap &params)
+{
+    if (params.value("params").toMap().keys().contains("values")) {
+        QVariantList stateVariantList = params.value("params").toMap().value("values").toList();
+
+        foreach (const QVariant &stateMap, stateVariantList) {
+            QUuid stateTypeId = stateMap.toMap().value("stateTypeId").toUuid();
+            QVariant value = stateMap.toMap().value("value");
+
+            // TODO: get device more performant
+            foreach (Device *d, Core::instance()->deviceManager()->devices()->devices()) {
+                if (d->hasState(stateTypeId)) {
+                    d->setStateValue(stateTypeId, value);
+                }
+            }
         }
     }
 }
@@ -102,5 +126,22 @@ void DeviceHandler::processDeviceAdded(const QVariantMap &params)
         qDebug() << "JsonRpc: Notification: Device added" << device->id().toString();
         Core::instance()->deviceManager()->devices()->addDevice(device);
     }
+}
 
+void DeviceHandler::processStateChanged(const QVariantMap &params)
+{
+    QVariantMap notification = params.value("params").toMap();
+    QUuid deviceId = notification.value("deviceId").toUuid();
+
+    Device *device = Core::instance()->deviceManager()->devices()->getDevice(deviceId);
+
+    if (!device) {
+        qWarning() << "JsonRpc: ERROR: could not find device for state changed notification";
+        return;
+    }
+
+    QUuid stateTypeId = notification.value("stateTypeId").toUuid();
+    QVariant value = notification.value("value");
+
+    device->setStateValue(stateTypeId, value);
 }

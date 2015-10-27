@@ -90,9 +90,8 @@ Page {
                 if (deviceError !== "DeviceErrorNoError") {
                     PopupUtils.open(deviceErrorComponent)
                 } else {
-                    pageStack.pop()
-                    pageStack.pop()
-                    pageStack.pop()
+                    pageStack.clear()
+                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
                 }
             }
         }

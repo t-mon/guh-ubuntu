@@ -32,6 +32,11 @@ QList<Device *> Devices::devices()
     return m_devices;
 }
 
+int Devices::count() const
+{
+    return m_devices.count();
+}
+
 Device *Devices::get(int index) const
 {
     return m_devices.at(index);

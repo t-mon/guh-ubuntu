@@ -18,76 +18,62 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "vendors.h"
+#include "deviceclassesproxy.h"
 
 #include <QDebug>
 
-Vendors::Vendors(QObject *parent) :
-    QAbstractListModel(parent)
+DeviceClassesProxy::DeviceClassesProxy(QObject *parent) :
+    QSortFilterProxyModel(parent)
 {
 }
 
-QList<Vendor *> Vendors::vendors()
+QUuid DeviceClassesProxy::vendorId() const
 {
-    return m_vendors;
+    return m_vendorId;
 }
 
-int Vendors::count() const
+void DeviceClassesProxy::setVendorId(const QUuid &vendorId)
 {
-    return m_vendors.count();
+    m_vendorId = vendorId;
+    emit vendorIdChanged();
+
+    qDebug() << "DeviceClassesProxy: set vendorId filter" << vendorId;
+
+    invalidateFilter();
 }
 
-Vendor *Vendors::getVendor(const QUuid &vendorId) const
+DeviceClasses *DeviceClassesProxy::deviceClasses()
 {
-    foreach (Vendor *vendor, m_vendors) {
-        if (vendor->id() == vendorId) {
-            return vendor;
-        }
-    }
-    return 0;
+    return m_deviceClasses;
 }
 
-int Vendors::rowCount(const QModelIndex &parent) const
+void DeviceClassesProxy::setDeviceClasses(DeviceClasses *deviceClasses)
 {
-    Q_UNUSED(parent)
-    return m_vendors.count();
+    m_deviceClasses = deviceClasses;
+    setSourceModel(deviceClasses);
+    emit deviceClassesChanged();
 }
 
-QVariant Vendors::data(const QModelIndex &index, int role) const
-{
-    if (index.row() < 0 || index.row() >= m_vendors.count())
-        return QVariant();
 
-    Vendor *vendor = m_vendors.at(index.row());
-    if (role == NameRole) {
-        return vendor->name();
-    } else if (role == IdRole) {
-        return vendor->id().toString();
-    }
-    return QVariant();
+void DeviceClassesProxy::resetFilter()
+{
+    qDebug() << "DeviceClassesProxy: reset filter";
+    setVendorId(QUuid());
+    invalidateFilter();
 }
 
-void Vendors::addVendor(Vendor *vendor)
+bool DeviceClassesProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    beginInsertRows(QModelIndex(), m_vendors.count(), m_vendors.count());
-    //qDebug() << "Vendors: loaded vendor" << vendor->name();
-    m_vendors.append(vendor);
-    endInsertRows();
-}
+    Q_UNUSED(sourceParent)
 
-void Vendors::clearModel()
-{
-    beginResetModel();
-    qDebug() << "Vendors: delete all vendors";
-    qDeleteAll(m_vendors);
-    m_vendors.clear();
-    endResetModel();
-}
+    DeviceClass *deviceClass = m_deviceClasses->get(sourceRow);
 
-QHash<int, QByteArray> Vendors::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[NameRole] = "name";
-    roles[IdRole] = "id";
-    return roles;
+    // filter auto devices
+    if (deviceClass->createMethods().count() == 1 && deviceClass->createMethods().contains("CreateMethodAuto"))
+        return false;
+
+    if (!m_vendorId.isNull() && deviceClass->vendorId() == m_vendorId)
+        return true;
+
+    return false;
 }

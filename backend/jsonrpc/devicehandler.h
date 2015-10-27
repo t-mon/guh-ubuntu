@@ -33,11 +33,13 @@ public:
 
     QString nameSpace() const;
 
-    // Get methods
+    // Get methods internal
     Q_INVOKABLE void processGetSupportedVendors(const QVariantMap &params);
     Q_INVOKABLE void processGetSupportedDevices(const QVariantMap &params);
     Q_INVOKABLE void processGetConfiguredDevices(const QVariantMap &params);
+    Q_INVOKABLE void processGetStateValues(const QVariantMap &params);
 
+    // Methods ui
     Q_INVOKABLE void processRemoveConfiguredDevice(const QVariantMap &params);
     Q_INVOKABLE void processAddConfiguredDevice(const QVariantMap &params);
     Q_INVOKABLE void processGetDiscoveredDevices(const QVariantMap &params);
@@ -46,7 +48,7 @@ public:
     // Notifications
     Q_INVOKABLE void processDeviceRemoved(const QVariantMap &params);
     Q_INVOKABLE void processDeviceAdded(const QVariantMap &params);
-
+    Q_INVOKABLE void processStateChanged(const QVariantMap &params);
 
 signals:
 

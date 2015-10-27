@@ -34,10 +34,11 @@ class StateType : public QObject
     Q_PROPERTY(QString name READ name CONSTANT)
     Q_PROPERTY(QString type READ type CONSTANT)
     Q_PROPERTY(QVariant defaultValue READ defaultValue CONSTANT)
+    Q_PROPERTY(Types::Unit unit READ unit CONSTANT)
     Q_PROPERTY(QString unitString READ unitString CONSTANT)
 
 public:
-    explicit StateType(QObject *parent = 0);
+    StateType(QObject *parent = 0);
 
     QUuid id() const;
     void setId(const QUuid &id);
@@ -64,6 +65,7 @@ private:
     QVariant m_defaultValue;
     Types::Unit m_unit;
     QString m_unitString;
+
 };
 
 #endif // STATETYPE_H

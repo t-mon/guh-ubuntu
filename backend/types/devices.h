@@ -41,6 +41,7 @@ public:
 
     QList<Device *> devices();
 
+    Q_INVOKABLE int count() const;
     Q_INVOKABLE Device *get(int index) const;
     Q_INVOKABLE Device *getDevice(const QUuid &deviceId) const;
 

@@ -18,12 +18,12 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QQuickView>
-#include <QCommandLineParser>
 #include <QtQml>
+#include <QQuickView>
+#include <QGuiApplication>
+#include <QCommandLineParser>
 #include <QtQml/QQmlContext>
+#include <QQmlApplicationEngine>
 
 #include "core.h"
 
@@ -43,12 +43,15 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<UpnpDiscoveryModel>("Guh", 1, 0, "UpnpDiscoveryModel", "Can't create this in QML. Get it from the Core.");
     qmlRegisterUncreatableType<GuhConnection>("Guh", 1, 0, "GuhConnection", "Can't create this in QML. Get it from the Connections.");
     qmlRegisterUncreatableType<GuhConnections>("Guh", 1, 0, "GuhConnections", "Can't create this in QML. Get it from the Core.");
+
     qmlRegisterUncreatableType<Types>("Guh", 1, 0, "Types", "Can't create this in QML. Get it from the Core.");
 
     qmlRegisterUncreatableType<ParamType>("Guh", 1, 0, "ParamType", "Can't create this in QML. Get it from the ParamTypes.");
     qmlRegisterUncreatableType<ParamTypes>("Guh", 1, 0, "ParamTypes", "Can't create this in QML. Get it from the DeviceClass.");
     qmlRegisterUncreatableType<EventType>("Guh", 1, 0, "EventType", "Can't create this in QML. Get it from the EventTypes.");
     qmlRegisterUncreatableType<EventTypes>("Guh", 1, 0, "EventTypes", "Can't create this in QML. Get it from the DeviceClass.");
+    qmlRegisterUncreatableType<State>("Guh", 1, 0, "State", "Can't create this in QML. Get it from the States.");
+    qmlRegisterUncreatableType<States>("Guh", 1, 0, "States", "Can't create this in QML. Get it from the Device.");
     qmlRegisterUncreatableType<StateType>("Guh", 1, 0, "StateType", "Can't create this in QML. Get it from the StateTypes.");
     qmlRegisterUncreatableType<StateTypes>("Guh", 1, 0, "StateTypes", "Can't create this in QML. Get it from the DeviceClass.");
     qmlRegisterUncreatableType<ActionType>("Guh", 1, 0, "ActionType", "Can't create this in QML. Get it from the ActionTypes.");
@@ -56,11 +59,15 @@ int main(int argc, char *argv[])
 
     qmlRegisterUncreatableType<Vendor>("Guh", 1, 0, "Vendor", "Can't create this in QML. Get it from the Vendors.");
     qmlRegisterUncreatableType<Vendors>("Guh", 1, 0, "Vendors", "Can't create this in QML. Get it from the DeviceManager.");
+
     qmlRegisterUncreatableType<Device>("Guh", 1, 0, "Device", "Can't create this in QML. Get it from the Devices.");
     qmlRegisterUncreatableType<Devices>("Guh", 1, 0, "Devices", "Can't create this in QML. Get it from the DeviceManager.");
+    qmlRegisterUncreatableType<DevicesProxy>("Guh", 1, 0, "DevicesProxy", "Can't create this in QML. Get it from the DeviceManager.");
+
     qmlRegisterUncreatableType<DeviceClass>("Guh", 1, 0, "DeviceClass", "Can't create this in QML. Get it from the DeviceClasses.");
     qmlRegisterUncreatableType<DeviceClasses>("Guh", 1, 0, "DeviceClasses", "Can't create this in QML. Get it from the DeviceManager.");
-    qmlRegisterUncreatableType<DeviceClassesFilterModel>("Guh", 1, 0, "DeviceClassesFilterModel", "Can't create this in QML. Get it from the DeviceManager.");
+    qmlRegisterUncreatableType<DeviceClassesProxy>("Guh", 1, 0, "DeviceClassesProxy", "Can't create this in QML. Get it from the DeviceManager.");
+
 
     QQuickView view;
     view.setSource(QUrl(QStringLiteral("qrc:///app/Main.qml")));

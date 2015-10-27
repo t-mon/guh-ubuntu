@@ -41,6 +41,8 @@ public:
     void getVendors();
     void getDevices();
     void getDeviceClasses();
+    void getStateValues(const QUuid &deviceId);
+
 
     // ui methods
     Q_INVOKABLE int addDevice(const QUuid &deviceClassId, const QVariantList &deviceParams);

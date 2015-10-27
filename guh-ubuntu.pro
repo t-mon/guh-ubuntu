@@ -36,30 +36,33 @@ HEADERS += backend/core.h \
            backend/discovery/upnpdiscovery.h \
            backend/discovery/upnpdiscoverymodel.h \
            backend/discovery/upnpdevice.h \
-           backend/types/vendor.h \
-           backend/types/vendors.h \
+           backend/discovery/guhconnection.h \
+           backend/discovery/guhconnections.h \
            backend/jsonrpc/jsontypes.h \
            backend/jsonrpc/jsonrpcclient.h \
-           backend/types/deviceclass.h \
-           backend/types/deviceclasses.h \
-           backend/types/deviceclassesfiltermodel.h \
            backend/jsonrpc/devicehandler.h \
            backend/jsonrpc/jsonhandler.h \
-           backend/types/paramtype.h \
            backend/types/types.h \
-    backend/types/device.h \
-    backend/types/param.h \
-    backend/types/devices.h \
-    backend/types/params.h \
-    backend/types/paramtypes.h \
-    backend/discovery/guhconnection.h \
-    backend/discovery/guhconnections.h \
-    backend/types/statetype.h \
-    backend/types/statetypes.h \
-    backend/types/eventtype.h \
-    backend/types/eventtypes.h \
-    backend/types/actiontype.h \
-    backend/types/actiontypes.h
+           backend/types/vendor.h \
+           backend/types/vendors.h \
+           backend/types/deviceclass.h \
+           backend/types/deviceclasses.h \
+           backend/types/deviceclassesproxy.h \
+           backend/types/paramtype.h \
+           backend/types/device.h \
+           backend/types/param.h \
+           backend/types/devices.h \
+           backend/types/params.h \
+           backend/types/paramtypes.h \
+           backend/types/statetype.h \
+           backend/types/statetypes.h \
+           backend/types/eventtype.h \
+           backend/types/eventtypes.h \
+           backend/types/actiontype.h \
+           backend/types/actiontypes.h \
+           backend/types/devicesproxy.h \
+    backend/types/state.h \
+    backend/types/states.h
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -68,29 +71,32 @@ SOURCES += backend/main.cpp \
            backend/discovery/upnpdiscovery.cpp \
            backend/discovery/upnpdiscoverymodel.cpp \
            backend/discovery/upnpdevice.cpp \
-           backend/types/vendor.cpp \
-           backend/types/vendors.cpp \
+           backend/discovery/guhconnection.cpp \
+           backend/discovery/guhconnections.cpp \
            backend/jsonrpc/jsontypes.cpp \
            backend/jsonrpc/jsonrpcclient.cpp \
-           backend/types/deviceclass.cpp \
-           backend/types/deviceclasses.cpp \
-           backend/types/deviceclassesfiltermodel.cpp \
            backend/jsonrpc/devicehandler.cpp \
            backend/jsonrpc/jsonhandler.cpp \
+           backend/types/vendor.cpp \
+           backend/types/vendors.cpp \
+           backend/types/deviceclass.cpp \
+           backend/types/deviceclasses.cpp \
+           backend/types/deviceclassesproxy.cpp \
            backend/types/paramtype.cpp \
-    backend/types/device.cpp \
-    backend/types/param.cpp \
-    backend/types/devices.cpp \
-    backend/types/params.cpp \
-    backend/types/paramtypes.cpp \
-    backend/discovery/guhconnection.cpp \
-    backend/discovery/guhconnections.cpp \
-    backend/types/statetype.cpp \
-    backend/types/statetypes.cpp \
-    backend/types/eventtype.cpp \
-    backend/types/eventtypes.cpp \
-    backend/types/actiontype.cpp \
-    backend/types/actiontypes.cpp
+           backend/types/device.cpp \
+           backend/types/param.cpp \
+           backend/types/devices.cpp \
+           backend/types/params.cpp \
+           backend/types/paramtypes.cpp \
+           backend/types/statetype.cpp \
+           backend/types/statetypes.cpp \
+           backend/types/eventtype.cpp \
+           backend/types/eventtypes.cpp \
+           backend/types/actiontype.cpp \
+           backend/types/actiontypes.cpp \
+           backend/types/devicesproxy.cpp \
+    backend/types/state.cpp \
+    backend/types/states.cpp
 
 RESOURCES += app.qrc
 

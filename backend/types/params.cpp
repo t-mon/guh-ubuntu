@@ -12,6 +12,11 @@ QList<Param *> Params::params()
     return m_params;
 }
 
+int Params::count() const
+{
+    return m_params.count();
+}
+
 Param *Params::get(int index) const
 {
     return m_params.at(index);

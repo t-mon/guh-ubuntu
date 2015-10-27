@@ -10,7 +10,7 @@ class ParamTypes : public QAbstractListModel
     Q_OBJECT
 public:
     enum ParamTypeRole {
-        NameRole,
+        NameRole = Qt::DisplayRole,
         TypeRole,
         DefaultValueRole,
         MinValueRole,
@@ -25,6 +25,7 @@ public:
 
     QList<ParamType *> paramTypes();
 
+    Q_INVOKABLE int count() const;
     Q_INVOKABLE ParamType *get(int index) const;
     Q_INVOKABLE ParamType *getParamType(const QString &name) const;
 

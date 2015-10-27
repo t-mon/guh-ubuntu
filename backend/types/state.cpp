@@ -18,63 +18,34 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "deviceclassesfiltermodel.h"
+#include "state.h"
 
-#include <QDebug>
-
-DeviceClassesFilterModel::DeviceClassesFilterModel(QObject *parent) :
-    QSortFilterProxyModel(parent)
+State::State(const QUuid &deviceId, const QUuid &stateTypeId, const QVariant &value, QObject *parent) :
+    QObject(parent),
+    m_deviceId(deviceId),
+    m_stateTypeId(stateTypeId),
+    m_value(value)
 {
 }
 
-QUuid DeviceClassesFilterModel::vendorId() const
+QUuid State::deviceId() const
 {
-    return m_vendorId;
+    return m_deviceId;
 }
 
-void DeviceClassesFilterModel::setVendorId(const QUuid &vendorId)
+QUuid State::stateTypeId() const
 {
-    m_vendorId = vendorId;
-    emit vendorIdChanged();
-
-    qDebug() << "DeviceClassesFilter: set vendorId to" << vendorId;
-
-    invalidateFilter();
-    sortRole();
+    return m_stateTypeId;
 }
 
-DeviceClasses *DeviceClassesFilterModel::deviceClasses()
+QVariant State::value() const
 {
-    return m_deviceClasses;
+    return m_value;
 }
 
-void DeviceClassesFilterModel::setDeviceClasses(DeviceClasses *deviceClasses)
+void State::setValue(const QVariant &value)
 {
-    m_deviceClasses = deviceClasses;
-    setSourceModel(deviceClasses);
-    emit deviceClassesChanged();
+    m_value = value;
+    emit valueChanged();
 }
 
-
-void DeviceClassesFilterModel::resetFilter()
-{
-    qDebug() << "DeviceClassesFilter: reset filter";
-    setVendorId(QUuid());
-    invalidateFilter();
-}
-
-bool DeviceClassesFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
-{
-    Q_UNUSED(sourceParent)
-
-    DeviceClass *deviceClass = m_deviceClasses->get(sourceRow);
-
-    // filter auto devices
-    if (deviceClass->createMethods().count() == 1 && deviceClass->createMethods().contains("CreateMethodAuto"))
-        return false;
-
-    if (!m_vendorId.isNull() && deviceClass->vendorId() == m_vendorId)
-        return true;
-
-    return false;
-}

@@ -18,76 +18,30 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "vendors.h"
+#include "devicesproxy.h"
 
-#include <QDebug>
-
-Vendors::Vendors(QObject *parent) :
-    QAbstractListModel(parent)
+DevicesProxy::DevicesProxy(QObject *parent) :
+    QSortFilterProxyModel(parent)
 {
+
 }
 
-QList<Vendor *> Vendors::vendors()
+Devices *DevicesProxy::devices()
 {
-    return m_vendors;
+    return m_devices;
 }
 
-int Vendors::count() const
+void DevicesProxy::setDevices(Devices *devices)
 {
-    return m_vendors.count();
+    m_devices = devices;
+    setSourceModel(devices);
+    emit devicesChanged();
 }
 
-Vendor *Vendors::getVendor(const QUuid &vendorId) const
+bool DevicesProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-    foreach (Vendor *vendor, m_vendors) {
-        if (vendor->id() == vendorId) {
-            return vendor;
-        }
-    }
-    return 0;
+    Q_UNUSED(sourceRow)
+    Q_UNUSED(sourceParent)
+    return true;
 }
 
-int Vendors::rowCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent)
-    return m_vendors.count();
-}
-
-QVariant Vendors::data(const QModelIndex &index, int role) const
-{
-    if (index.row() < 0 || index.row() >= m_vendors.count())
-        return QVariant();
-
-    Vendor *vendor = m_vendors.at(index.row());
-    if (role == NameRole) {
-        return vendor->name();
-    } else if (role == IdRole) {
-        return vendor->id().toString();
-    }
-    return QVariant();
-}
-
-void Vendors::addVendor(Vendor *vendor)
-{
-    beginInsertRows(QModelIndex(), m_vendors.count(), m_vendors.count());
-    //qDebug() << "Vendors: loaded vendor" << vendor->name();
-    m_vendors.append(vendor);
-    endInsertRows();
-}
-
-void Vendors::clearModel()
-{
-    beginResetModel();
-    qDebug() << "Vendors: delete all vendors";
-    qDeleteAll(m_vendors);
-    m_vendors.clear();
-    endResetModel();
-}
-
-QHash<int, QByteArray> Vendors::roleNames() const
-{
-    QHash<int, QByteArray> roles;
-    roles[NameRole] = "name";
-    roles[IdRole] = "id";
-    return roles;
-}

@@ -66,6 +66,17 @@ void Device::setDeviceClassId(const QUuid &deviceClassId)
     m_deviceClassId = deviceClassId;
 }
 
+bool Device::setupComplete()
+{
+    return m_setupComplete;
+}
+
+void Device::setSetupComplete(const bool &setupComplete)
+{
+    m_setupComplete = setupComplete;
+    emit setupCompleteChanged();
+}
+
 Params *Device::params() const
 {
     return m_params;
@@ -77,13 +88,43 @@ void Device::setParams(Params *params)
     emit paramsChanged();
 }
 
-bool Device::setupComplete()
+States *Device::states() const
 {
-    return m_setupComplete;
+    return m_states;
 }
 
-void Device::setSetupComplete(const bool &setupComplete)
+void Device::setStates(States *states)
 {
-    m_setupComplete = setupComplete;
-    emit setupCompleteChanged();
+    m_states = states;
+    emit statesChanged();
+}
+
+bool Device::hasState(const QUuid &stateTypeId)
+{
+    foreach (State *state, states()->states()) {
+        if (state->stateTypeId() == stateTypeId) {
+            return true;
+        }
+    }
+    return false;
+}
+
+QVariant Device::stateValue(const QUuid &stateTypeId)
+{
+    foreach (State *state, states()->states()) {
+        if (state->stateTypeId() == stateTypeId) {
+            return state->value();
+        }
+    }
+    return QVariant();
+}
+
+void Device::setStateValue(const QUuid &stateTypeId, const QVariant &value)
+{
+    foreach (State *state, states()->states()) {
+        if (state->stateTypeId() == stateTypeId) {
+            state->setValue(value);
+            return;
+        }
+    }
 }
