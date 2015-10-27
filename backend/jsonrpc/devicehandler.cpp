@@ -69,11 +69,19 @@ void DeviceHandler::processGetConfiguredDevices(const QVariantMap &params)
 
 void DeviceHandler::processRemoveConfiguredDevice(const QVariantMap &params)
 {
-    qDebug() << params;
+    // response handled in the ui
+    Q_UNUSED(params);
 }
 
 void DeviceHandler::processAddConfiguredDevice(const QVariantMap &params)
 {
+    // response handled in the ui
+    Q_UNUSED(params);
+}
+
+void DeviceHandler::processGetDiscoveredDevices(const QVariantMap &params)
+{
+    // response handled in the ui
     qDebug() << params;
 }
 

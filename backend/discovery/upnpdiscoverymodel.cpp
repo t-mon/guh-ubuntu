@@ -46,6 +46,8 @@ QVariant UpnpDiscoveryModel::data(const QModelIndex &index, int role) const
         return device.friendlyName();
     } else if (role == HostAddressRole) {
         return device.hostAddress().toString();
+    } else if (role == WebSocketUrlRole) {
+        return device.webSocketUrl();
     } else if (role == PortRole) {
         return device.port();
     } else if (role == VersionRole) {
@@ -73,6 +75,7 @@ QHash<int, QByteArray> UpnpDiscoveryModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
     roles[HostAddressRole] = "hostAddress";
+    roles[WebSocketUrlRole] = "webSocketUrl";
     roles[PortRole] = "port";
     roles[VersionRole] = "version";
     return roles;

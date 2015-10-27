@@ -31,6 +31,7 @@ class Devices : public QAbstractListModel
 public:
     enum DeviceRole {
         NameRole = Qt::DisplayRole,
+        DeviceNameRole,
         IdRole,
         DeviceClassRole,
         SetupComplete

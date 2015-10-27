@@ -18,76 +18,70 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "core.h"
+#include "statetype.h"
 
-Core* Core::s_instance = 0;
-
-Core *Core::instance()
+StateType::StateType(QObject *parent) : QObject(parent)
 {
-    if (!s_instance)
-        s_instance = new Core();
 
-    return s_instance;
 }
 
-QObject *Core::qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine)
+QUuid StateType::id() const
 {
-    Q_UNUSED(qmlEngine)
-    Q_UNUSED(jsEngine)
-    return Core::instance();
+    return m_id;
 }
 
-Core::Core(QObject *parent) :
-    QObject(parent),
-    m_deviceManager(new DeviceManager(this)),
-    m_interface(new GuhInterface(this)),
-    m_jsonRpcClient(new JsonRpcClient(this)),
-    m_discovery(new UpnpDiscovery(this)),
-    m_connections(new GuhConnections(this)),
-    m_connected(false)
+void StateType::setId(const QUuid &id)
 {
-    connect(m_interface, &GuhInterface::connectedChanged, this, &Core::connectedChanged);
-    connect(m_interface, &GuhInterface::connectedChanged, this, &Core::onConnectionChanged);
-    connect(m_interface, &GuhInterface::dataReady, m_jsonRpcClient, &JsonRpcClient::dataReceived);
+    m_id = id;
 }
 
-DeviceManager *Core::deviceManager()
+QString StateType::name() const
 {
-    return m_deviceManager;
+    return m_name;
 }
 
-UpnpDiscovery *Core::discovery()
+void StateType::setName(const QString &name)
 {
-    return m_discovery;
+    m_name = name;
 }
 
-GuhConnections *Core::connections()
+QString StateType::type() const
 {
-    return m_connections;
+    return m_type;
 }
 
-GuhInterface *Core::interface()
+void StateType::setType(const QString &type)
 {
-    return m_interface;
+    m_type = type;
 }
 
-JsonRpcClient *Core::jsonRpcClient()
+QVariant StateType::defaultValue() const
 {
-    return m_jsonRpcClient;
+    return m_defaultValue;
 }
 
-bool Core::connected() const
+void StateType::setDefaultValue(const QVariant &defaultValue)
 {
-    return m_interface->connected();
+    m_defaultValue = defaultValue;
 }
 
-void Core::onConnectionChanged()
+Types::Unit StateType::unit() const
 {
-    // delete all data
-    if (!connected()) {
-        deviceManager()->devices()->clearModel();
-        deviceManager()->deviceClasses()->clearModel();
-        deviceManager()->vendors()->clearModel();
-    }
+    return m_unit;
+}
+
+void StateType::setUnit(const Types::Unit &unit)
+{
+    m_unit = unit;
+}
+
+QString StateType::unitString() const
+{
+    return m_unitString;
+}
+
+void StateType::setUnitString(const QString &unitString)
+{
+    m_unitString = unitString;
 }
 

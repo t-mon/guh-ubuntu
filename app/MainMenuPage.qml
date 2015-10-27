@@ -19,13 +19,17 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components 1.3
+import Ubuntu.Components.Popups 1.3
+import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
 Page {
     id: root
     title: i18n.tr("Devices")
+
+    property string deviceError
+    property int id
 
     head.actions: Action {
         id: addDeviceAction
@@ -45,46 +49,121 @@ Page {
                 actions: [
                     Action {
                         iconName: "delete"
-                        onTriggered: Core.deviceManager.removeDevice(model.id)
+                        onTriggered: PopupUtils.open(removeComponent)
                     }
                 ]
             }
+
             trailingActions: ListItemActions {
                 actions: [
                     Action {
                         iconName: "info"
-                        onTriggered: pageStack.push(Qt.resolvedUrl("DeviceParamPage.qml"), {
-                                                        deviceName: model.name,
-                                                        params: model.params
-                                                    })
+                        onTriggered: pageStack.push(Qt.resolvedUrl("DeviceParamPage.qml"), { device: deviceList.model.get(index) } )
                     }
                 ]
             }
 
-            Column {
+
+            Component {
+                id: removeComponent
+                Dialog {
+                    id: removeDialog
+                    title: i18n.tr("Remove device")
+                    text: i18n.tr("Are you sure you want to remove \"" + model.name + "\"?")
+
+                    property int commandId
+
+                    ThinDivider {}
+
+                    Button {
+                        text: i18n.tr("Remove")
+                        color: UbuntuColors.red
+                        onClicked: {
+                            root.id = Core.jsonRpcClient.removeDevice(model.id)
+                            PopupUtils.close(removeDialog)
+                        }
+                    }
+
+                    Button {
+                        text: i18n.tr("Cancel")
+                        onClicked: PopupUtils.close(removeDialog)
+                    }
+                }
+            }
+
+
+            Label {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: units.gu(2)
+                text: model.name
+                //fontSize: "large"
+            }
 
-                Label {
-                    text: model.name
-                    fontSize: "large"
+            Label {
+                anchors.right: parent.right
+                anchors.rightMargin: units.gu(2)
+                anchors.top: parent.top
+                anchors.topMargin: units.gu(1)
+                text: model.deviceName
+                color: UbuntuColors.lightGrey
+            }
+
+            Label {
+                anchors.right: parent.right
+                anchors.rightMargin: units.gu(2)
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: units.gu(1)
+                text: {
+                    var vendorId = Core.deviceManager.deviceClasses.getDeviceClass(model.deviceClassId).vendorId
+                    Core.deviceManager.vendors.getVendor(vendorId).name
                 }
-                Label {
-                    text: {
-                        var vendorId = Core.deviceManager.deviceClasses.getDeviceClass(model.deviceClassId).vendorId
-                        Core.deviceManager.vendors.getVendor(vendorId).name
-                    }
-                }
+                color: UbuntuColors.lightGrey
             }
 
             onClicked: {
                 var d = deviceList.model.get(index)
                 console.log("device details for " + d.name)
-                pageStack.push(Qt.resolvedUrl("DeviceDetailsPage.qml"),
-                               { device: d })
+                pageStack.push(Qt.resolvedUrl("DeviceDetailsPage.qml"), { device: d } )
+            }
+        }
+
+        add: Transition {
+            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 300 }
+            NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 300 }
+        }
+
+        remove:  Transition {
+            NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 300 }
+            NumberAnimation { property: "scale"; from: 1.0; to: 0; duration: 300 }
+        }
+    }
+
+    Connections {
+        target: Core.jsonRpcClient
+        onResponseReceived: {
+            if (commandId == root.id) {
+                deviceError = response['deviceError']
+                if (deviceError !== "DeviceErrorNoError") {
+                    PopupUtils.open(deviceErrorComponent)
+                }
             }
         }
     }
+
+    Component {
+        id: deviceErrorComponent
+        Dialog {
+            id: deviceErrorDialog
+            title: i18n.tr("Error occured")
+            text: "Could not remove device \n" + deviceError
+
+            Button {
+                text: i18n.tr("Cancel")
+                onClicked: PopupUtils.close(deviceErrorDialog)
+            }
+        }
+    }
+
 }
 

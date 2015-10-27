@@ -19,24 +19,22 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components 1.3
+import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
 Page {
     id: root
-    title: deviceName
-    property var params: null
-    property string deviceName
+    title: device.name
+    property var device: null
 
     UbuntuListView {
         id: paramList
         anchors.fill: parent
-        model: params
+        model: root.device.params
         delegate: SingleValue {
             text: model.name
             value: model.value
         }
     }
-
 }

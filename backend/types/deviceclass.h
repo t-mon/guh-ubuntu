@@ -27,6 +27,9 @@
 #include <QString>
 
 #include "paramtypes.h"
+#include "statetypes.h"
+#include "eventtypes.h"
+#include "actiontypes.h"
 
 class DeviceClass : public QObject
 {
@@ -39,7 +42,10 @@ class DeviceClass : public QObject
     Q_PROPERTY(QUuid vendorId READ vendorId CONSTANT)
     Q_PROPERTY(ParamTypes *paramTypes READ paramTypes NOTIFY paramTypesChanged)
     Q_PROPERTY(ParamTypes *discoveryParamTypes READ discoveryParamTypes NOTIFY discoveryParamTypesChanged)
-    Q_PROPERTY(QList<CreateMethod> createMethods READ createMethods CONSTANT)
+    Q_PROPERTY(StateTypes *stateTypes READ stateTypes NOTIFY stateTypesChanged)
+    Q_PROPERTY(EventTypes *eventTypes READ eventTypes NOTIFY eventTypesChanged)
+    Q_PROPERTY(ActionTypes *actionTypes READ actionTypes NOTIFY actionTypesChanged)
+    Q_PROPERTY(QStringList createMethods READ createMethods CONSTANT)
     Q_PROPERTY(SetupMethod setupMethod READ setupMethod CONSTANT)
 
 public:
@@ -70,8 +76,8 @@ public:
     QUuid pluginId() const;
     void setPluginId(const QUuid &pluginId);
 
-    QList<CreateMethod> createMethods() const;
-    void setCreateMethods(QList<CreateMethod> createMethods);
+    QStringList createMethods() const;
+    void setCreateMethods(const QStringList &createMethods);
 
     SetupMethod setupMethod() const;
     void setSetupMethod(SetupMethod setupMethod);
@@ -82,33 +88,36 @@ public:
     ParamTypes *discoveryParamTypes() const;
     void setDiscoveryParamTypes(ParamTypes *paramTypes);
 
-//    QList<StateType> stateTypes() const;
-//    void setStateTypes(const QList<StateType> &stateTypes);
+    StateTypes *stateTypes() const;
+    void setStateTypes(StateTypes *stateTypes);
 
-//    QList<EventType> eventTypes() const;
-//    void setEventTypes(const QList<EventType> &eventTypes);
+    EventTypes *eventTypes() const;
+    void setEventTypes(EventTypes *eventTypes);
 
-//    QList<ActionType> actionTypes() const;
-//    void setActionTypes(const QList<ActionType> &actionTypes);
+    ActionTypes *actionTypes() const;
+    void setActionTypes(ActionTypes *actionTypes);
 
 private:
     QUuid m_id;
     QUuid m_vendorId;
     QUuid m_pluginId;
     QString m_name;
-    QList<CreateMethod> m_createMethods;
+    QStringList m_createMethods;
     SetupMethod m_setupMethod;
 
     ParamTypes *m_paramTypes;
     ParamTypes *m_discoveryParamTypes;
 
-//    QList<StateType> m_stateTypes;
-//    QList<EventType> m_eventTypes;
-//    QList<ActionType> m_actionTypes;
+    StateTypes *m_stateTypes;
+    EventTypes *m_eventTypes;
+    ActionTypes *m_actionTypes;
 
 signals:
     void paramTypesChanged();
     void discoveryParamTypesChanged();
+    void stateTypesChanged();
+    void eventTypesChanged();
+    void actionTypesChanged();
 
 };
 

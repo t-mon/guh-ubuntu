@@ -44,9 +44,9 @@ DeviceClass *JsonTypes::unpackDeviceClass(const QVariantMap &deviceClassMap, QOb
     deviceClass->setId(deviceClassMap.value("id").toUuid());
     deviceClass->setVendorId(deviceClassMap.value("vendorId").toUuid());
     QVariantList createMethodsList = deviceClassMap.value("createMethods").toList();
-    QList<DeviceClass::CreateMethod> createMethods;
-    foreach (QVariant createMethod, createMethodsList) {
-        createMethods.append(JsonTypes::stringToCreateMethod(createMethod.toString()));
+    QStringList createMethods;
+    foreach (QVariant method, createMethodsList) {
+        createMethods.append(method.toString());
     }
     deviceClass->setCreateMethods(createMethods);
     deviceClass->setSetupMethod(stringToSetupMethod(deviceClassMap.value("setupMethod").toString()));
@@ -64,6 +64,29 @@ DeviceClass *JsonTypes::unpackDeviceClass(const QVariantMap &deviceClassMap, QOb
         discoveryParamTypes->addParamType(JsonTypes::unpackParamType(paramType.toMap(), discoveryParamTypes));
     }
     deviceClass->setDiscoveryParamTypes(discoveryParamTypes);
+
+
+    // StateTypes
+    StateTypes *stateTypes = new StateTypes(deviceClass);
+    foreach (QVariant stateType, deviceClassMap.value("stateTypes").toList()) {
+        stateTypes->addStateType(JsonTypes::unpackStateType(stateType.toMap(), stateTypes));
+    }
+    deviceClass->setStateTypes(stateTypes);
+
+    // EventTypes
+    EventTypes *eventTypes = new EventTypes(deviceClass);
+    foreach (QVariant eventType, deviceClassMap.value("eventTypes").toList()) {
+        eventTypes->addEventType(JsonTypes::unpackEventType(eventType.toMap(), eventTypes));
+    }
+    deviceClass->setEventTypes(eventTypes);
+
+    // ActionTypes
+    ActionTypes *actionTypes = new ActionTypes(deviceClass);
+    foreach (QVariant actionType, deviceClassMap.value("actionTypes").toList()) {
+        actionTypes->addActionType(JsonTypes::unpackActionType(actionType.toMap(), actionTypes));
+    }
+    deviceClass->setActionTypes(actionTypes);
+
     return deviceClass;
 }
 
@@ -89,10 +112,49 @@ ParamType *JsonTypes::unpackParamType(const QVariantMap &paramTypeMap, QObject *
     return paramType;
 }
 
+StateType *JsonTypes::unpackStateType(const QVariantMap &stateTypeMap, QObject *parent)
+{
+    StateType *stateType = new StateType(parent);
+    stateType->setId(stateTypeMap.value("id").toUuid());
+    stateType->setName(stateTypeMap.value("name").toString());
+    stateType->setDefaultValue(stateTypeMap.value("defaultValue"));
+    stateType->setType(stateTypeMap.value("type").toString());
+    QPair<Types::Unit, QString> unit = stringToUnit(stateTypeMap.value("unit").toString());
+    stateType->setUnit(unit.first);
+    stateType->setUnitString(unit.second);
+    return stateType;
+}
+
+EventType *JsonTypes::unpackEventType(const QVariantMap &eventTypeMap, QObject *parent)
+{
+    EventType *eventType = new EventType(parent);
+    eventType->setId(eventTypeMap.value("id").toUuid());
+    eventType->setName(eventTypeMap.value("name").toString());
+    ParamTypes *paramTypes = new ParamTypes(eventType);
+    foreach (QVariant paramType, eventTypeMap.value("paramTypes").toList()) {
+        paramTypes->addParamType(JsonTypes::unpackParamType(paramType.toMap(), paramTypes));
+    }
+    eventType->setParamTypes(paramTypes);
+    return eventType;
+}
+
+ActionType *JsonTypes::unpackActionType(const QVariantMap &actionTypeMap, QObject *parent)
+{
+    ActionType *actionType = new ActionType(parent);
+    actionType->setId(actionTypeMap.value("id").toUuid());
+    actionType->setName(actionTypeMap.value("name").toString());
+    ParamTypes *paramTypes = new ParamTypes(actionType);
+    foreach (QVariant paramType, actionTypeMap.value("paramTypes").toList()) {
+        paramTypes->addParamType(JsonTypes::unpackParamType(paramType.toMap(), paramTypes));
+    }
+    actionType->setParamTypes(paramTypes);
+    return actionType;
+}
+
 Device *JsonTypes::unpackDevice(const QVariantMap &deviceMap, QObject *parent)
 {
     Device *device = new Device(parent);
-    device->setName(deviceMap.value("name").toString());
+    device->setDeviceName(deviceMap.value("name").toString());
     device->setId(deviceMap.value("id").toUuid());
     device->setDeviceClassId(deviceMap.value("deviceClassId").toUuid());
     device->setSetupComplete(deviceMap.value("setupComplete").toBool());

@@ -39,7 +39,10 @@ public:
 
 private:
     QWebSocket *m_socket;
+    QString m_webSocketUrl;
     bool m_connected;
+
+    void setConnected(const bool &connected);
 
 signals:
     void connectedChanged();

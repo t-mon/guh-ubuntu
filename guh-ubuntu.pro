@@ -51,7 +51,15 @@ HEADERS += backend/core.h \
     backend/types/param.h \
     backend/types/devices.h \
     backend/types/params.h \
-    backend/types/paramtypes.h
+    backend/types/paramtypes.h \
+    backend/discovery/guhconnection.h \
+    backend/discovery/guhconnections.h \
+    backend/types/statetype.h \
+    backend/types/statetypes.h \
+    backend/types/eventtype.h \
+    backend/types/eventtypes.h \
+    backend/types/actiontype.h \
+    backend/types/actiontypes.h
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -74,7 +82,15 @@ SOURCES += backend/main.cpp \
     backend/types/param.cpp \
     backend/types/devices.cpp \
     backend/types/params.cpp \
-    backend/types/paramtypes.cpp
+    backend/types/paramtypes.cpp \
+    backend/discovery/guhconnection.cpp \
+    backend/discovery/guhconnections.cpp \
+    backend/types/statetype.cpp \
+    backend/types/statetypes.cpp \
+    backend/types/eventtype.cpp \
+    backend/types/eventtypes.cpp \
+    backend/types/actiontype.cpp \
+    backend/types/actiontypes.cpp
 
 RESOURCES += app.qrc
 

@@ -33,6 +33,7 @@ public:
     enum DeviceRole {
         NameRole,
         HostAddressRole,
+        WebSocketUrlRole,
         PortRole,
         VersionRole
     };

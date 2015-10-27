@@ -38,6 +38,7 @@ GuhInterface::GuhInterface(QObject *parent) :
 
 void GuhInterface::connectGuh(const QString &urlString)
 {
+    m_webSocketUrl = urlString;
     m_socket->open(QUrl(urlString));
 }
 
@@ -56,22 +57,27 @@ bool GuhInterface::connected() const
     return m_connected;
 }
 
+void GuhInterface::setConnected(const bool &connected)
+{
+    m_connected = connected;
+    emit connectedChanged();
+}
+
 void GuhInterface::onConnected()
 {
-    m_connected = true;
-    emit connectedChanged();
+    Core::instance()->discovery()->stopDiscovery();
+    qDebug() << "Connected to" << m_webSocketUrl;
 
-    qDebug() << QString("Connected to guh on ws://%1:%2").arg(m_socket->peerAddress().toString()).arg(QString::number(m_socket->peerPort()));
+    setConnected(true);
 
+    Core::instance()->connections()->addConnection("guhd", m_socket->peerAddress().toString(), m_webSocketUrl);
     Core::instance()->jsonRpcClient()->getVendors();
 }
 
 void GuhInterface::onDisconnected()
 {
-    m_connected = false;
-    emit connectedChanged();
-
-    qDebug() << QString("Disconnected from ws://%1:%2").arg(m_socket->peerAddress().toString()).arg(QString::number(m_socket->peerPort()));
+    qDebug() << "Disconnected from" << m_webSocketUrl;
+    setConnected(false);
 }
 
 void GuhInterface::onTextMessageReceived(const QString &data)

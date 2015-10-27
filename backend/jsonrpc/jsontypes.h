@@ -30,6 +30,9 @@
 #include "../types/device.h"
 #include "../types/deviceclass.h"
 #include "../types/paramtype.h"
+#include "../types/statetype.h"
+#include "../types/eventtype.h"
+#include "../types/actiontype.h"
 
 class Vendor;
 
@@ -43,6 +46,9 @@ public:
     static DeviceClass *unpackDeviceClass(const QVariantMap &deviceClassMap, QObject *parent);
     static Param *unpackParam(const QVariantMap &paramMap, QObject *parent);
     static ParamType *unpackParamType(const QVariantMap &paramTypeMap, QObject *parent);
+    static StateType *unpackStateType(const QVariantMap &stateTypeMap, QObject *parent);
+    static EventType *unpackEventType(const QVariantMap &eventTypeMap, QObject *parent);
+    static ActionType *unpackActionType(const QVariantMap &actionTypeMap, QObject *parent);
     static Device *unpackDevice(const QVariantMap &deviceMap, QObject *parent);
 
 private:

@@ -55,8 +55,6 @@ signals:
     void vendorIdChanged();
     void deviceClassesChanged();
 
-public slots:
-
 };
 
 #endif // DEVICECLASSFILERMODEL_H

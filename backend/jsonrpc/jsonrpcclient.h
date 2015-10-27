@@ -37,12 +37,16 @@ class JsonRpcClient : public QObject
 public:
     explicit JsonRpcClient(QObject *parent = 0);
 
+    // internal
     void getVendors();
     void getDevices();
     void getDeviceClasses();
 
-    void addDevice(const QUuid &deviceClassId, Params *params);
-    void deleteDevice(const QUuid &deviceId);
+    // ui methods
+    Q_INVOKABLE int addDevice(const QUuid &deviceClassId, const QVariantList &deviceParams);
+    Q_INVOKABLE int addDiscoveredDevice(const QUuid &deviceClassId, const QUuid &deviceDescriptorId);
+    Q_INVOKABLE int removeDevice(const QUuid &deviceId);
+    Q_INVOKABLE int discoverDevices(const QUuid &deviceClassId, const QVariantList &discoveryParams = QVariantList());
 
 private:
     int m_id;
@@ -52,6 +56,9 @@ private:
     DeviceHandler *m_deviceHandler;
 
     JsonRpcReply *createReply(QString nameSpace, QString method, QVariantMap params = QVariantMap());
+
+signals:
+    void responseReceived(const int &commandId, const QVariantMap &response);
 
 public slots:
     void dataReceived(const QVariantMap &data);

@@ -18,59 +18,37 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef CORE_H
-#define CORE_H
+#ifndef EVENTTYPE_H
+#define EVENTTYPE_H
 
 #include <QObject>
-#include <QQmlEngine>
-#include <QJSEngine>
+#include <QUuid>
 
-#include "guhinterface.h"
-#include "jsonrpc/jsonrpcclient.h"
-#include "devicemanager.h"
-#include "discovery/upnpdiscovery.h"
-#include "discovery/guhconnections.h"
+#include "paramtypes.h"
 
-class Core : public QObject
+class EventType : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(GuhInterface *interface READ interface CONSTANT)
-    Q_PROPERTY(DeviceManager *deviceManager READ deviceManager CONSTANT)
-    Q_PROPERTY(UpnpDiscovery *discovery READ discovery CONSTANT)
-    Q_PROPERTY(JsonRpcClient *jsonRpcClient READ jsonRpcClient CONSTANT)
-    Q_PROPERTY(GuhConnections *connections READ connections CONSTANT)
-    Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
+    Q_PROPERTY(QUuid id READ id CONSTANT)
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(ParamTypes paramTypes READ paramTypes CONSTANT)
 
 public:
-    static Core* instance();
-    static QObject *qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
+    explicit EventType(QObject *parent = 0);
 
-    DeviceManager *deviceManager();
-    GuhInterface *interface();
-    JsonRpcClient *jsonRpcClient();
-    UpnpDiscovery *discovery();
-    GuhConnections *connections();
+    QUuid id() const;
+    void setId(const QUuid &id);
 
-    bool connected() const;
+    QString name() const;
+    void setName(const QString &name);
+
+    ParamTypes *paramTypes() const;
+    void setParamTypes(ParamTypes *paramTypes);
 
 private:
-    explicit Core(QObject *parent = 0);
-    static Core *s_instance;
-
-    DeviceManager *m_deviceManager;
-    GuhInterface *m_interface;
-    JsonRpcClient *m_jsonRpcClient;
-    UpnpDiscovery *m_discovery;
-    GuhConnections *m_connections;
-
-    bool m_connected;
-
-signals:
-    void connectedChanged();
-
-private slots:
-    void onConnectionChanged();
-
+    QUuid m_id;
+    QString m_name;
+    ParamTypes *m_paramTypes;
 };
 
-#endif // CORE_H
+#endif // EVENTTYPE_H

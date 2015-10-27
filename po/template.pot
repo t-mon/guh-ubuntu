@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-17 21:05+0200\n"
+"POT-Creation-Date: 2015-10-25 14:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,9 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:28
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:33
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:29
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:29
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:36
 msgid "Add device"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:108
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:108
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:143
+msgid "Error occured"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:112
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:112
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:87
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:147
+msgid "Cancel"
 msgstr ""
 
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:28
@@ -30,7 +44,7 @@ msgstr ""
 msgid "Manual"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:40
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:42
 msgid "Reload"
 msgstr ""
 
@@ -38,8 +52,20 @@ msgstr ""
 msgid "Supported devices"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:28
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:29
 msgid "Devices"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:70
+msgid "Remove device"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:71
+msgid "Are you sure you want to remove \""
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:78
+msgid "Remove"
 msgstr ""
 
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ManualConnectionPage.qml:28

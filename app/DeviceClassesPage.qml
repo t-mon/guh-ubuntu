@@ -19,8 +19,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components 1.3
+import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
 Page {
@@ -35,8 +35,30 @@ Page {
             text: model.name
             onClicked: {
                 var dc = Core.deviceManager.deviceClasses.getDeviceClass(model.id)
-                console.log("add device \"" + dc.name + "\"")
-                pageStack.push(Qt.resolvedUrl("AddDevicePage.qml"), { deviceClass: dc })
+
+                if (dc.createMethods.indexOf("CreateMethodDiscovery") !== -1) {
+                    console.log("Create: discovery")
+                    pageStack.push(Qt.resolvedUrl("AddDiscoveredDevicePage.qml"), { deviceClass: dc })
+                } else {
+                    console.log("Create: user")
+                    pageStack.push(Qt.resolvedUrl("AddDevicePage.qml"), { deviceClass: dc })
+                }
+
+                switch (dc.setupMethod) {
+                case DeviceClass.SetupMethodJustAdd:
+                    console.log("Setup: just add")
+                    break
+                case DeviceClass.SetupMethodDisplayPin:
+                    console.log("Setup: display pin")
+                    break
+                case DeviceClass.SetupMethodPushButton:
+                    console.log("Setup: push button")
+                    break
+                case DeviceClass.SetupMethodEnterPin:
+                    console.log("Setup: enter pin")
+                    break
+                }
+
             }
         }
     }

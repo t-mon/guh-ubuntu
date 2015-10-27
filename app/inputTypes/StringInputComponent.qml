@@ -19,60 +19,47 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components 1.3
+import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
-Component {
+Item {
     id: root
+    width: parent.width
+    implicitHeight: units.gu(10)
 
-    Rectangle {
-        id: mainRectangle
+    Component.onCompleted: {
+        paramValue = ""
+    }
+
+    Column {
         anchors.fill: parent
-        color: "transparent"
+        anchors.margins: units.gu(1)
+        spacing: units.gu(1)
 
-        Column {
-            anchors.fill: parent
-            anchors.margins: units.gu(1)
-            spacing: units.gu(1)
-
-            Label {
-                anchors.left: parent.left
-                anchors.leftMargin: units.gu(2)
-                font.capitalization: Font.Capitalize
-                text: paramType.name
-            }
-
-            Loader {
-                id: inputLoader
-
-                anchors.left: parent.left
-                anchors.leftMargin: units.gu(2)
-                anchors.right: parent.right
-                anchors.rightMargin: units.gu(2)
-
-                sourceComponent: textInputLine
-            }
-
-            Component {
-                id: textInputLine
-                TextField {
-                    id: textField
-                    inputMask: {
-                        if (paramType.inputType == Types.InputTypeIPv4Address)
-                            return "000.000.000.000;_"
-                        else if (paramType.inputType == Types.InputTypeMacAddress)
-                            return "HH:HH:HH:HH:HH:HH;_"
-                        else
-                            return ""
-                    }
-                    echoMode: paramType.inputType == Types.InputTypePassword ? TextInput.Password : TextInput.Normal
-                    onTextChanged: {
-                        value =  textField.text
-                    }
-                }
-            }
+        Label {
+            anchors.left: parent.left
+            anchors.leftMargin: units.gu(2)
+            font.capitalization: Font.Capitalize
+            text: paramType.name
         }
+
+        TextField {
+            id: textField
+            inputMask: {
+                if (paramType.inputType === Types.InputTypeIPv4Address)
+                    return "000.000.000.000;_"
+                else if (paramType.inputType === Types.InputTypeMacAddress)
+                    return "HH:HH:HH:HH:HH:HH;_"
+                else
+                    return ""
+            }
+            echoMode: paramType.inputType === Types.InputTypePassword ? TextInput.Password : TextInput.Normal
+            onTextChanged: paramValue =  textField.text
+        }
+
+        ThinDivider {}
     }
 }
+
 

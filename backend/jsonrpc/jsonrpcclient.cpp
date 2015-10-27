@@ -60,16 +60,31 @@ void JsonRpcClient::getDeviceClasses()
     Core::instance()->interface()->sendRequest(reply->requestMap());
 }
 
-void JsonRpcClient::addDevice(const QUuid &deviceClassId, Params *params)
+int JsonRpcClient::addDevice(const QUuid &deviceClassId, const QVariantList &deviceParams)
 {
-    qDebug() << "JsonRpc: add device " << deviceClassId.toString() << "with params";
-    foreach (Param *param, params->params()) {
-        qDebug() << "    -> " << param->name() << param->value();
-    }
-
+    qDebug() << "JsonRpc: add device " << deviceClassId.toString();
+    QVariantMap params;
+    params.insert("deviceClassId", deviceClassId.toString());
+    params.insert("deviceParams", deviceParams);
+    JsonRpcReply *reply = createReply("Devices", "AddConfiguredDevice", params);
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+    return reply->commandId();
 }
 
-void JsonRpcClient::deleteDevice(const QUuid &deviceId)
+int JsonRpcClient::addDiscoveredDevice(const QUuid &deviceClassId, const QUuid &deviceDescriptorId)
+{
+    qDebug() << "JsonRpc: add discovered device " << deviceClassId.toString();
+    QVariantMap params;
+    params.insert("deviceClassId", deviceClassId.toString());
+    params.insert("deviceDescriptorId", deviceDescriptorId.toString());
+    JsonRpcReply *reply = createReply("Devices", "AddConfiguredDevice", params);
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+    return reply->commandId();
+}
+
+int JsonRpcClient::removeDevice(const QUuid &deviceId)
 {
     qDebug() << "JsonRpc: delete device" << deviceId.toString();
     QVariantMap params;
@@ -77,6 +92,22 @@ void JsonRpcClient::deleteDevice(const QUuid &deviceId)
     JsonRpcReply *reply = createReply("Devices", "RemoveConfiguredDevice", params);
     m_replies.insert(reply->commandId(), reply);
     Core::instance()->interface()->sendRequest(reply->requestMap());
+    return reply->commandId();
+}
+
+int JsonRpcClient::discoverDevices(const QUuid &deviceClassId, const QVariantList &discoveryParams)
+{
+    qDebug() << "JsonRpc: discover devices " << deviceClassId.toString();
+    QVariantMap params;
+    params.insert("deviceClassId", deviceClassId.toString());
+    if (!discoveryParams.isEmpty()) {
+        params.insert("discoveryParams", discoveryParams);
+    }
+
+    JsonRpcReply *reply = createReply("Devices", "GetDiscoveredDevices", params);
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+    return reply->commandId();
 }
 
 JsonRpcReply *JsonRpcClient::createReply(QString nameSpace, QString method, QVariantMap params)
@@ -98,6 +129,8 @@ void JsonRpcClient::dataReceived(const QVariantMap &data)
         if (!QMetaObject::invokeMethod(handler, QString("process" + reply->method()).toLatin1().data(), Q_ARG(QVariantMap, data)))
             qWarning() << "JsonRpc: method not implemented:" << reply->method();
 
+        emit responseReceived(reply->commandId(), data.value("params").toMap());
+
         return;
     }
 
@@ -118,8 +151,6 @@ void JsonRpcClient::dataReceived(const QVariantMap &data)
 
     }
 }
-
-
 
 JsonRpcReply::JsonRpcReply(int commandId, QString nameSpace, QString method, QVariantMap params, QObject *parent):
     QObject(parent),

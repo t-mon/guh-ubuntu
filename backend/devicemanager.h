@@ -44,10 +44,6 @@ public:
     DeviceClasses *deviceClasses() const;
     DeviceClassesFilterModel *deviceClassesFilter() const;
 
-    Q_INVOKABLE void removeDevice(QUuid deviceId);
-    Q_INVOKABLE void addDevice(QUuid deviceClassId, Params *params);
-
-
 private:
     Vendors *m_vendors;
     Devices *m_devices;

@@ -18,59 +18,44 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef CORE_H
-#define CORE_H
+#ifndef EVENTTYPES_H
+#define EVENTTYPES_H
 
 #include <QObject>
-#include <QQmlEngine>
-#include <QJSEngine>
+#include <QAbstractListModel>
 
-#include "guhinterface.h"
-#include "jsonrpc/jsonrpcclient.h"
-#include "devicemanager.h"
-#include "discovery/upnpdiscovery.h"
-#include "discovery/guhconnections.h"
+#include "eventtype.h"
 
-class Core : public QObject
+class EventTypes : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(GuhInterface *interface READ interface CONSTANT)
-    Q_PROPERTY(DeviceManager *deviceManager READ deviceManager CONSTANT)
-    Q_PROPERTY(UpnpDiscovery *discovery READ discovery CONSTANT)
-    Q_PROPERTY(JsonRpcClient *jsonRpcClient READ jsonRpcClient CONSTANT)
-    Q_PROPERTY(GuhConnections *connections READ connections CONSTANT)
-    Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
 
 public:
-    static Core* instance();
-    static QObject *qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
+    enum EventTypeRole {
+        NameRole,
+        IdRole
+    };
 
-    DeviceManager *deviceManager();
-    GuhInterface *interface();
-    JsonRpcClient *jsonRpcClient();
-    UpnpDiscovery *discovery();
-    GuhConnections *connections();
+    EventTypes(QObject *parent = 0);
 
-    bool connected() const;
+    QList<EventType *> eventTypes();
+
+    Q_INVOKABLE EventType *get(int index) const;
+    Q_INVOKABLE EventType *getEventType(const QUuid &eventTypeId) const;
+
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+
+    void addEventType(EventType *eventType);
+
+    void clearModel();
+
+protected:
+    QHash<int, QByteArray> roleNames() const;
 
 private:
-    explicit Core(QObject *parent = 0);
-    static Core *s_instance;
-
-    DeviceManager *m_deviceManager;
-    GuhInterface *m_interface;
-    JsonRpcClient *m_jsonRpcClient;
-    UpnpDiscovery *m_discovery;
-    GuhConnections *m_connections;
-
-    bool m_connected;
-
-signals:
-    void connectedChanged();
-
-private slots:
-    void onConnectionChanged();
+    QList<EventType *> m_eventTypes;
 
 };
 
-#endif // CORE_H
+#endif // EVENTTYPES_H

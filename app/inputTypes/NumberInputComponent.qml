@@ -19,64 +19,66 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components 1.3
+import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
-Component {
+Item {
     id: root
+    width: parent.width
+    implicitHeight: inputLoader.implicitHeight
 
-    Rectangle {
-        id: mainRectangle
-        anchors.fill: parent
-        color: "transparent"
+    Loader {
+        id: inputLoader
+        width: parent.width
+        height: item.inplicitHeight
+        sourceComponent: paramType.minValue ? sliderInputLine : numberInputLine
+    }
 
-        Loader {
-            id: inputLoader
-            anchors.fill: parent
-            anchors.margins: units.gu(2)
-            sourceComponent: paramType.minValue ? sliderInputLine : numberInputLine
-        }
-
-        Component {
-            id: numberInputLine
-
-            Rectangle {
-                id: rectangle
-                anchors.fill: parent
-                color: "transparent"
+    Component {
+        id: numberInputLine
+        Column {
+            Item {
+                width: parent.width
+                height: units.gu(6)
 
                 Label {
-                    anchors.left: rectangle.left
-                    anchors.verticalCenter: rectangle.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: units.gu(2)
+                    anchors.verticalCenter: parent.verticalCenter
                     font.capitalization: Font.Capitalize
                     text: paramType.name
                 }
 
                 TextField {
                     id: textField
-                    anchors.right: rectangle.right
-                    anchors.verticalCenter: rectangle.verticalCenter
-                    width: units.gu(10)
+                    anchors.right: parent.right
+                    anchors.rightMargin: units.gu(2)
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: units.gu(12)
                     inputMethodHints: Qt.ImhFormattedNumbersOnly
                     onTextChanged: {
                         value =  textField.text
                     }
+                    Component.onCompleted: paramValue = 0
                 }
             }
+
+            ThinDivider {}
         }
+    }
 
-        Component {
-            id: sliderInputLine
-
-            Rectangle {
-                id: rectangle
-                anchors.fill: parent
-                color: "transparent"
+    Component {
+        id: sliderInputLine
+        Column {
+            Item {
+                width: parent.width
+                height: units.gu(6)
 
                 Label {
                     id: nameLable
                     anchors.left: parent.left
+                    anchors.leftMargin: units.gu(2)
                     anchors.verticalCenter: parent.verticalCenter
                     font.capitalization: Font.Capitalize
                     text: paramType.name
@@ -85,6 +87,7 @@ Component {
                 Slider {
                     id: slider
                     anchors.right: parent.right
+                    anchors.rightMargin: units.gu(2)
                     anchors.verticalCenter: parent.verticalCenter
                     width: units.gu(20)
                     maximumValue: paramType.maxValue
@@ -92,9 +95,13 @@ Component {
                     onValueChanged: {
                         value =  slider.value
                     }
+                    Component.onCompleted: paramValue = value
                 }
             }
+
+            ThinDivider {}
         }
     }
 }
+
 

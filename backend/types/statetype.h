@@ -18,59 +18,52 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef CORE_H
-#define CORE_H
+#ifndef STATETYPE_H
+#define STATETYPE_H
 
+#include <QVariant>
 #include <QObject>
-#include <QQmlEngine>
-#include <QJSEngine>
+#include <QUuid>
 
-#include "guhinterface.h"
-#include "jsonrpc/jsonrpcclient.h"
-#include "devicemanager.h"
-#include "discovery/upnpdiscovery.h"
-#include "discovery/guhconnections.h"
+#include "types.h"
 
-class Core : public QObject
+class StateType : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(GuhInterface *interface READ interface CONSTANT)
-    Q_PROPERTY(DeviceManager *deviceManager READ deviceManager CONSTANT)
-    Q_PROPERTY(UpnpDiscovery *discovery READ discovery CONSTANT)
-    Q_PROPERTY(JsonRpcClient *jsonRpcClient READ jsonRpcClient CONSTANT)
-    Q_PROPERTY(GuhConnections *connections READ connections CONSTANT)
-    Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
+    Q_PROPERTY(QUuid id READ id CONSTANT)
+    Q_PROPERTY(QString name READ name CONSTANT)
+    Q_PROPERTY(QString type READ type CONSTANT)
+    Q_PROPERTY(QVariant defaultValue READ defaultValue CONSTANT)
+    Q_PROPERTY(QString unitString READ unitString CONSTANT)
 
 public:
-    static Core* instance();
-    static QObject *qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
+    explicit StateType(QObject *parent = 0);
 
-    DeviceManager *deviceManager();
-    GuhInterface *interface();
-    JsonRpcClient *jsonRpcClient();
-    UpnpDiscovery *discovery();
-    GuhConnections *connections();
+    QUuid id() const;
+    void setId(const QUuid &id);
 
-    bool connected() const;
+    QString name() const;
+    void setName(const QString &name);
+
+    QString type() const;
+    void setType(const QString &type);
+
+    QVariant defaultValue() const;
+    void setDefaultValue(const QVariant &defaultValue);
+
+    Types::Unit unit() const;
+    void setUnit(const Types::Unit &unit);
+
+    QString unitString() const;
+    void setUnitString(const QString &unitString);
 
 private:
-    explicit Core(QObject *parent = 0);
-    static Core *s_instance;
-
-    DeviceManager *m_deviceManager;
-    GuhInterface *m_interface;
-    JsonRpcClient *m_jsonRpcClient;
-    UpnpDiscovery *m_discovery;
-    GuhConnections *m_connections;
-
-    bool m_connected;
-
-signals:
-    void connectedChanged();
-
-private slots:
-    void onConnectionChanged();
-
+    QUuid m_id;
+    QString m_name;
+    QString m_type;
+    QVariant m_defaultValue;
+    Types::Unit m_unit;
+    QString m_unitString;
 };
 
-#endif // CORE_H
+#endif // STATETYPE_H

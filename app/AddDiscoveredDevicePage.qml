@@ -26,30 +26,52 @@ import Guh 1.0
 
 Page {
     id: root
-    title: i18n.tr("Add device")
+    title: i18n.tr("Discover devices")
 
     property var deviceClass: null
-    property int id
+    property var deviceDescriptors: []
+    property int addId: 0
+    property int discoverId: 0
     property string deviceError
     property bool waiting: false
 
-    Flickable {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.topMargin: 5.5
-        anchors.bottom: bottomBar.top
+    Component.onCompleted: {
+        if (deviceClass.discoveryParamTypes.paramCount === 0) {
+            discover()
+        }
+    }
 
-        contentHeight: paramColumn.implicitHeight
+    function discover() {
+        root.deviceDescriptors = []
+        print("Discover devices: " + paramRepeater.count)
+        var deviceParams = [];
+        for (var i = 0; i < paramRepeater.count; i ++) {
+            deviceParams.push({"name": paramRepeater.itemAt(i).paramName, "value": paramRepeater.itemAt(i).paramValue})
+            print("   " + paramRepeater.itemAt(i).paramName + ": " + paramRepeater.itemAt(i).paramValue)
+        }
+        root.waiting = true
+        root.discoverId = Core.jsonRpcClient.discoverDevices(deviceClass.id, deviceParams)
+    }
 
-        Column {
-            id: paramColumn
-            width: parent.width
-            Repeater {
-                id: paramRepeater
-                model: deviceClass.paramTypes
-                delegate: ParamInput {
-                    paramType: model
+    Column {
+        id: paramColumn
+        anchors.fill: parent
+        Repeater {
+            id: paramRepeater
+            model: deviceClass.discoveryParamTypes
+            delegate: ParamInput {
+                paramType: model
+            }
+        }
+
+        Repeater {
+            id: deviceDescriptorRepeater
+            model: deviceDescriptors
+            delegate: SingleValue {
+                text: deviceDescriptors[index]['title']
+                value: deviceDescriptors[index]['description']
+                onClicked: {
+                    root.addId = Core.jsonRpcClient.addDiscoveredDevice(deviceClass.id, deviceDescriptors[index]['id'])
                 }
             }
         }
@@ -64,27 +86,22 @@ Page {
         anchors.right: parent.right
 
         Button {
-            id: addButton
+            id: discoverButton
             anchors.centerIn: parent
             width: parent.width - units.gu(4)
             text: root.title
-            onClicked: {
-                print("Add device pressed with params: " + paramRepeater.count)
-                var deviceParams = [];
-                for (var i = 0; i < paramRepeater.count; i ++) {
-                    deviceParams.push({"name": paramRepeater.itemAt(i).paramName, "value": paramRepeater.itemAt(i).paramValue})
-                    print("   " + paramRepeater.itemAt(i).paramName + ": " + paramRepeater.itemAt(i).paramValue)
-                }
-                root.waiting = true
-                root.id = Core.jsonRpcClient.addDevice(deviceClass.id, deviceParams)
-            }
+            onClicked: discover()
         }
     }
 
     Connections {
         target: Core.jsonRpcClient
         onResponseReceived: {
-            if (commandId == id) {
+            if (commandId == discoverId) {
+                root.waiting = false
+                root.deviceDescriptors = response['deviceDescriptors']
+            }
+            if (commandId == addId) {
                 root.waiting = false
                 deviceError = response['deviceError']
                 if (deviceError !== "DeviceErrorNoError") {

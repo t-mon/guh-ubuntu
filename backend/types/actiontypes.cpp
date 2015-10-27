@@ -18,68 +18,69 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "vendors.h"
+#include "actiontypes.h"
 
-#include <QDebug>
-
-Vendors::Vendors(QObject *parent) :
+ActionTypes::ActionTypes(QObject *parent) :
     QAbstractListModel(parent)
 {
 }
 
-QList<Vendor *> Vendors::vendors()
+QList<ActionType *> ActionTypes::actionTypes()
 {
-    return m_vendors;
+    return m_actionTypes;
 }
 
-Vendor *Vendors::getVendor(const QUuid &vendorId) const
+ActionType *ActionTypes::get(int index) const
 {
-    foreach (Vendor *vendor, m_vendors) {
-        if (vendor->id() == vendorId) {
-            return vendor;
+    return m_actionTypes.at(index);
+}
+
+ActionType *ActionTypes::getActionType(const QUuid &actionTypeId) const
+{
+    foreach (ActionType *actionType, m_actionTypes) {
+        if (actionType->id() == actionTypeId) {
+            return actionType;
         }
     }
     return 0;
 }
 
-int Vendors::rowCount(const QModelIndex &parent) const
+int ActionTypes::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return m_vendors.count();
+    return m_actionTypes.count();
 }
 
-QVariant Vendors::data(const QModelIndex &index, int role) const
+QVariant ActionTypes::data(const QModelIndex &index, int role) const
 {
-    if (index.row() < 0 || index.row() >= m_vendors.count())
+    if (index.row() < 0 || index.row() >= m_actionTypes.count())
         return QVariant();
 
-    Vendor *vendor = m_vendors.at(index.row());
+    ActionType *actionType = m_actionTypes.at(index.row());
     if (role == NameRole) {
-        return vendor->name();
+        return actionType->name();
     } else if (role == IdRole) {
-        return vendor->id().toString();
+        return actionType->id().toString();
     }
     return QVariant();
 }
 
-void Vendors::addVendor(Vendor *vendor)
+void ActionTypes::addActionType(ActionType *actionType)
 {
-    beginInsertRows(QModelIndex(), m_vendors.count(), m_vendors.count());
-    //qDebug() << "Vendors: loaded vendor" << vendor->name();
-    m_vendors.append(vendor);
+    beginInsertRows(QModelIndex(), m_actionTypes.count(), m_actionTypes.count());
+    qDebug() << "ActionTypes: loaded actionType" << actionType->name();
+    m_actionTypes.append(actionType);
     endInsertRows();
 }
 
-void Vendors::clearModel()
+void ActionTypes::clearModel()
 {
     beginResetModel();
-    qDebug() << "Vendors: delete all vendors";
-    qDeleteAll(m_vendors);
-    m_vendors.clear();
+    m_actionTypes.clear();
     endResetModel();
 }
 
-QHash<int, QByteArray> Vendors::roleNames() const
+QHash<int, QByteArray> ActionTypes::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";

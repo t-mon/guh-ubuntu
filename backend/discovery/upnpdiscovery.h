@@ -44,6 +44,7 @@ public:
     UpnpDiscoveryModel *discoveryModel();
 
     Q_INVOKABLE void discover();
+    Q_INVOKABLE void stopDiscovery();
 
 private:
     QNetworkAccessManager *m_networkAccessManager;
@@ -58,6 +59,8 @@ private:
     bool m_discovering;
     QHash<QNetworkReply *, UpnpDevice> m_runningReplies;
     QList<QUrl> m_foundDevices;
+
+    void setDiscovering(const bool &discovering);
 
 signals:
     void discoveringChanged();

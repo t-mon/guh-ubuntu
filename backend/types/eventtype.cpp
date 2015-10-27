@@ -18,76 +18,40 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "core.h"
+#include "eventtype.h"
 
-Core* Core::s_instance = 0;
-
-Core *Core::instance()
+EventType::EventType(QObject *parent) :
+    QObject(parent)
 {
-    if (!s_instance)
-        s_instance = new Core();
-
-    return s_instance;
 }
 
-QObject *Core::qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine)
+QUuid EventType::id() const
 {
-    Q_UNUSED(qmlEngine)
-    Q_UNUSED(jsEngine)
-    return Core::instance();
+    return m_id;
 }
 
-Core::Core(QObject *parent) :
-    QObject(parent),
-    m_deviceManager(new DeviceManager(this)),
-    m_interface(new GuhInterface(this)),
-    m_jsonRpcClient(new JsonRpcClient(this)),
-    m_discovery(new UpnpDiscovery(this)),
-    m_connections(new GuhConnections(this)),
-    m_connected(false)
+void EventType::setId(const QUuid &id)
 {
-    connect(m_interface, &GuhInterface::connectedChanged, this, &Core::connectedChanged);
-    connect(m_interface, &GuhInterface::connectedChanged, this, &Core::onConnectionChanged);
-    connect(m_interface, &GuhInterface::dataReady, m_jsonRpcClient, &JsonRpcClient::dataReceived);
+    m_id = id;
 }
 
-DeviceManager *Core::deviceManager()
+QString EventType::name() const
 {
-    return m_deviceManager;
+    return m_name;
 }
 
-UpnpDiscovery *Core::discovery()
+void EventType::setName(const QString &name)
 {
-    return m_discovery;
+    m_name = name;
 }
 
-GuhConnections *Core::connections()
+ParamTypes *EventType::paramTypes() const
 {
-    return m_connections;
+    return m_paramTypes;
 }
 
-GuhInterface *Core::interface()
+void EventType::setParamTypes(ParamTypes *paramTypes)
 {
-    return m_interface;
-}
-
-JsonRpcClient *Core::jsonRpcClient()
-{
-    return m_jsonRpcClient;
-}
-
-bool Core::connected() const
-{
-    return m_interface->connected();
-}
-
-void Core::onConnectionChanged()
-{
-    // delete all data
-    if (!connected()) {
-        deviceManager()->devices()->clearModel();
-        deviceManager()->deviceClasses()->clearModel();
-        deviceManager()->vendors()->clearModel();
-    }
+    m_paramTypes = paramTypes;
 }
 

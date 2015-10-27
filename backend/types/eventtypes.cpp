@@ -18,76 +18,75 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "core.h"
+#include "eventtypes.h"
 
-Core* Core::s_instance = 0;
+#include <QDebug>
 
-Core *Core::instance()
+EventTypes::EventTypes(QObject *parent) :
+    QAbstractListModel(parent)
 {
-    if (!s_instance)
-        s_instance = new Core();
-
-    return s_instance;
 }
 
-QObject *Core::qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine)
+QList<EventType *> EventTypes::eventTypes()
 {
-    Q_UNUSED(qmlEngine)
-    Q_UNUSED(jsEngine)
-    return Core::instance();
+    return m_eventTypes;
 }
 
-Core::Core(QObject *parent) :
-    QObject(parent),
-    m_deviceManager(new DeviceManager(this)),
-    m_interface(new GuhInterface(this)),
-    m_jsonRpcClient(new JsonRpcClient(this)),
-    m_discovery(new UpnpDiscovery(this)),
-    m_connections(new GuhConnections(this)),
-    m_connected(false)
+EventType *EventTypes::get(int index) const
 {
-    connect(m_interface, &GuhInterface::connectedChanged, this, &Core::connectedChanged);
-    connect(m_interface, &GuhInterface::connectedChanged, this, &Core::onConnectionChanged);
-    connect(m_interface, &GuhInterface::dataReady, m_jsonRpcClient, &JsonRpcClient::dataReceived);
+    return m_eventTypes.at(index);
 }
 
-DeviceManager *Core::deviceManager()
+EventType *EventTypes::getEventType(const QUuid &eventTypeId) const
 {
-    return m_deviceManager;
-}
-
-UpnpDiscovery *Core::discovery()
-{
-    return m_discovery;
-}
-
-GuhConnections *Core::connections()
-{
-    return m_connections;
-}
-
-GuhInterface *Core::interface()
-{
-    return m_interface;
-}
-
-JsonRpcClient *Core::jsonRpcClient()
-{
-    return m_jsonRpcClient;
-}
-
-bool Core::connected() const
-{
-    return m_interface->connected();
-}
-
-void Core::onConnectionChanged()
-{
-    // delete all data
-    if (!connected()) {
-        deviceManager()->devices()->clearModel();
-        deviceManager()->deviceClasses()->clearModel();
-        deviceManager()->vendors()->clearModel();
+    foreach (EventType *eventType, m_eventTypes) {
+        if (eventType->id() == eventTypeId) {
+            return eventType;
+        }
     }
+    return 0;
+}
+
+int EventTypes::rowCount(const QModelIndex &parent) const
+{
+    Q_UNUSED(parent)
+    return m_eventTypes.count();
+}
+
+QVariant EventTypes::data(const QModelIndex &index, int role) const
+{
+    if (index.row() < 0 || index.row() >= m_eventTypes.count())
+        return QVariant();
+
+    EventType *eventType = m_eventTypes.at(index.row());
+    if (role == NameRole) {
+        return eventType->name();
+    } else if (role == IdRole) {
+        return eventType->id().toString();
+    }
+    return QVariant();
+}
+
+void EventTypes::addEventType(EventType *eventType)
+{
+    beginInsertRows(QModelIndex(), m_eventTypes.count(), m_eventTypes.count());
+    qDebug() << "EventTypes: loaded eventType" << eventType->name();
+    m_eventTypes.append(eventType);
+    endInsertRows();
+}
+
+void EventTypes::clearModel()
+{
+    beginResetModel();
+    m_eventTypes.clear();
+    endResetModel();
+}
+
+QHash<int, QByteArray> EventTypes::roleNames() const
+{
+    QHash<int, QByteArray> roles;
+    roles[NameRole] = "name";
+    roles[IdRole] = "id";
+    return roles;
 }
 

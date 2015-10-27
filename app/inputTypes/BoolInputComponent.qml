@@ -19,36 +19,39 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components 1.3
+import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
-Component {
+Item {
     id: root
+    width: parent.width
+    implicitHeight: units.gu(6)
 
-    Rectangle {
-        id: mainRectangle
-        anchors.fill: parent
-        color: "transparent"
+    Label {
+        id: nameLable
+        anchors.left: parent.left
+        anchors.leftMargin: units.gu(2)
+        anchors.verticalCenter: parent.verticalCenter
+        font.capitalization: Font.Capitalize
+        text: paramType.name
+    }
 
-        Label {
-            id: nameLable
-            anchors.left: parent.left
-            anchors.leftMargin: units.gu(2)
-            anchors.verticalCenter: parent.verticalCenter
-            font.capitalization: Font.Capitalize
-            text: paramType.name
-        }
+    Switch {
+        id: boolSwitch
+        anchors.right: parent.right
+        anchors.rightMargin: units.gu(2)
+        anchors.verticalCenter: parent.verticalCenter
+        checked: false
+        onCheckedChanged: paramValue = checked
+        Component.onCompleted: paramValue = checked
+    }
 
-        Switch {
-            id: boolSwitch
-            anchors.right: parent.right
-            anchors.rightMargin: units.gu(2)
-            anchors.verticalCenter: parent.verticalCenter
-            checked: false
-            onCheckedChanged: value = checked
-        }
+    ThinDivider {
+        width: parent.width
+        anchors.top: root.bottom
     }
 }
+
 
 

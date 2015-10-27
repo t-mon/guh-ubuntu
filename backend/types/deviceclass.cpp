@@ -67,12 +67,12 @@ void DeviceClass::setName(const QString &name)
     m_name = name;
 }
 
-QList<DeviceClass::CreateMethod> DeviceClass::createMethods() const
+QStringList DeviceClass::createMethods() const
 {
     return m_createMethods;
 }
 
-void DeviceClass::setCreateMethods(QList<CreateMethod> createMethods)
+void DeviceClass::setCreateMethods(const QStringList &createMethods)
 {
     m_createMethods = createMethods;
 }
@@ -95,6 +95,7 @@ ParamTypes *DeviceClass::paramTypes() const
 void DeviceClass::setParamTypes(ParamTypes *paramTypes)
 {
     m_paramTypes = paramTypes;
+    emit paramTypesChanged();
 }
 
 ParamTypes *DeviceClass::discoveryParamTypes() const
@@ -105,4 +106,38 @@ ParamTypes *DeviceClass::discoveryParamTypes() const
 void DeviceClass::setDiscoveryParamTypes(ParamTypes *paramTypes)
 {
     m_discoveryParamTypes = paramTypes;
+    emit discoveryParamTypesChanged();
+}
+
+StateTypes *DeviceClass::stateTypes() const
+{
+    return m_stateTypes;
+}
+
+void DeviceClass::setStateTypes(StateTypes *stateTypes)
+{
+    m_stateTypes = stateTypes;
+    emit stateTypesChanged();
+}
+
+EventTypes *DeviceClass::eventTypes() const
+{
+    return m_eventTypes;
+}
+
+void DeviceClass::setEventTypes(EventTypes *eventTypes)
+{
+    m_eventTypes = eventTypes;
+    emit eventTypesChanged();
+}
+
+ActionTypes *DeviceClass::actionTypes() const
+{
+    return m_actionTypes;
+}
+
+void DeviceClass::setActionTypes(ActionTypes *actionTypes)
+{
+    m_actionTypes = actionTypes;
+    emit actionTypesChanged();
 }

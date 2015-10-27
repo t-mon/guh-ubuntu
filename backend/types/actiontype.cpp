@@ -18,23 +18,40 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
-import Guh 1.0
+#include "actiontype.h"
 
-Component {
-    id: root
-    Rectangle {
-        id: mainRectangle
-        anchors.fill: parent
-        color: "transparent"
-
-        ValueSelector {
-            text: paramType.name
-            values: paramType.allowedValues
-        }
-    }
+ActionType::ActionType(QObject *parent) :
+    QObject(parent)
+{
 }
 
+QUuid ActionType::id() const
+{
+    return m_id;
+}
+
+void ActionType::setId(const QUuid &id)
+{
+    m_id = id;
+}
+
+QString ActionType::name() const
+{
+    return m_name;
+}
+
+void ActionType::setName(const QString &name)
+{
+    m_name = name;
+}
+
+ParamTypes *ActionType::paramTypes() const
+{
+    return m_paramTypes;
+}
+
+void ActionType::setParamTypes(ParamTypes *paramTypes)
+{
+    m_paramTypes = paramTypes;
+}
 

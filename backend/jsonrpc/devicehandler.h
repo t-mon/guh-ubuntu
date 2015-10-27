@@ -40,6 +40,7 @@ public:
 
     Q_INVOKABLE void processRemoveConfiguredDevice(const QVariantMap &params);
     Q_INVOKABLE void processAddConfiguredDevice(const QVariantMap &params);
+    Q_INVOKABLE void processGetDiscoveredDevices(const QVariantMap &params);
 
 
     // Notifications

@@ -18,82 +18,86 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "deviceclasses.h"
+#include "statetypes.h"
 
 #include <QDebug>
 
-DeviceClasses::DeviceClasses(QObject *parent) :
+StateTypes::StateTypes(QObject *parent) :
     QAbstractListModel(parent)
 {
 }
 
-QList<DeviceClass *> DeviceClasses::deviceClasses()
+QList<StateType *> StateTypes::stateTypes()
 {
-    return m_deviceClasses;
+    return m_stateTypes;
 }
 
-int DeviceClasses::rowCount(const QModelIndex &parent) const
+StateType *StateTypes::get(int index) const
 {
-    Q_UNUSED(parent)
-    return m_deviceClasses.count();
+    return m_stateTypes.at(index);
 }
 
-QVariant DeviceClasses::data(const QModelIndex &index, int role) const
+StateType *StateTypes::getStateType(const QUuid &stateTypeId) const
 {
-    if (index.row() < 0 || index.row() >= m_deviceClasses.count())
-        return QVariant();
-
-    DeviceClass *deviceClass = m_deviceClasses.at(index.row());
-    if (role == NameRole) {
-        return deviceClass->name();
-    } else if (role == IdRole) {
-        return deviceClass->id().toString();
-    } else if (role == PluginIdRole) {
-        return deviceClass->pluginId().toString();
-    } else if (role == VendorIdRole) {
-        return deviceClass->vendorId().toString();
-    }
-    return QVariant();
-}
-
-DeviceClass *DeviceClasses::get(int index) const
-{
-    return m_deviceClasses.at(index);
-}
-
-DeviceClass *DeviceClasses::getDeviceClass(QUuid deviceClassId) const
-{
-    foreach (DeviceClass *deviceClass, m_deviceClasses) {
-        if (deviceClass->id() == deviceClassId) {
-            return deviceClass;
+    foreach (StateType *stateType, m_stateTypes) {
+        if (stateType->id() == stateTypeId) {
+            return stateType;
         }
     }
     return 0;
 }
 
-void DeviceClasses::addDeviceClass(DeviceClass *deviceClass)
+int StateTypes::rowCount(const QModelIndex &parent) const
 {
-    beginInsertRows(QModelIndex(), m_deviceClasses.count(), m_deviceClasses.count());
-    //qDebug() << "DeviceClasses: loaded deviceClass" << deviceClass->name();
-    m_deviceClasses.append(deviceClass);
+    Q_UNUSED(parent)
+    return m_stateTypes.count();
+}
+
+QVariant StateTypes::data(const QModelIndex &index, int role) const
+{
+    if (index.row() < 0 || index.row() >= m_stateTypes.count())
+        return QVariant();
+
+    StateType *stateType = m_stateTypes.at(index.row());
+    if (role == NameRole) {
+        return stateType->name();
+    } else if (role == IdRole) {
+        return stateType->id().toString();
+    } else if (role == TypeRole) {
+        return stateType->type();
+    } else if (role == DefaultValueRole) {
+        return stateType->defaultValue();
+    } else if (role == UnitStringRole) {
+        return stateType->unitString();
+    }
+    return QVariant();
+}
+
+void StateTypes::addStateType(StateType *stateType)
+{
+    beginInsertRows(QModelIndex(), m_stateTypes.count(), m_stateTypes.count());
+    qDebug() << "StateTypes: loaded stateType" << stateType->name();
+    m_stateTypes.append(stateType);
     endInsertRows();
 }
 
-void DeviceClasses::clearModel()
+void StateTypes::clearModel()
 {
     beginResetModel();
-    qDebug() << "Devices: delete all deviceClasses";
-    qDeleteAll(m_deviceClasses);
-    m_deviceClasses.clear();
+    qDebug() << "StateTypes: delete all stateTypes";
+    qDeleteAll(m_stateTypes);
+    m_stateTypes.clear();
     endResetModel();
 }
 
-QHash<int, QByteArray> DeviceClasses::roleNames() const
+QHash<int, QByteArray> StateTypes::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
     roles[IdRole] = "id";
-    roles[PluginIdRole] = "pluginId";
-    roles[VendorIdRole] = "vendorId";
+    roles[TypeRole] = "type";
+    roles[DefaultValueRole] = "defaultValue";
+    roles[UnitStringRole] = "unitString";
     return roles;
 }
+

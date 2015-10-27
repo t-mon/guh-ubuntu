@@ -27,12 +27,22 @@ Device::Device(QObject *parent) :
 
 QString Device::name() const
 {
+    foreach (Param *param, m_params->params()) {
+        if (param->name() == "name") {
+            return param->value().toString();
+        }
+    }
     return m_name;
 }
 
-void Device::setName(const QString &name)
+QString Device::deviceName() const
 {
-    m_name = name;
+    return m_name;
+}
+
+void Device::setDeviceName(const QString &deviceName)
+{
+    m_name = deviceName;
     emit nameChanged();
 }
 

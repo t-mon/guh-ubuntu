@@ -18,59 +18,45 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef CORE_H
-#define CORE_H
+#ifndef STATETYPES_H
+#define STATETYPES_H
 
 #include <QObject>
-#include <QQmlEngine>
-#include <QJSEngine>
+#include <QAbstractListModel>
 
-#include "guhinterface.h"
-#include "jsonrpc/jsonrpcclient.h"
-#include "devicemanager.h"
-#include "discovery/upnpdiscovery.h"
-#include "discovery/guhconnections.h"
+#include "statetype.h"
 
-class Core : public QObject
+class StateTypes : public QAbstractListModel
 {
-    Q_OBJECT
-    Q_PROPERTY(GuhInterface *interface READ interface CONSTANT)
-    Q_PROPERTY(DeviceManager *deviceManager READ deviceManager CONSTANT)
-    Q_PROPERTY(UpnpDiscovery *discovery READ discovery CONSTANT)
-    Q_PROPERTY(JsonRpcClient *jsonRpcClient READ jsonRpcClient CONSTANT)
-    Q_PROPERTY(GuhConnections *connections READ connections CONSTANT)
-    Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
-
 public:
-    static Core* instance();
-    static QObject *qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
+    enum StateTypeRole {
+        NameRole,
+        IdRole,
+        TypeRole,
+        DefaultValueRole,
+        UnitStringRole
+    };
 
-    DeviceManager *deviceManager();
-    GuhInterface *interface();
-    JsonRpcClient *jsonRpcClient();
-    UpnpDiscovery *discovery();
-    GuhConnections *connections();
+    StateTypes(QObject *parent = 0);
 
-    bool connected() const;
+    QList<StateType *> stateTypes();
+
+    Q_INVOKABLE StateType *get(int index) const;
+    Q_INVOKABLE StateType *getStateType(const QUuid &stateTypeId) const;
+
+    int rowCount(const QModelIndex & parent = QModelIndex()) const;
+    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+
+    void addStateType(StateType *stateType);
+
+    void clearModel();
+
+protected:
+    QHash<int, QByteArray> roleNames() const;
 
 private:
-    explicit Core(QObject *parent = 0);
-    static Core *s_instance;
-
-    DeviceManager *m_deviceManager;
-    GuhInterface *m_interface;
-    JsonRpcClient *m_jsonRpcClient;
-    UpnpDiscovery *m_discovery;
-    GuhConnections *m_connections;
-
-    bool m_connected;
-
-signals:
-    void connectedChanged();
-
-private slots:
-    void onConnectionChanged();
+    QList<StateType *> m_stateTypes;
 
 };
 
-#endif // CORE_H
+#endif // STATETYPES_H

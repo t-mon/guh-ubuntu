@@ -3,16 +3,16 @@
         <file>app/Main.qml</file>
         <file>app/MainMenuPage.qml</file>
         <file>app/ConnectionPage.qml</file>
-        <file>app/ManualConnectionPage.qml</file>
         <file>app/VendorsPage.qml</file>
         <file>app/DeviceClassesPage.qml</file>
         <file>app/DeviceDetailsPage.qml</file>
         <file>app/AddDevicePage.qml</file>
+        <file>app/AddDiscoveredDevicePage.qml</file>
         <file>app/ParamInput.qml</file>
         <file>app/DeviceParamPage.qml</file>
-        <file>app/StringInputComponent.qml</file>
-        <file>app/BoolInputComponent.qml</file>
-        <file>app/AllowedValuesInputComponent.qml</file>
-        <file>app/NumberInputComponent.qml</file>
+        <file>app/inputTypes/StringInputComponent.qml</file>
+        <file>app/inputTypes/BoolInputComponent.qml</file>
+        <file>app/inputTypes/AllowedValuesInputComponent.qml</file>
+        <file>app/inputTypes/NumberInputComponent.qml</file>
     </qresource>
 </RCC>

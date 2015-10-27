@@ -18,38 +18,51 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
-import Guh 1.0
+#include "guhconnection.h"
 
-Page {
-    id: root
-    title: i18n.tr("Manual Connection")
-
-    Column {
-        anchors.fill: parent
-        anchors.margins: units.gu(2)
-        spacing: units.gu(1)
-
-        Label {
-            text: i18n.tr("Please enter the websocket URL of guh")
-        }
-
-        TextField {
-            id: urlTextField
-            width: parent.width
-            placeholderText: "ws://webdm.local:4444"
-        }
-
-        Button {
-            id: connectButton
-            width: parent.width
-            color: UbuntuColors.green
-            text: i18n.tr("Connect")
-            onClicked: Core.interface.connectGuh(urlTextField.text)
-        }
-    }
-
+GuhConnection::GuhConnection(QObject *parent) :
+    QObject(parent)
+{
 }
+
+QString GuhConnection::name() const
+{
+    return m_name;
+}
+
+void GuhConnection::setName(const QString &name)
+{
+    m_name = name;
+}
+
+QString GuhConnection::webSocketUrl() const
+{
+    return m_webSocketUrl;
+}
+
+void GuhConnection::setWebSocketUrl(const QString &webSocketUrl)
+{
+    m_webSocketUrl = webSocketUrl;
+}
+
+QString GuhConnection::hostAddress() const
+{
+    return m_hostAddress;
+}
+
+void GuhConnection::setHostAddress(const QString &hostAddress)
+{
+    m_hostAddress = hostAddress;
+}
+
+QUuid GuhConnection::uuid() const
+{
+    return m_uuid;
+}
+
+void GuhConnection::setUuid(const QUuid &uuid)
+{
+    m_uuid = uuid;
+}
+
 

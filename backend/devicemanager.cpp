@@ -52,12 +52,4 @@ DeviceClassesFilterModel *DeviceManager::deviceClassesFilter() const
     return m_deviceClassesFilter;
 }
 
-void DeviceManager::removeDevice(QUuid deviceId)
-{
-    Core::instance()->jsonRpcClient()->deleteDevice(deviceId);
-}
 
-void DeviceManager::addDevice(QUuid deviceClassId, Params *params)
-{
-    Core::instance()->jsonRpcClient()->addDevice(deviceClassId, params);
-}

@@ -61,6 +61,8 @@ QVariant Devices::data(const QModelIndex &index, int role) const
     Device *device = m_devices.at(index.row());
     if (role == NameRole) {
         return device->name();
+    } else if (role == DeviceNameRole) {
+        return device->deviceName();
     } else if (role == IdRole) {
         return device->id().toString();
     } else if (role == DeviceClassRole) {
@@ -75,17 +77,18 @@ QVariant Devices::data(const QModelIndex &index, int role) const
 void Devices::addDevice(Device *device)
 {
     beginInsertRows(QModelIndex(), m_devices.count(), m_devices.count());
-    qDebug() << "Devices: loaded device" << device->name();
+    qDebug() << "Devices: add device" << device->name();
     m_devices.append(device);
     endInsertRows();
 }
 
 void Devices::removeDevice(Device *device)
 {
-    beginRemoveRows(QModelIndex(), m_devices.indexOf(device), m_devices.indexOf(device));
+    int index = m_devices.indexOf(device);
+    beginRemoveRows(QModelIndex(), index, index);
     qDebug() << "Devices: removed device" << device->name();
-    m_devices.removeAll(device);
-    endInsertRows();
+    m_devices.removeAt(index);
+    endRemoveRows();
 }
 
 void Devices::clearModel()
@@ -101,6 +104,7 @@ QHash<int, QByteArray> Devices::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
+    roles[DeviceNameRole] = "deviceName";
     roles[IdRole] = "id";
     roles[DeviceClassRole] = "deviceClassId";
     roles[SetupComplete] = "setupComplete";

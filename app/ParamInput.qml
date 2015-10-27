@@ -19,52 +19,57 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
-import Ubuntu.Components 1.2
-import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components 1.3
+import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
+import "inputTypes"
 
-Standard {
+Item {
     id: root
     property var paramType: null
-    property var name: paramType.name
-    property var value: null
+    property var paramName: paramType.name
+    property var paramValue: paramType.defaultValue
 
-    height: {
-        if (inputLoader.sourceComponent == stringInput)
-            return units.gu(10)
-        else if (inputLoader.sourceComponent == allowedValuesInput)
-            return units.gu(6)
-        else if (inputLoader.sourceComponent == numberInput)
-            return units.gu(6)
-        else
-            return units.gu(6)
-    }
+    width: parent.width
+    height: inputLoader.implicitHeight
 
-    AllowedValuesInputComponent {
+    Component {
         id: allowedValuesInput
+        AllowedValuesInputComponent { }
     }
 
-    StringInputComponent {
+    Component {
         id: stringInput
+        StringInputComponent { }
     }
 
-    NumberInputComponent {
+    Component {
         id: numberInput
+        NumberInputComponent { }
     }
 
-    BoolInputComponent {
+    Component {
         id: boolInput
+        BoolInputComponent { }
     }
 
     Loader {
         id: inputLoader
-        anchors.fill: parent
-        sourceComponent: paramType.type == "QString" && paramType.allowedValues.length == 0
-                         ? stringInput : paramType.allowedValues.length > 0
-                           ? allowedValuesInput : (paramType.type == "int" ||
-                                                   paramType.type == "double" ||
-                                                   paramType.type == "uint") &&
-                             paramType.allowedValues.length == 0 ? numberInput : boolInput
+        width: parent.width
+        height: item.implicitHeight
+        sourceComponent: {
+            if (paramType.type === "QString" && paramType.allowedValues.length === 0) {
+                return stringInput
+            } else if ( paramType.allowedValues.length > 0) {
+                return allowedValuesInput
+            } else if (paramType.type === "int" || paramType.type === "double" || paramType.type === "uint") {
+                if (paramType.allowedValues.length === 0) {
+                    return numberInput
+                }
+            } else {
+                return boolInput
+            }
+        }
     }
 }

@@ -32,7 +32,8 @@ class Device : public QObject
     Q_OBJECT
     Q_PROPERTY(QUuid id READ id CONSTANT)
     Q_PROPERTY(QUuid deviceClassId READ deviceClassId CONSTANT)
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
+    Q_PROPERTY(QString deviceName READ deviceName WRITE setDeviceName NOTIFY nameChanged)
     Q_PROPERTY(bool setupComplete READ setupComplete NOTIFY setupCompleteChanged)
     Q_PROPERTY(Params *params READ params NOTIFY paramsChanged)
 
@@ -40,7 +41,9 @@ public:
     explicit Device(QObject *parent = 0);
 
     QString name() const;
-    void setName(const QString &name);
+
+    QString deviceName() const;
+    void setDeviceName(const QString &deviceName);
 
     QUuid id() const;
     void setId(const QUuid &id);

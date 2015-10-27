@@ -55,7 +55,7 @@ QVariant Params::data(const QModelIndex &index, int role) const
 void Params::addParam(Param *param)
 {
     beginInsertRows(QModelIndex(), m_params.count(), m_params.count());
-    qDebug() << "Params: loaded param" << param->name();
+    //qDebug() << "Params: loaded param" << param->name();
     m_params.append(param);
     endInsertRows();
 }

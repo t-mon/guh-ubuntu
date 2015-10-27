@@ -73,12 +73,9 @@ void UpnpDiscovery::discover()
     qDebug() << "start discovering...";
     m_timer->start();
     m_discoveryModel->clearModel();
-
-    m_timer->start();
-    m_discovering = true;
-    emit discoveringChanged();
-
     m_foundDevices.clear();
+
+    setDiscovering(true);
 
     QByteArray ssdpSearchMessage = QByteArray("M-SEARCH * HTTP/1.1\r\n"
                                               "HOST:239.255.255.250:1900\r\n"
@@ -87,6 +84,20 @@ void UpnpDiscovery::discover()
                                               "ST: ssdp:all\r\n\r\n");
 
     writeDatagram(ssdpSearchMessage, m_host, m_port);
+}
+
+void UpnpDiscovery::stopDiscovery()
+{
+    qDebug() << "stop discovering";
+    m_timer->stop();
+    m_discoveryModel->clearModel();
+    setDiscovering(false);
+}
+
+void UpnpDiscovery::setDiscovering(const bool &discovering)
+{
+    m_discovering = discovering;
+    emit discoveringChanged();
 }
 
 void UpnpDiscovery::error(QAbstractSocket::SocketError error)
@@ -154,9 +165,16 @@ void UpnpDiscovery::networkReplyFinished(QNetworkReply *reply)
         QXmlStreamReader xml(data);
         while (!xml.atEnd() && !xml.hasError()) {
             xml.readNext();
-            if (xml.isStartDocument()) {
+
+            if (xml.isStartDocument())
                 continue;
+
+            if (xml.isStartElement()) {
+                if (xml.name().toString() == "websocketURL") {
+                    upnpDevice.setWebSocketUrl(xml.readElementText());
+                }
             }
+
             if (xml.isStartElement()) {
                 if (xml.name().toString() == "device") {
                     while (!xml.atEnd()) {
@@ -210,6 +228,5 @@ void UpnpDiscovery::networkReplyFinished(QNetworkReply *reply)
 void UpnpDiscovery::onTimeout()
 {
     qDebug() << "discovery finished";
-    m_discovering = false;
-    emit discoveringChanged();
+    setDiscovering(false);
 }

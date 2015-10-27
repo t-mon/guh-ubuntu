@@ -40,6 +40,7 @@ void DeviceClassesFilterModel::setVendorId(const QUuid &vendorId)
     qDebug() << "DeviceClassesFilter: set vendorId to" << vendorId;
 
     invalidateFilter();
+    sortRole();
 }
 
 DeviceClasses *DeviceClassesFilterModel::deviceClasses()
@@ -57,6 +58,7 @@ void DeviceClassesFilterModel::setDeviceClasses(DeviceClasses *deviceClasses)
 
 void DeviceClassesFilterModel::resetFilter()
 {
+    qDebug() << "DeviceClassesFilter: reset filter";
     setVendorId(QUuid());
     invalidateFilter();
 }
@@ -66,11 +68,13 @@ bool DeviceClassesFilterModel::filterAcceptsRow(int sourceRow, const QModelIndex
     Q_UNUSED(sourceParent)
 
     DeviceClass *deviceClass = m_deviceClasses->get(sourceRow);
-    if (!m_vendorId.isNull() && deviceClass->vendorId() == m_vendorId) {
-        qDebug() << "filter match" << deviceClass->name();
+
+    // filter auto devices
+    if (deviceClass->createMethods().count() == 1 && deviceClass->createMethods().contains("CreateMethodAuto"))
+        return false;
+
+    if (!m_vendorId.isNull() && deviceClass->vendorId() == m_vendorId)
         return true;
-    }
 
     return false;
-
 }

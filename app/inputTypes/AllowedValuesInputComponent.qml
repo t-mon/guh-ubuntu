@@ -18,59 +18,21 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef CORE_H
-#define CORE_H
+import QtQuick 2.4
+import Ubuntu.Components 1.3
+import Ubuntu.Components.ListItems 1.3
+import Guh 1.0
 
-#include <QObject>
-#include <QQmlEngine>
-#include <QJSEngine>
+Item {
+    id: root
+    width: parent.width
+    implicitHeight: valueSelector.expanded ? valueSelector.values.length * units.gu(6) : units.gu(6)
 
-#include "guhinterface.h"
-#include "jsonrpc/jsonrpcclient.h"
-#include "devicemanager.h"
-#include "discovery/upnpdiscovery.h"
-#include "discovery/guhconnections.h"
-
-class Core : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(GuhInterface *interface READ interface CONSTANT)
-    Q_PROPERTY(DeviceManager *deviceManager READ deviceManager CONSTANT)
-    Q_PROPERTY(UpnpDiscovery *discovery READ discovery CONSTANT)
-    Q_PROPERTY(JsonRpcClient *jsonRpcClient READ jsonRpcClient CONSTANT)
-    Q_PROPERTY(GuhConnections *connections READ connections CONSTANT)
-    Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
-
-public:
-    static Core* instance();
-    static QObject *qmlInstance(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
-
-    DeviceManager *deviceManager();
-    GuhInterface *interface();
-    JsonRpcClient *jsonRpcClient();
-    UpnpDiscovery *discovery();
-    GuhConnections *connections();
-
-    bool connected() const;
-
-private:
-    explicit Core(QObject *parent = 0);
-    static Core *s_instance;
-
-    DeviceManager *m_deviceManager;
-    GuhInterface *m_interface;
-    JsonRpcClient *m_jsonRpcClient;
-    UpnpDiscovery *m_discovery;
-    GuhConnections *m_connections;
-
-    bool m_connected;
-
-signals:
-    void connectedChanged();
-
-private slots:
-    void onConnectionChanged();
-
-};
-
-#endif // CORE_H
+    ValueSelector {
+        id:  valueSelector
+        text: paramType.name
+        values: paramType.allowedValues
+        onSelectedChanged: paramValue = values[selectedIndex]
+        Component.onCompleted: paramValue = values[selectedIndex]
+    }
+}

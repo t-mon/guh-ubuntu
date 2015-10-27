@@ -36,6 +36,16 @@ void UpnpDevice::setLocation(const QUrl &location)
     m_location = location;
 }
 
+QString UpnpDevice::webSocketUrl() const
+{
+    return m_webSocketUrl;
+}
+
+void UpnpDevice::setWebSocketUrl(const QString &webSocketUrl)
+{
+    m_webSocketUrl = webSocketUrl;
+}
+
 QHostAddress UpnpDevice::hostAddress() const
 {
     return m_hostAddress;
@@ -141,6 +151,7 @@ QDebug operator<<(QDebug debug, const UpnpDevice &upnpDevice)
     debug << "----------------------------------------------\n";
     debug << "UPnP device on " << QString("%1:%2").arg(upnpDevice.hostAddress().toString()).arg(upnpDevice.port()) << "\n";
     debug << "location              | " << upnpDevice.location().toString() << "\n";
+    debug << "websocket             | " << upnpDevice.webSocketUrl() << "\n";
     debug << "friendly name         | " << upnpDevice.friendlyName() << "\n";
     debug << "manufacturer          | " << upnpDevice.manufacturer() << "\n";
     debug << "manufacturer URL      | " << upnpDevice.manufacturerURL().toString() << "\n";

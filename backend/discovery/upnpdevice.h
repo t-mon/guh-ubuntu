@@ -33,6 +33,9 @@ public:
     QUrl location() const;
     void setLocation(const QUrl &location);
 
+    QString webSocketUrl() const;
+    void setWebSocketUrl(const QString &webSocketUrl);
+
     QHostAddress hostAddress() const;
     void setHostAddress(const QHostAddress &hostAddress);
 
@@ -66,9 +69,9 @@ public:
     QString uuid() const;
     void setUuid(const QString &uuid);
 
-
 private:
     QUrl m_location;
+    QString m_webSocketUrl;
     QHostAddress m_hostAddress;
     int m_port;
     QString m_friendlyName;
