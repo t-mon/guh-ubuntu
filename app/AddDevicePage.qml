@@ -34,17 +34,16 @@ Page {
     property bool waiting: false
 
     Flickable {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.topMargin: 5.5
-        anchors.bottom: bottomBar.top
+        id: flickable
+        anchors.fill: parent
+        anchors.bottomMargin: bottomBar.height
 
-        contentHeight: paramColumn.implicitHeight
+        contentHeight: paramColumn.height
 
         Column {
             id: paramColumn
-            width: parent.width
+            anchors.left: parent.left
+            anchors.right: parent.right
             Repeater {
                 id: paramRepeater
                 model: deviceClass.paramTypes

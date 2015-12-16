@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-27 20:28+0100\n"
+"POT-Creation-Date: 2015-12-16 11:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,13 +22,13 @@ msgstr ""
 msgid "Add device"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:104
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:103
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:121
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:190
 msgid "Error occured"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:108
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:107
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:125
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:175
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:87

@@ -59,11 +59,11 @@ Item {
         width: parent.width
         height: item.implicitHeight
         sourceComponent: {
-            if (paramType.type === "QString" && paramType.allowedValues.length === 0) {
+            if (paramType.type === "String" && paramType.allowedValues.length === 0) {
                 return stringInput
             } else if ( paramType.allowedValues.length > 0) {
                 return allowedValuesInput
-            } else if (paramType.type === "int" || paramType.type === "double" || paramType.type === "uint") {
+            } else if (paramType.type === "Int" || paramType.type === "Double" || paramType.type === "Uint") {
                 if (paramType.allowedValues.length === 0) {
                     return numberInput
                 }
