@@ -26,8 +26,8 @@ import Guh 1.0
 
 Item {
     id: root
-    width: parent.width
-    height: valueSelector.itemHeight
+//    width: parent.width
+//    height: valueSelector.itemHeight
 
     Component.onCompleted:  {
         console.log("value selector height = " + valueSelector.itemHeight)

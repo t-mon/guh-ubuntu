@@ -26,52 +26,30 @@ import Guh 1.0
 
 import "inputTypes"
 
-Item {
+Loader {
     id: root
+
+    width: item ? item.implicitWidth : 0
+    height: item ? item.implicitHeight : 0
+
     property var paramType: null
     property var paramName: paramType.name
     property var paramValue: paramType.defaultValue
 
-    Layout.preferredHeight: inputLoader.implicitHeight
-    Layout.fillWidth: true
-
-    Component {
-        id: allowedValuesInput
-        AllowedValuesInputComponent { }
-    }
-
-    Component {
-        id: stringInput
-        StringInputComponent { }
-    }
-
-    Component {
-        id: numberInput
-        NumberInputComponent { }
-    }
-
-    Component {
-        id: boolInput
-        BoolInputComponent { }
-    }
-
-    Loader {
-        id: inputLoader
-        Layout.preferredHeight: item.implicitHeight
-        Layout.fillWidth: true
-
-        sourceComponent: {
-            if (paramType.type === "String" && paramType.allowedValues.length === 0) {
-                return stringInput
-            } else if ( paramType.allowedValues.length > 0) {
-                return allowedValuesInput
-            } else if (paramType.type === "Int" || paramType.type === "Double" || paramType.type === "Uint") {
-                if (paramType.allowedValues.length === 0) {
-                    return numberInput
-                }
-            } else {
-                return boolInput
+    source: {
+        var filename;
+        if (paramType.type === "String" && paramType.allowedValues.length === 0) {
+            filename = "inputTypes/StringInputComponent.qml";
+        } else if ( paramType.allowedValues.length > 0) {
+            filename = "inputTypes/NumberInputComponent.qml";
+        } else if (paramType.type === "Int" || paramType.type === "Double" || paramType.type === "Uint") {
+            if (paramType.allowedValues.length === 0) {
+                filename = "inputTypes/NumberInputComponent.qml";
             }
+        } else {
+            filename = "inputTypes/BoolInputComponent.qml";
         }
+        return Qt.resolvedUrl(filename);
     }
 }
+

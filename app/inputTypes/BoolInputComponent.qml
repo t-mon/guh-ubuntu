@@ -26,8 +26,8 @@ import Guh 1.0
 
 Item {
     id: root
-    width: parent.width
-    implicitHeight: units.gu(6)
+//    width: parent.width
+//    implicitHeight: units.gu(6)
 
     Label {
         id: nameLable

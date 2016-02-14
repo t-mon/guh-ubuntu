@@ -26,8 +26,6 @@ import Guh 1.0
 
 Item {
     id: root
-    width: parent.width
-    implicitHeight: units.gu(10)
 
     Component.onCompleted: {
         paramValue = ""

@@ -26,13 +26,9 @@ import Guh 1.0
 
 Item {
     id: root
-//    Layout.preferredHeight: root.implicitHeight
-//    Layout.fillWidth: true
 
     Loader {
         id: inputLoader
-        Layout.preferredHeight: item.implicitHeight
-        Layout.fillWidth: true
         sourceComponent: paramType.minValue ? sliderInputLine : numberInputLine
     }
 

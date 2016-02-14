@@ -47,10 +47,10 @@ Page {
             Layout.fillHeight: true
             Repeater {
                 id: paramRepeater
-                anchors.left: parent.left
-                anchors.right: parent.right
                 model: deviceClass.paramTypes
                 delegate: ParamInput {
+                    Layout.preferredHeight: implicitHeight
+                    Layout.fillWidth: true
                     paramType: model
                 }
             }
