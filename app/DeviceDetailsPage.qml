@@ -26,7 +26,6 @@ import Guh 1.0
 Page {
     id: root
     title: device.name
-    head.sections.model: ["Actions", "States"]
 
     property var device: null
     property var deviceClass: Core.deviceManager.deviceClasses.getDeviceClass(device.deviceClassId)
@@ -34,18 +33,23 @@ Page {
     ListView {
         id: tabView
         model: tabs
-        interactive: false
         anchors.fill: parent
-        orientation: Qt.Horizontal
         snapMode: ListView.SnapOneItem
-        currentIndex: root.head.sections.selectedIndex
-        highlightMoveDuration: UbuntuAnimation.SlowDuration
+        orientation: Qt.Horizontal
+        highlightMoveDuration: UbuntuAnimation.FastDuration
+        highlightRangeMode: ListView.StrictlyEnforceRange
+        highlightFollowsCurrentItem: true
+        delegate: Item {
+            width: listView.width
+            height: listView.height
+        }
     }
 
     VisualItemModel {
         id: tabs
 
         DeviceActions {
+            id: actions
             width: tabView.width
             height: tabView.height
             device: root.device
@@ -53,6 +57,7 @@ Page {
         }
 
         DeviceStates {
+            id: states
             width: tabView.width
             height: tabView.height
             device: root.device

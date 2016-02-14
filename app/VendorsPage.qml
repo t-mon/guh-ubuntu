@@ -30,7 +30,7 @@ Page {
     UbuntuListView {
         id: vendorList
         anchors.fill: parent
-        model: Core.deviceManager.vendors
+        model: Core.deviceManager.vendorsProxy
         delegate: Standard {
             text: model.name
             progression: true

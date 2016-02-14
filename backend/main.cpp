@@ -59,6 +59,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterUncreatableType<Vendor>("Guh", 1, 0, "Vendor", "Can't create this in QML. Get it from the Vendors.");
     qmlRegisterUncreatableType<Vendors>("Guh", 1, 0, "Vendors", "Can't create this in QML. Get it from the DeviceManager.");
+    qmlRegisterUncreatableType<VendorsProxy>("Guh", 1, 0, "VendorsProxy", "Can't create this in QML. Get it from the DeviceManager.");
 
     qmlRegisterUncreatableType<Device>("Guh", 1, 0, "Device", "Can't create this in QML. Get it from the Devices.");
     qmlRegisterUncreatableType<Devices>("Guh", 1, 0, "Devices", "Can't create this in QML. Get it from the DeviceManager.");

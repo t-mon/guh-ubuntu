@@ -75,7 +75,7 @@ QVariant EventTypes::data(const QModelIndex &index, int role) const
 void EventTypes::addEventType(EventType *eventType)
 {
     beginInsertRows(QModelIndex(), m_eventTypes.count(), m_eventTypes.count());
-    qDebug() << "EventTypes: loaded eventType" << eventType->name();
+    //qDebug() << "EventTypes: loaded eventType" << eventType->name();
     m_eventTypes.append(eventType);
     endInsertRows();
 }

@@ -19,6 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
@@ -26,13 +27,15 @@ import Guh 1.0
 Item {
     id: root
     width: parent.width
-    implicitHeight: valueSelector.expanded ? valueSelector.values.length * units.gu(6) : units.gu(6)
+    height: valueSelector.itemHeight
 
-    ValueSelector {
+    Component.onCompleted:  {
+        console.log("value selector height = " + valueSelector.itemHeight)
+    }
+
+    OptionSelector {
         id:  valueSelector
         text: paramType.name
-        values: paramType.allowedValues
-        onSelectedChanged: paramValue = values[selectedIndex]
-        Component.onCompleted: paramValue = values[selectedIndex]
+        model: paramType.allowedValues
     }
 }

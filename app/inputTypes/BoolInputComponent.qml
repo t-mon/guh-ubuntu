@@ -19,6 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
@@ -44,12 +45,12 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         checked: false
         onCheckedChanged: paramValue = checked
-        Component.onCompleted: paramValue = checked
+        //Component.onCompleted: paramValue = checked
     }
 
     ThinDivider {
         width: parent.width
-        anchors.top: root.bottom
+        anchors.bottom: root.bottom
     }
 }
 

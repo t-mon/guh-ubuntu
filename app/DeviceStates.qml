@@ -19,6 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
@@ -29,23 +30,32 @@ Item {
     property var device: null
     property var deviceClass: null
 
-    Label {
-        anchors.top: parent.top
-        anchors.topMargin: units.gu(10)
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: i18n.tr("This device has no states.")
-        visible: deviceClass.stateTypes.count() === 0
-    }
-
     Flickable {
         anchors.fill: parent
-        anchors.topMargin: units.gu(2.5)
-
         contentHeight: statesColumn.height
+        enabled: height < contentHeight
 
-        Column {
+        ColumnLayout {
             id: statesColumn
             width: parent.width
+
+            spacing: units.gu(1)
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                fontSize: "large"
+                color: UbuntuColors.lightGrey
+                text: i18n.tr("States")
+            }
+
+            ThinDivider {}
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: deviceClass.stateTypes.count() === 0
+                text: i18n.tr("This device has no states.")
+            }
+
 
             Repeater {
                 id: stateRepeater

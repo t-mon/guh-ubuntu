@@ -23,43 +23,14 @@ import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
-Page {
+Item {
     id: root
-    title: Core.deviceManager.vendors.getVendor(Core.deviceManager.deviceClassesProxy.vendorId).name
+    width: parent.width
+    implicitHeight: units.gu(6)
 
-    UbuntuListView {
-        id: deviceClassesList
-        anchors.fill: parent
-        model: Core.deviceManager.deviceClassesProxy
-        delegate: Standard {
-            text: model.name
-            progression: true
-            onClicked: {
-                var dc = Core.deviceManager.deviceClasses.getDeviceClass(model.id)
-                if (dc.createMethods.indexOf("CreateMethodDiscovery") !== -1) {
-                    console.log("Create: discovery")
-                    pageStack.push(Qt.resolvedUrl("AddDiscoveredDevicePage.qml"), { deviceClass: dc })
-                } else {
-                    console.log("Create: user")
-                    pageStack.push(Qt.resolvedUrl("AddDevicePage.qml"), { deviceClass: dc })
-                }
+    Button {
+        //text: paramType.name
 
-                switch (dc.setupMethod) {
-                case DeviceClass.SetupMethodJustAdd:
-                    console.log("Setup: just add")
-                    break
-                case DeviceClass.SetupMethodDisplayPin:
-                    console.log("Setup: display pin")
-                    break
-                case DeviceClass.SetupMethodPushButton:
-                    console.log("Setup: push button")
-                    break
-                case DeviceClass.SetupMethodEnterPin:
-                    console.log("Setup: enter pin")
-                    break
-                }
-
-            }
-        }
     }
 }
+

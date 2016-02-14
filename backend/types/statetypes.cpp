@@ -83,7 +83,7 @@ QVariant StateTypes::data(const QModelIndex &index, int role) const
 void StateTypes::addStateType(StateType *stateType)
 {
     beginInsertRows(QModelIndex(), m_stateTypes.count(), m_stateTypes.count());
-    qDebug() << "StateTypes: loaded stateType" << stateType->name();
+    //qDebug() << "StateTypes: loaded stateType" << stateType->name();
     m_stateTypes.append(stateType);
     endInsertRows();
 }

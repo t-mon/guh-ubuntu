@@ -19,6 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
@@ -47,9 +48,7 @@ Item {
         TextField {
             id: textField
             inputMask: {
-                if (paramType.inputType === Types.InputTypeIPv4Address)
-                    return "000.000.000.000;_"
-                else if (paramType.inputType === Types.InputTypeMacAddress)
+                 if (paramType.inputType === Types.InputTypeMacAddress)
                     return "HH:HH:HH:HH:HH:HH;_"
                 else
                     return ""

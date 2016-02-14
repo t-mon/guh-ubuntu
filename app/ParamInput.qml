@@ -19,6 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
@@ -31,8 +32,8 @@ Item {
     property var paramName: paramType.name
     property var paramValue: paramType.defaultValue
 
-    width: parent.width
-    height: inputLoader.implicitHeight
+    Layout.preferredHeight: inputLoader.implicitHeight
+    Layout.fillWidth: true
 
     Component {
         id: allowedValuesInput
@@ -56,8 +57,9 @@ Item {
 
     Loader {
         id: inputLoader
-        width: parent.width
-        height: item.implicitHeight
+        Layout.preferredHeight: item.implicitHeight
+        Layout.fillWidth: true
+
         sourceComponent: {
             if (paramType.type === "String" && paramType.allowedValues.length === 0) {
                 return stringInput

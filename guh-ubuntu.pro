@@ -45,14 +45,16 @@ HEADERS += backend/core.h \
            backend/types/types.h \
            backend/types/vendor.h \
            backend/types/vendors.h \
+           backend/types/vendorsproxy.h \
            backend/types/deviceclass.h \
            backend/types/deviceclasses.h \
            backend/types/deviceclassesproxy.h \
-           backend/types/paramtype.h \
            backend/types/device.h \
-           backend/types/param.h \
            backend/types/devices.h \
+           backend/types/devicesproxy.h \
+           backend/types/param.h \
            backend/types/params.h \
+           backend/types/paramtype.h \
            backend/types/paramtypes.h \
            backend/types/statetype.h \
            backend/types/statetypes.h \
@@ -60,9 +62,8 @@ HEADERS += backend/core.h \
            backend/types/eventtypes.h \
            backend/types/actiontype.h \
            backend/types/actiontypes.h \
-           backend/types/devicesproxy.h \
-    backend/types/state.h \
-    backend/types/states.h
+           backend/types/state.h \
+           backend/types/states.h \
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -79,14 +80,16 @@ SOURCES += backend/main.cpp \
            backend/jsonrpc/jsonhandler.cpp \
            backend/types/vendor.cpp \
            backend/types/vendors.cpp \
+           backend/types/vendorsproxy.cpp \
            backend/types/deviceclass.cpp \
            backend/types/deviceclasses.cpp \
            backend/types/deviceclassesproxy.cpp \
-           backend/types/paramtype.cpp \
            backend/types/device.cpp \
-           backend/types/param.cpp \
            backend/types/devices.cpp \
+           backend/types/devicesproxy.cpp \
+           backend/types/param.cpp \
            backend/types/params.cpp \
+           backend/types/paramtype.cpp \
            backend/types/paramtypes.cpp \
            backend/types/statetype.cpp \
            backend/types/statetypes.cpp \
@@ -94,14 +97,18 @@ SOURCES += backend/main.cpp \
            backend/types/eventtypes.cpp \
            backend/types/actiontype.cpp \
            backend/types/actiontypes.cpp \
-           backend/types/devicesproxy.cpp \
-    backend/types/state.cpp \
-    backend/types/states.cpp
+           backend/types/state.cpp \
+           backend/types/states.cpp \
 
 RESOURCES += app.qrc
 
+QML_FILES += $$files(*.qml,true) \
+             $$files(*.js,true)
+
+
 # config files for click package
-OTHER_FILES += guh-ubuntu.apparmor \
+OTHER_FILES += $${QML_FILES} \
+               guh-ubuntu.apparmor \
                guh-ubuntu.desktop \
                guh-ubuntu.png
 
@@ -112,6 +119,9 @@ configs.files += $${OTHER_FILES}
 target.path = $${UBUNTU_CLICK_BINARY_PATH}
 
 INSTALLS += target configs
+
+DISTFILES += \
+    app/actionTypes/WithoutParamsAction.qml
 
 
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-16 11:25+0100\n"
+"POT-Creation-Date: 2016-02-14 14:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,34 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:29
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:30
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:37
 msgid "Add device"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:103
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:121
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:99
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:161
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:190
 msgid "Error occured"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:107
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:125
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:175
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:103
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:165
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:179
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:87
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:194
 msgid "Cancel"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:29
-msgid "Discover devices"
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:131
+msgid "Searching..."
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:122
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:131
+msgid "Discover"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:162
 msgid "Could not add device"
 msgstr ""
 
@@ -60,31 +64,35 @@ msgstr ""
 msgid "Known connections"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:86
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:87
 msgid "Discovered connections"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:118
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:120
 msgid "Manual connection"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:119
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:121
 msgid "Please enter the connection data:"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:164
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:168
 msgid "Connect"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:36
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:47
+msgid "Actions"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:55
 msgid "This device has no actions."
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceClassesPage.qml:28
-msgid "Supported devices"
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceStates.qml:48
+msgid "States"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceStates.qml:36
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceStates.qml:56
 msgid "This device has no states."
 msgstr ""
 

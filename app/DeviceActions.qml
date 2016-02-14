@@ -19,6 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
@@ -29,13 +30,46 @@ Item {
     property var device: null
     property var deviceClass: null
 
-    Label {
-        anchors.top: parent.top
-        anchors.topMargin: units.gu(10)
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: i18n.tr("This device has no actions.")
-        visible: deviceClass.actionTypes.count() === 0
+    Flickable {
+        anchors.fill: parent
+        contentHeight: actionsColumn.height
+        enabled: height < contentHeight
+
+        ColumnLayout {
+            id: actionsColumn
+            anchors.left: parent.left
+            anchors.right: parent.right
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                fontSize: "large"
+                color: UbuntuColors.lightGrey
+                text: i18n.tr("Actions")
+            }
+
+            ThinDivider {}
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: deviceClass.actionTypes.count() === 0
+                text: i18n.tr("This device has no actions.")
+            }
+
+            Repeater {
+                id: actionRepeater
+                model: root.deviceClass.actionTypes
+                delegate: Item {
+                    width: parent.width
+                    height: units.gu(3)
+
+                    Label {
+                        anchors.left: parent.left
+                        anchors.leftMargin: units.gu(2)
+                        font.capitalization: Font.Capitalize
+                        text: model.name
+                    }
+                }
+            }
+        }
     }
-
-
 }

@@ -55,8 +55,8 @@ Page {
             color: UbuntuColors.lightGrey
             anchors.horizontalCenter: parent.horizontalCenter
         }
-        ThinDivider {}
 
+        ThinDivider {}
 
         Repeater {
             id: connectionList
@@ -82,12 +82,14 @@ Page {
         }
 
         ThinDivider {}
+
         Label {
             text: "  " + i18n.tr("Discovered connections")
             fontSize: "large"
             color: UbuntuColors.lightGrey
             anchors.horizontalCenter: parent.horizontalCenter
         }
+
         ThinDivider {}
 
         Repeater {
@@ -142,7 +144,8 @@ Page {
             TextField {
                 id: urlTextField
                 width: parent.width
-                placeholderText: "webdm.local"
+                text: "guh.local"
+                placeholderText: "guh.local"
             }
 
             Label {
@@ -153,6 +156,7 @@ Page {
             TextField {
                 id: portTextField
                 width: parent.width
+                text: "4444"
                 placeholderText: "4444"
             }
 

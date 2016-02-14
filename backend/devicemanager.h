@@ -24,6 +24,7 @@
 #include <QObject>
 
 #include "types/vendors.h"
+#include "types/vendorsproxy.h"
 #include "types/devices.h"
 #include "types/devicesproxy.h"
 #include "types/deviceclasses.h"
@@ -33,6 +34,7 @@ class DeviceManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Vendors *vendors READ vendors CONSTANT)
+    Q_PROPERTY(VendorsProxy *vendorsProxy READ vendorsProxy CONSTANT)
     Q_PROPERTY(Devices *devices READ devices CONSTANT)
     Q_PROPERTY(DevicesProxy *devicesProxy READ devicesProxy CONSTANT)
     Q_PROPERTY(DeviceClasses *deviceClasses READ deviceClasses CONSTANT)
@@ -42,6 +44,7 @@ public:
     explicit DeviceManager(QObject *parent = 0);
 
     Vendors *vendors() const;
+    VendorsProxy *vendorsProxy() const;
     Devices *devices() const;
     DevicesProxy *devicesProxy() const;
     DeviceClasses *deviceClasses() const;
@@ -49,6 +52,7 @@ public:
 
 private:
     Vendors *m_vendors;
+    VendorsProxy *m_vendorsProxy;
     Devices *m_devices;
     DevicesProxy *m_devicesProxy;
     DeviceClasses *m_deviceClasses;

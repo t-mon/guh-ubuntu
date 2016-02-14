@@ -40,6 +40,7 @@ void DeviceClassesProxy::setVendorId(const QUuid &vendorId)
     qDebug() << "DeviceClassesProxy: set vendorId filter" << vendorId;
 
     invalidateFilter();
+    sort(0);
 }
 
 DeviceClasses *DeviceClassesProxy::deviceClasses()
@@ -76,4 +77,12 @@ bool DeviceClassesProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
         return true;
 
     return false;
+}
+
+bool DeviceClassesProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    QVariant leftName = sourceModel()->data(left);
+    QVariant rightName = sourceModel()->data(right);
+
+    return QString::localeAwareCompare(leftName.toString(), rightName.toString()) < 0;
 }

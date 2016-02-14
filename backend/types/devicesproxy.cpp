@@ -35,13 +35,15 @@ void DevicesProxy::setDevices(Devices *devices)
 {
     m_devices = devices;
     setSourceModel(devices);
+    sort(0);
     emit devicesChanged();
 }
 
-bool DevicesProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool DevicesProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-    Q_UNUSED(sourceRow)
-    Q_UNUSED(sourceParent)
-    return true;
+    QVariant leftName = sourceModel()->data(left);
+    QVariant rightName = sourceModel()->data(right);
+
+    return QString::localeAwareCompare(leftName.toString(), rightName.toString()) < 0;
 }
 

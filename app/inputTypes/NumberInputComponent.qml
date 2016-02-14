@@ -19,19 +19,20 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
 Item {
     id: root
-    width: parent.width
-    implicitHeight: inputLoader.implicitHeight
+//    Layout.preferredHeight: root.implicitHeight
+//    Layout.fillWidth: true
 
     Loader {
         id: inputLoader
-        width: parent.width
-        height: item.inplicitHeight
+        Layout.preferredHeight: item.implicitHeight
+        Layout.fillWidth: true
         sourceComponent: paramType.minValue ? sliderInputLine : numberInputLine
     }
 
@@ -58,7 +59,7 @@ Item {
                     width: units.gu(12)
                     inputMethodHints: Qt.ImhFormattedNumbersOnly
                     onTextChanged: {
-                        value =  textField.text
+                        paramValue =  textField.text
                     }
                     Component.onCompleted: paramValue = 0
                 }
@@ -93,9 +94,9 @@ Item {
                     maximumValue: paramType.maxValue
                     minimumValue: paramType.minValue
                     onValueChanged: {
-                        value =  slider.value
+                        paramValue =  slider.value
                     }
-                    Component.onCompleted: paramValue = value
+                    //Component.onCompleted: slider.value = paramType.defaultValue
                 }
             }
 

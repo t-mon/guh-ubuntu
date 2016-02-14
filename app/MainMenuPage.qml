@@ -41,7 +41,7 @@ Page {
     ListView {
         id: deviceList
         anchors.fill: parent
-        model: Core.deviceManager.devices
+        model: Core.deviceManager.devicesProxy
         clip: true
         delegate: ListItem {
             id: deviceItem
@@ -107,7 +107,7 @@ Page {
                             width: parent.width
                             Repeater {
                                 id: paramRepeater
-                                model: deviceList.model.get(index).params
+                                model: deviceList.model.devices.get(index).params
                                 delegate: SingleValue {
                                     width: parent.width
                                     height: units.gu(5)
@@ -155,7 +155,7 @@ Page {
             }
 
             onClicked: {
-                var d = deviceList.model.get(index)
+                var d = Core.deviceManager.devices.getDevice(model.id)
                 pageStack.push(Qt.resolvedUrl("DeviceDetailsPage.qml"), { device: d } )
             }
         }
