@@ -31,7 +31,7 @@ class ActionType : public QObject
     Q_OBJECT
     Q_PROPERTY(QUuid id READ id CONSTANT)
     Q_PROPERTY(QString name READ name CONSTANT)
-    Q_PROPERTY(ParamTypes paramTypes READ paramTypes CONSTANT)
+    Q_PROPERTY(ParamTypes *paramTypes READ paramTypes NOTIFY paramTypesChanged)
 
 public:
     explicit ActionType(QObject *parent = 0);
@@ -49,6 +49,9 @@ private:
     QUuid m_id;
     QString m_name;
     ParamTypes *m_paramTypes;
+
+signals:
+    void paramTypesChanged();
 
 };
 

@@ -18,45 +18,50 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef PARAMS_H
-#define PARAMS_H
+import QtQuick 2.4
+import QtQuick.Layouts 1.1
+import Ubuntu.Components 1.3
+import Ubuntu.Components.ListItems 1.3
+import Guh 1.0
 
-#include <QAbstractListModel>
+import "actionTypes"
 
-#include "param.h"
+Item {
+    id: root
 
-class Params : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    enum ParamRole {
-        NameRole = Qt::DisplayRole,
-        ValueRole
-    };
+    property var actionType: null
+    property var state: null
 
-    explicit Params(QObject *parent = 0);
+    signal executeAction(var actionTypeId, var params)
 
-    QList<Param *> params();
+    implicitWidth: loader.item ? loader.item.implicitWidth : 0
+    implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
-    Q_INVOKABLE int count() const;
-    Q_INVOKABLE Param *get(int index) const;
-    Q_INVOKABLE Param *getParam(QString name) const;
+    Loader {
+        id: loader
+        anchors.fill: parent
+        source: {
+            var filename;
+            console.log("Create action element for " + actionType.name)
+            if (actionType.paramTypes.count() === 0) {
+                filename = "actionTypes/ActionWithoutParams.qml";
+            } else if (actionType.paramTypes.count() === 1) {
+                var paramType = actionType.paramTypes.get(0)
+                if (paramType.type === "Int") {
+                    console.log("Int paramType")
+                    filename = "actionTypes/ActionIntParam.qml";
+                }
+            } else {
+                filename = "actionTypes/ActionWithoutParams.qml";
+            }
 
-    Q_INVOKABLE int paramCount() const;
+            return Qt.resolvedUrl(filename);
+        }
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+        Connections {
+            target: loader.item
+            onExecuteAction: executeAction(actionType.id, params)
+        }
+    }
+}
 
-    Q_INVOKABLE void addParam(Param *param);
-
-    void clearModel();
-
-protected:
-    QHash<int, QByteArray> roleNames() const;
-
-private:
-    QList<Param *> m_params;
-
-};
-
-#endif // PARAMS_H

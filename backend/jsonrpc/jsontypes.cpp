@@ -37,6 +37,19 @@ Vendor *JsonTypes::unpackVendor(const QVariantMap &vendorMap, QObject *parent)
     return new Vendor(vendorMap.value("id").toUuid(), vendorMap.value("name").toString(), parent);
 }
 
+Plugin *JsonTypes::unpackPlugin(const QVariantMap &pluginMap, QObject *parent)
+{
+    Plugin *plugin = new Plugin(parent);
+    plugin->setName(pluginMap.value("name").toString());
+    plugin->setPluginId(pluginMap.value("id").toUuid());
+    ParamTypes *paramTypes = new ParamTypes(plugin);
+    foreach (QVariant paramType, pluginMap.value("paramTypes").toList()) {
+        paramTypes->addParamType(JsonTypes::unpackParamType(paramType.toMap(), paramTypes));
+    }
+    plugin->setParamTypes(paramTypes);
+    return plugin;
+}
+
 DeviceClass *JsonTypes::unpackDeviceClass(const QVariantMap &deviceClassMap, QObject *parent)
 {
     DeviceClass *deviceClass = new DeviceClass(parent);

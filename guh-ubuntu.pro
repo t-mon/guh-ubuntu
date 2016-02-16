@@ -64,6 +64,10 @@ HEADERS += backend/core.h \
            backend/types/actiontypes.h \
            backend/types/state.h \
            backend/types/states.h \
+    backend/jsonrpc/actionhandler.h \
+    backend/types/plugin.h \
+    backend/types/plugins.h \
+    backend/types/pluginsproxy.h
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -99,6 +103,10 @@ SOURCES += backend/main.cpp \
            backend/types/actiontypes.cpp \
            backend/types/state.cpp \
            backend/types/states.cpp \
+    backend/jsonrpc/actionhandler.cpp \
+    backend/types/plugin.cpp \
+    backend/types/plugins.cpp \
+    backend/types/pluginsproxy.cpp
 
 RESOURCES += app.qrc
 
@@ -121,7 +129,9 @@ target.path = $${UBUNTU_CLICK_BINARY_PATH}
 INSTALLS += target configs
 
 DISTFILES += \
-    app/actionTypes/WithoutParamsAction.qml
+    app/actionTypes/WithoutParamsAction.qml \
+    app/WaitingOverlay.qml \
+    app/ActionElement.qml
 
 
 

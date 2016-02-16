@@ -32,14 +32,24 @@ JsonRpcClient::JsonRpcClient(QObject *parent) :
     m_id(0)
 {
     m_deviceHandler = new DeviceHandler(this);
+    m_actionHandler = new ActionHandler(this);
 
     m_handlers.insert(m_deviceHandler->nameSpace(), m_deviceHandler);
+    m_handlers.insert(m_actionHandler->nameSpace(), m_actionHandler);
 }
 
 void JsonRpcClient::getVendors()
 {
     qDebug() << "JsonRpc: get vendors";
     JsonRpcReply *reply = createReply("Devices", "GetSupportedVendors");
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+}
+
+void JsonRpcClient::getPlugins()
+{
+    qDebug() << "JsonRpc: get plugins";
+    JsonRpcReply *reply = createReply("Devices", "GetPlugins");
     m_replies.insert(reply->commandId(), reply);
     Core::instance()->interface()->sendRequest(reply->requestMap());
 }
@@ -54,7 +64,7 @@ void JsonRpcClient::getDevices()
 
 void JsonRpcClient::getDeviceClasses()
 {
-    qDebug() << "JsonRpc: get supported devices";
+    qDebug() << "JsonRpc: get device classes";
     JsonRpcReply *reply = createReply("Devices", "GetSupportedDevices");
     m_replies.insert(reply->commandId(), reply);
     Core::instance()->interface()->sendRequest(reply->requestMap());
@@ -115,6 +125,22 @@ int JsonRpcClient::discoverDevices(const QUuid &deviceClassId, const QVariantLis
     }
 
     JsonRpcReply *reply = createReply("Devices", "GetDiscoveredDevices", params);
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+    return reply->commandId();
+}
+
+int JsonRpcClient::executeAction(const QUuid &deviceId, const QUuid &actionTypeId, const QVariant &params)
+{
+    qDebug() << "JsonRpc: execute action " << deviceId.toString() << actionTypeId.toString() << params;
+    QVariantMap p;
+    p.insert("deviceId", deviceId.toString());
+    p.insert("actionTypeId", actionTypeId.toString());
+    if (!params.isNull()) {
+        p.insert("params", params);
+    }
+
+    JsonRpcReply *reply = createReply("Actions", "ExecuteAction", p);
     m_replies.insert(reply->commandId(), reply);
     Core::instance()->interface()->sendRequest(reply->requestMap());
     return reply->commandId();

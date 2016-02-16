@@ -18,45 +18,50 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef PARAMS_H
-#define PARAMS_H
+#include "plugin.h"
 
-#include <QAbstractListModel>
-
-#include "param.h"
-
-class Params : public QAbstractListModel
+Plugin::Plugin(QObject *parent) : QObject(parent)
 {
-    Q_OBJECT
-public:
-    enum ParamRole {
-        NameRole = Qt::DisplayRole,
-        ValueRole
-    };
 
-    explicit Params(QObject *parent = 0);
+}
 
-    QList<Param *> params();
+QString Plugin::name() const
+{
+    return m_name;
+}
 
-    Q_INVOKABLE int count() const;
-    Q_INVOKABLE Param *get(int index) const;
-    Q_INVOKABLE Param *getParam(QString name) const;
+void Plugin::setName(const QString &name)
+{
+    m_name = name;
+}
 
-    Q_INVOKABLE int paramCount() const;
+QUuid Plugin::pluginId() const
+{
+    return m_pluginId;
+}
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+void Plugin::setPluginId(const QUuid pluginId)
+{
+    m_pluginId = pluginId;
+}
 
-    Q_INVOKABLE void addParam(Param *param);
+ParamTypes *Plugin::paramTypes()
+{
+    return m_paramTypes;
+}
 
-    void clearModel();
+void Plugin::setParamTypes(ParamTypes *paramTypes)
+{
+    m_paramTypes = paramTypes;
+}
 
-protected:
-    QHash<int, QByteArray> roleNames() const;
+Params *Plugin::params()
+{
+    return m_params;
+}
 
-private:
-    QList<Param *> m_params;
+void Plugin::setParams(Params *params)
+{
+    m_params = params;
+}
 
-};
-
-#endif // PARAMS_H

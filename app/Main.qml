@@ -36,8 +36,8 @@ MainView {
 
     Component.onCompleted: {
         i18n.domain = "guh-ubuntu.stuerz-simon"
-        Core.discovery.discover()
         Theme.name = "Ubuntu.Components.Themes.SuruDark"
+        Core.discovery.discover()
     }
 
     PageStack {

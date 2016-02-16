@@ -29,12 +29,16 @@
 #include "types/devicesproxy.h"
 #include "types/deviceclasses.h"
 #include "types/deviceclassesproxy.h"
+#include "types/plugins.h"
+#include "types/pluginsproxy.h"
 
 class DeviceManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Vendors *vendors READ vendors CONSTANT)
     Q_PROPERTY(VendorsProxy *vendorsProxy READ vendorsProxy CONSTANT)
+    Q_PROPERTY(Plugins *plugins READ plugins CONSTANT)
+    Q_PROPERTY(PluginsProxy *pluginsProxy READ pluginsProxy CONSTANT)
     Q_PROPERTY(Devices *devices READ devices CONSTANT)
     Q_PROPERTY(DevicesProxy *devicesProxy READ devicesProxy CONSTANT)
     Q_PROPERTY(DeviceClasses *deviceClasses READ deviceClasses CONSTANT)
@@ -45,6 +49,8 @@ public:
 
     Vendors *vendors() const;
     VendorsProxy *vendorsProxy() const;
+    Plugins *plugins() const;
+    PluginsProxy *pluginsProxy() const;
     Devices *devices() const;
     DevicesProxy *devicesProxy() const;
     DeviceClasses *deviceClasses() const;
@@ -53,6 +59,8 @@ public:
 private:
     Vendors *m_vendors;
     VendorsProxy *m_vendorsProxy;
+    Plugins *m_plugins;
+    PluginsProxy *m_pluginsProxy;
     Devices *m_devices;
     DevicesProxy *m_devicesProxy;
     DeviceClasses *m_deviceClasses;

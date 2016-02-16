@@ -88,6 +88,7 @@ void Core::onConnectionChanged()
         deviceManager()->devices()->clearModel();
         deviceManager()->deviceClasses()->clearModel();
         deviceManager()->vendors()->clearModel();
+        deviceManager()->plugins()->clearModel();
     }
 }
 

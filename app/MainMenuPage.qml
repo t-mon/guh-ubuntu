@@ -30,12 +30,18 @@ Page {
 
     property string deviceError
     property int id
+    property bool waiting: false
 
     head.actions: Action {
         id: addDeviceAction
         iconName: "add"
         text: i18n.tr("Add device")
         onTriggered: pageStack.push(Qt.resolvedUrl("VendorsPage.qml"))
+    }
+
+    WaitingOverlay {
+        anchors.fill: parent
+        enabled: root.waiting
     }
 
     ListView {
@@ -78,6 +84,7 @@ Page {
                         text: i18n.tr("Remove")
                         color: UbuntuColors.red
                         onClicked: {
+                            waiting = true
                             root.id = Core.jsonRpcClient.removeDevice(model.id)
                             PopupUtils.close(removeDialog)
                         }
@@ -107,7 +114,7 @@ Page {
                             width: parent.width
                             Repeater {
                                 id: paramRepeater
-                                model: deviceList.model.devices.get(index).params
+                                model: deviceList.model.params
                                 delegate: SingleValue {
                                     width: parent.width
                                     height: units.gu(5)
@@ -175,6 +182,7 @@ Page {
         target: Core.jsonRpcClient
         onResponseReceived: {
             if (commandId == root.id) {
+                waiting = false
                 deviceError = response['deviceError']
                 if (deviceError !== "DeviceErrorNoError") {
                     PopupUtils.open(deviceErrorComponent)
@@ -196,6 +204,5 @@ Page {
             }
         }
     }
-
 }
 

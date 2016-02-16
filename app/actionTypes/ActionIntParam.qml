@@ -18,45 +18,50 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef PARAMS_H
-#define PARAMS_H
+import QtQuick 2.4
+import QtQuick.Layouts 1.1
+import Ubuntu.Components 1.3
+import Guh 1.0
 
-#include <QAbstractListModel>
+Item {
+    id: root
 
-#include "param.h"
+    implicitHeight: column.implicitHeight
 
-class Params : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    enum ParamRole {
-        NameRole = Qt::DisplayRole,
-        ValueRole
-    };
+    property var paramType: actionType.paramTypes.get(0)
 
-    explicit Params(QObject *parent = 0);
+    signal executeAction(var params);
 
-    QList<Param *> params();
+    function capitalize(s) {
+        return s && s[0].toUpperCase() + s.slice(1);
+    }
 
-    Q_INVOKABLE int count() const;
-    Q_INVOKABLE Param *get(int index) const;
-    Q_INVOKABLE Param *getParam(QString name) const;
+    Column {
+        id: column
+        anchors.left: parent.left
+        anchors.right: parent.right
+        spacing: units.gu(1)
 
-    Q_INVOKABLE int paramCount() const;
+        Label {
+            id: nameLable
+            font.capitalization: Font.Capitalize
+            text: paramType.name
+        }
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+        Slider {
+            id: slider
+            anchors.left: parent.left
+            anchors.leftMargin: units.gu(2)
+            anchors.right: parent.right
+            anchors.rightMargin: units.gu(2)
+            maximumValue: root.paramType.maxValue
+            minimumValue: root.paramType.minValue
+            onValueChanged: {
+                console.log(Math.round(slider.value))//paramValue =  Math.round(slider.value)
+            }
+//            Component.onCompleted: paramValue = paramType.defaultValue ? parseInt(paramType.defaultValue) : 0
+        }
+    }
 
-    Q_INVOKABLE void addParam(Param *param);
+}
 
-    void clearModel();
-
-protected:
-    QHash<int, QByteArray> roleNames() const;
-
-private:
-    QList<Param *> m_params;
-
-};
-
-#endif // PARAMS_H

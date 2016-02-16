@@ -50,12 +50,12 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<ParamTypes>("Guh", 1, 0, "ParamTypes", "Can't create this in QML. Get it from the DeviceClass.");
     qmlRegisterUncreatableType<EventType>("Guh", 1, 0, "EventType", "Can't create this in QML. Get it from the EventTypes.");
     qmlRegisterUncreatableType<EventTypes>("Guh", 1, 0, "EventTypes", "Can't create this in QML. Get it from the DeviceClass.");
-    qmlRegisterUncreatableType<State>("Guh", 1, 0, "State", "Can't create this in QML. Get it from the States.");
-    qmlRegisterUncreatableType<States>("Guh", 1, 0, "States", "Can't create this in QML. Get it from the Device.");
     qmlRegisterUncreatableType<StateType>("Guh", 1, 0, "StateType", "Can't create this in QML. Get it from the StateTypes.");
     qmlRegisterUncreatableType<StateTypes>("Guh", 1, 0, "StateTypes", "Can't create this in QML. Get it from the DeviceClass.");
     qmlRegisterUncreatableType<ActionType>("Guh", 1, 0, "ActionType", "Can't create this in QML. Get it from the ActionTypes.");
     qmlRegisterUncreatableType<ActionTypes>("Guh", 1, 0, "ActionTypes", "Can't create this in QML. Get it from the DeviceClass.");
+    qmlRegisterUncreatableType<State>("Guh", 1, 0, "State", "Can't create this in QML. Get it from the States.");
+    qmlRegisterUncreatableType<States>("Guh", 1, 0, "States", "Can't create this in QML. Get it from the Device.");
 
     qmlRegisterUncreatableType<Vendor>("Guh", 1, 0, "Vendor", "Can't create this in QML. Get it from the Vendors.");
     qmlRegisterUncreatableType<Vendors>("Guh", 1, 0, "Vendors", "Can't create this in QML. Get it from the DeviceManager.");
@@ -69,6 +69,9 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<DeviceClasses>("Guh", 1, 0, "DeviceClasses", "Can't create this in QML. Get it from the DeviceManager.");
     qmlRegisterUncreatableType<DeviceClassesProxy>("Guh", 1, 0, "DeviceClassesProxy", "Can't create this in QML. Get it from the DeviceManager.");
 
+    qmlRegisterUncreatableType<Plugin>("Guh", 1, 0, "Plugin", "Can't create this in QML. Get it from the Plugins.");
+    qmlRegisterUncreatableType<Plugins>("Guh", 1, 0, "Plugins", "Can't create this in QML. Get it from the DeviceManager.");
+    qmlRegisterUncreatableType<PluginsProxy>("Guh", 1, 0, "PluginsProxy", "Can't create this in QML. Get it from the DeviceManager.");
 
     QQuickView view;
     view.setSource(QUrl(QStringLiteral("qrc:///app/Main.qml")));

@@ -27,12 +27,17 @@ import Guh 1.0
 
 Page {
     id: root
-    title: i18n.tr("Add device")
+    title: i18n.tr("Add ") + deviceClass.name
 
     property var deviceClass: null
     property int id
     property string deviceError
     property bool waiting: false
+
+    WaitingOverlay {
+        anchors.fill: parent
+        enabled: root.waiting
+    }
 
     Flickable {
         id: flickable
@@ -43,8 +48,6 @@ Page {
             id: paramColumn
             anchors.left: parent.left
             anchors.right: parent.right
-            Layout.fillWidth: true
-            Layout.fillHeight: true
             Repeater {
                 id: paramRepeater
                 model: deviceClass.paramTypes

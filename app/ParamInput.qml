@@ -26,30 +26,35 @@ import Guh 1.0
 
 import "inputTypes"
 
-Loader {
+
+Item {
     id: root
 
-    width: item ? item.implicitWidth : 0
-    height: item ? item.implicitHeight : 0
+    implicitWidth: loader.item ? loader.item.implicitWidth : 0
+    implicitHeight: loader.item ? loader.item.implicitHeight : 0
 
     property var paramType: null
-    property var paramName: paramType.name
-    property var paramValue: paramType.defaultValue
+    property var paramName: paramType ? paramType.name : null
+    property var paramValue: paramType ? paramType.defaultValue : null
 
-    source: {
-        var filename;
-        if (paramType.type === "String" && paramType.allowedValues.length === 0) {
-            filename = "inputTypes/StringInputComponent.qml";
-        } else if ( paramType.allowedValues.length > 0) {
-            filename = "inputTypes/NumberInputComponent.qml";
-        } else if (paramType.type === "Int" || paramType.type === "Double" || paramType.type === "Uint") {
-            if (paramType.allowedValues.length === 0) {
-                filename = "inputTypes/NumberInputComponent.qml";
+    Loader {
+        id: loader
+        anchors.fill: parent
+        source: {
+            var filename;
+            if (paramType.type === "String" && paramType.allowedValues.length === 0) {
+                filename = "inputTypes/StringInputComponent.qml";
+            } else if ( paramType.allowedValues.length > 0) {
+                filename = "inputTypes/AllowedValuesInputComponent.qml";
+            } else if (paramType.type === "Int" || paramType.type === "Double" || paramType.type === "Uint") {
+                if (paramType.allowedValues.length === 0) {
+                    filename = "inputTypes/NumberInputComponent.qml";
+                }
+            } else {
+                filename = "inputTypes/BoolInputComponent.qml";
             }
-        } else {
-            filename = "inputTypes/BoolInputComponent.qml";
+            return Qt.resolvedUrl(filename);
         }
-        return Qt.resolvedUrl(filename);
     }
 }
 

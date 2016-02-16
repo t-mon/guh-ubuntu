@@ -21,6 +21,7 @@
 import QtQuick 2.4
 import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
+import Ubuntu.Components.Popups 1.3
 import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
@@ -29,11 +30,18 @@ Item {
 
     property var device: null
     property var deviceClass: null
+    property bool waiting: false
+    property string deviceError
+    property int executeActionCommandId: 0
+
+    WaitingOverlay {
+        anchors.fill: parent
+        enabled: root.waiting
+    }
 
     Flickable {
         anchors.fill: parent
         contentHeight: actionsColumn.height
-        enabled: height < contentHeight
 
         ColumnLayout {
             id: actionsColumn
@@ -49,26 +57,55 @@ Item {
 
             ThinDivider {}
 
+            Repeater {
+                id: actionRepeater
+                model: root.deviceClass.actionTypes
+                delegate: ActionElement {
+                    id: action
+                    Layout.preferredHeight: implicitHeight
+                    Layout.fillWidth: true
+                    actionType: deviceClass.actionTypes.getActionType(model.id)
+
+                    onExecuteAction: {
+                        console.log(model.id + " -> " + params)
+                        waiting = true
+                        root.executeActionCommandId = Core.jsonRpcClient.executeAction(device.id, model.id, params)
+                    }
+                }
+            }
+
             Label {
                 anchors.horizontalCenter: parent.horizontalCenter
                 visible: deviceClass.actionTypes.count() === 0
                 text: i18n.tr("This device has no actions.")
             }
 
-            Repeater {
-                id: actionRepeater
-                model: root.deviceClass.actionTypes
-                delegate: Item {
-                    width: parent.width
-                    height: units.gu(3)
+        }
+    }
 
-                    Label {
-                        anchors.left: parent.left
-                        anchors.leftMargin: units.gu(2)
-                        font.capitalization: Font.Capitalize
-                        text: model.name
-                    }
+    Connections {
+        target: Core.jsonRpcClient
+        onResponseReceived: {
+            if (commandId == executeActionCommandId) {
+                root.waiting = false
+                deviceError = response['deviceError']
+                if (deviceError !== "DeviceErrorNoError") {
+                    PopupUtils.open(deviceErrorComponent)
                 }
+            }
+        }
+    }
+
+    Component {
+        id: deviceErrorComponent
+        Dialog {
+            id: deviceErrorDialog
+            title: i18n.tr("Error occured")
+            text: "Could not execute action\n" + deviceError
+
+            Button {
+                text: i18n.tr("Cancel")
+                onClicked: PopupUtils.close(deviceErrorDialog)
             }
         }
     }

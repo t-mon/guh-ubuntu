@@ -26,16 +26,20 @@ import Guh 1.0
 
 Item {
     id: root
-//    width: parent.width
-//    height: valueSelector.itemHeight
 
-    Component.onCompleted:  {
-        console.log("value selector height = " + valueSelector.itemHeight)
+    implicitHeight: valueSelector.implicitHeight
+
+    function capitalize(s) {
+        return s && s[0].toUpperCase() + s.slice(1);
     }
 
-    OptionSelector {
-        id:  valueSelector
-        text: paramType.name
-        model: paramType.allowedValues
+    ValueSelector {
+        id:valueSelector
+        text: capitalize(paramType.name)
+        values: paramType.allowedValues
+        selectedIndex: 0
+        onSelectedIndexChanged: paramValue = values[selectedIndex]
+        Component.onCompleted: paramValue = paramType.defaultValue ? paramType.defaultValue : values[selectedIndex]
     }
+
 }

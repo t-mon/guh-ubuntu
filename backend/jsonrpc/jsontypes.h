@@ -28,6 +28,7 @@
 
 #include "../types/types.h"
 #include "../types/device.h"
+#include "../types/plugin.h"
 #include "../types/deviceclass.h"
 #include "../types/paramtype.h"
 #include "../types/statetype.h"
@@ -44,6 +45,7 @@ public:
     explicit JsonTypes(QObject *parent = 0);
 
     static Vendor *unpackVendor(const QVariantMap &vendorMap, QObject *parent);
+    static Plugin *unpackPlugin(const QVariantMap &pluginMap, QObject *parent);
     static DeviceClass *unpackDeviceClass(const QVariantMap &deviceClassMap, QObject *parent);
     static Param *unpackParam(const QVariantMap &paramMap, QObject *parent);
     static ParamType *unpackParamType(const QVariantMap &paramTypeMap, QObject *parent);

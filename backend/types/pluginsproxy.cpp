@@ -18,19 +18,31 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-import QtQuick 2.4
-import Ubuntu.Components 1.3
-import Ubuntu.Components.ListItems 1.3
-import Guh 1.0
+#include "pluginsproxy.h"
 
-Item {
-    id: root
-    width: parent.width
-    implicitHeight: units.gu(6)
+PluginsProxy::PluginsProxy(QObject *parent) :
+    QSortFilterProxyModel(parent)
+{
 
-    Button {
-        //text: paramType.name
+}
 
-    }
+Plugins *PluginsProxy::plugins()
+{
+    return m_plugins;
+}
+
+void PluginsProxy::setPlugins(Plugins *plugins)
+{
+    m_plugins = plugins;
+    setSourceModel(plugins);
+    sort(0);
+}
+
+bool PluginsProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    QVariant leftName = sourceModel()->data(left);
+    QVariant rightName = sourceModel()->data(right);
+
+    return QString::localeAwareCompare(leftName.toString(), rightName.toString()) < 0;
 }
 

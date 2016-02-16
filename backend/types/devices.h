@@ -1,6 +1,3 @@
-#ifndef DEVICES_H
-#define DEVICES_H
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *                                                                         *
  *  Copyright (C) 2015 Simon Stuerz <stuerz.simon@gmail.com>               *
@@ -20,6 +17,9 @@
  *  along with guh-ubuntu. If not, see <http://www.gnu.org/licenses/>.     *
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+#ifndef DEVICES_H
+#define DEVICES_H
 
 #include <QAbstractListModel>
 

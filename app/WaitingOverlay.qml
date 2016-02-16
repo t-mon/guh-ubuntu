@@ -18,45 +18,24 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef PARAMS_H
-#define PARAMS_H
+import QtQuick 2.4
+import QtQuick.Layouts 1.1
+import Ubuntu.Components 1.3
+import Guh 1.0
 
-#include <QAbstractListModel>
+Item {
+    id: root
+    property bool enabled: false
 
-#include "param.h"
+    Rectangle {
+        anchors.fill: parent
+        color: "#88888888"
+        visible: root.enabled
+        ActivityIndicator {
+            anchors.centerIn: parent
+            running: root.enabled
+        }
+    }
 
-class Params : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    enum ParamRole {
-        NameRole = Qt::DisplayRole,
-        ValueRole
-    };
-
-    explicit Params(QObject *parent = 0);
-
-    QList<Param *> params();
-
-    Q_INVOKABLE int count() const;
-    Q_INVOKABLE Param *get(int index) const;
-    Q_INVOKABLE Param *getParam(QString name) const;
-
-    Q_INVOKABLE int paramCount() const;
-
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-
-    Q_INVOKABLE void addParam(Param *param);
-
-    void clearModel();
-
-protected:
-    QHash<int, QByteArray> roleNames() const;
-
-private:
-    QList<Param *> m_params;
-
-};
-
-#endif // PARAMS_H
+    MouseArea { anchors.fill: parent }
+}

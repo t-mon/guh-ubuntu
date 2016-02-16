@@ -18,45 +18,33 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef PARAMS_H
-#define PARAMS_H
+import QtQuick 2.4
+import Ubuntu.Components 1.3
 
-#include <QAbstractListModel>
+Item {
+    id: root
 
-#include "param.h"
+    implicitHeight: button.implicitHeight
 
-class Params : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    enum ParamRole {
-        NameRole = Qt::DisplayRole,
-        ValueRole
-    };
+    signal executeAction(var params);
 
-    explicit Params(QObject *parent = 0);
+    function capitalize(s) {
+        return s && s[0].toUpperCase() + s.slice(1);
+    }
 
-    QList<Param *> params();
+    Button {
+        id: button
+        anchors.centerIn: parent
+        text: capitalize(actionType.name)
+        onClicked: executeAction(null)
+    }
 
-    Q_INVOKABLE int count() const;
-    Q_INVOKABLE Param *get(int index) const;
-    Q_INVOKABLE Param *getParam(QString name) const;
+    Repeater {
+        model: actionType.paramTypes
+        delegate: Label {
+            text: model.name
+        }
+    }
 
-    Q_INVOKABLE int paramCount() const;
+}
 
-    int rowCount(const QModelIndex & parent = QModelIndex()) const;
-    QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-
-    Q_INVOKABLE void addParam(Param *param);
-
-    void clearModel();
-
-protected:
-    QHash<int, QByteArray> roleNames() const;
-
-private:
-    QList<Param *> m_params;
-
-};
-
-#endif // PARAMS_H

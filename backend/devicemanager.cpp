@@ -25,13 +25,15 @@ DeviceManager::DeviceManager(QObject *parent) :
     QObject(parent),
     m_vendors(new Vendors(this)),
     m_vendorsProxy(new VendorsProxy(this)),
+    m_plugins(new Plugins(this)),
+    m_pluginsProxy(new PluginsProxy(this)),
     m_devices(new Devices(this)),
     m_devicesProxy(new DevicesProxy(this)),
     m_deviceClasses(new DeviceClasses(this)),
     m_deviceClassesProxy(new DeviceClassesProxy(this))
-
 {
     m_vendorsProxy->setVendors(m_vendors);
+    m_pluginsProxy->setPlugins(m_plugins);
     m_devicesProxy->setDevices(m_devices);
     m_deviceClassesProxy->setDeviceClasses(m_deviceClasses);
 }
@@ -44,6 +46,16 @@ Vendors *DeviceManager::vendors() const
 VendorsProxy *DeviceManager::vendorsProxy() const
 {
     return m_vendorsProxy;
+}
+
+Plugins *DeviceManager::plugins() const
+{
+    return m_plugins;
+}
+
+PluginsProxy *DeviceManager::pluginsProxy() const
+{
+    return m_pluginsProxy;
 }
 
 Devices *DeviceManager::devices() const

@@ -18,36 +18,35 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#ifndef PARAMS_H
-#define PARAMS_H
+#ifndef PLUGINS_H
+#define PLUGINS_H
 
+#include <QObject>
 #include <QAbstractListModel>
 
-#include "param.h"
+#include "plugin.h"
 
-class Params : public QAbstractListModel
+class Plugins : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    enum ParamRole {
+    enum StateRole {
         NameRole = Qt::DisplayRole,
-        ValueRole
+        PluginIdRole
     };
 
-    explicit Params(QObject *parent = 0);
+    explicit Plugins(QObject *parent = 0);
 
-    QList<Param *> params();
+    QList<Plugin *> plugins();
 
     Q_INVOKABLE int count() const;
-    Q_INVOKABLE Param *get(int index) const;
-    Q_INVOKABLE Param *getParam(QString name) const;
-
-    Q_INVOKABLE int paramCount() const;
+    Q_INVOKABLE Plugin *get(int index) const;
+    Q_INVOKABLE Plugin *getPlugin(const QUuid &pluginId) const;
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 
-    Q_INVOKABLE void addParam(Param *param);
+    void addPlugin(Plugin *plugin);
 
     void clearModel();
 
@@ -55,8 +54,8 @@ protected:
     QHash<int, QByteArray> roleNames() const;
 
 private:
-    QList<Param *> m_params;
+    QList<Plugin *> m_plugins;
 
 };
 
-#endif // PARAMS_H
+#endif // PLUGINS_H

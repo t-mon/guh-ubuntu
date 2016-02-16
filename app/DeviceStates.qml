@@ -48,7 +48,7 @@ Item {
                 text: i18n.tr("States")
             }
 
-            ThinDivider {}
+            ThinDivider { }
 
             Label {
                 anchors.horizontalCenter: parent.horizontalCenter

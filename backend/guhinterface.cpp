@@ -76,7 +76,7 @@ void GuhInterface::onConnected()
 
 void GuhInterface::onDisconnected()
 {
-    qDebug() << "Disconnected from" << m_webSocketUrl;
+    qDebug() << "Disconnected from" << m_webSocketUrl << ": reason:" << m_socket->closeReason();
     setConnected(false);
 }
 

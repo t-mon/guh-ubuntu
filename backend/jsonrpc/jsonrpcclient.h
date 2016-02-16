@@ -25,6 +25,7 @@
 #include <QVariantMap>
 
 #include "devicehandler.h"
+#include "actionhandler.h"
 
 class JsonRpcReply;
 class JsonHandler;
@@ -39,16 +40,17 @@ public:
 
     // internal
     void getVendors();
+    void getPlugins();
     void getDevices();
     void getDeviceClasses();
     void getStateValues(const QUuid &deviceId);
-
 
     // ui methods
     Q_INVOKABLE int addDevice(const QUuid &deviceClassId, const QVariantList &deviceParams);
     Q_INVOKABLE int addDiscoveredDevice(const QUuid &deviceClassId, const QUuid &deviceDescriptorId);
     Q_INVOKABLE int removeDevice(const QUuid &deviceId);
     Q_INVOKABLE int discoverDevices(const QUuid &deviceClassId, const QVariantList &discoveryParams = QVariantList());
+    Q_INVOKABLE int executeAction(const QUuid &deviceId, const QUuid &actionTypeId, const QVariant &params = QVariant());
 
 private:
     int m_id;
@@ -56,6 +58,7 @@ private:
     QHash<int, JsonRpcReply *> m_replies;
 
     DeviceHandler *m_deviceHandler;
+    ActionHandler *m_actionHandler;
 
     JsonRpcReply *createReply(QString nameSpace, QString method, QVariantMap params = QVariantMap());
 

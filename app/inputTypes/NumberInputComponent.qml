@@ -27,37 +27,44 @@ import Guh 1.0
 Item {
     id: root
 
+    implicitHeight: inputLoader.implicitHeight
+
     Loader {
         id: inputLoader
+        anchors.fill: parent
         sourceComponent: paramType.minValue ? sliderInputLine : numberInputLine
     }
 
     Component {
         id: numberInputLine
         Column {
-            Item {
-                width: parent.width
-                height: units.gu(6)
+            id: column
+            anchors.fill: parent
+            anchors.margins: units.gu(1)
+            spacing: units.gu(1)
+
+            RowLayout {
+                anchors.left: parent.left
+                anchors.right: parent.right
 
                 Label {
-                    anchors.left: parent.left
+                    Layout.alignment: Qt.AlignLeft
                     anchors.leftMargin: units.gu(2)
-                    anchors.verticalCenter: parent.verticalCenter
                     font.capitalization: Font.Capitalize
                     text: paramType.name
                 }
 
                 TextField {
                     id: textField
-                    anchors.right: parent.right
+                    Layout.alignment: Qt.AlignRight
+                    Layout.preferredWidth: units.gu(12)
                     anchors.rightMargin: units.gu(2)
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: units.gu(12)
                     inputMethodHints: Qt.ImhFormattedNumbersOnly
+                    placeholderText: paramType.defaultValue ? paramType.defaultValue : 0
                     onTextChanged: {
-                        paramValue =  textField.text
+                        paramValue =  parseInt(textField.text)
                     }
-                    Component.onCompleted: paramValue = 0
+                    Component.onCompleted: paramValue = paramType.defaultValue ? parseInt(paramType.defaultValue) : 0
                 }
             }
 
@@ -68,31 +75,34 @@ Item {
     Component {
         id: sliderInputLine
         Column {
-            Item {
-                width: parent.width
-                height: units.gu(6)
+            anchors.fill: parent
+            anchors.margins: units.gu(1)
+            spacing: units.gu(1)
+
+            RowLayout {
+                anchors.left: parent.left
+                anchors.right: parent.right
+
 
                 Label {
                     id: nameLable
-                    anchors.left: parent.left
+                    Layout.alignment: Qt.AlignLeft
                     anchors.leftMargin: units.gu(2)
-                    anchors.verticalCenter: parent.verticalCenter
                     font.capitalization: Font.Capitalize
                     text: paramType.name
                 }
 
                 Slider {
                     id: slider
-                    anchors.right: parent.right
+                    Layout.alignment: Qt.AlignRight
+                    Layout.preferredWidth: units.gu(20)
                     anchors.rightMargin: units.gu(2)
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: units.gu(20)
                     maximumValue: paramType.maxValue
                     minimumValue: paramType.minValue
                     onValueChanged: {
-                        paramValue =  slider.value
+                        paramValue =  Math.round(slider.value)
                     }
-                    //Component.onCompleted: slider.value = paramType.defaultValue
+                    Component.onCompleted: paramValue = paramType.defaultValue ? parseInt(paramType.defaultValue) : 0
                 }
             }
 

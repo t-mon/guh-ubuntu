@@ -35,15 +35,21 @@ Page {
     property int discoverId: 0
     property string deviceError
     property bool waiting: false
+    property bool discovering: false
 
-//    head.actions:[
-//        Action {
-//            id: manualConnectionAction
-//            iconName: "edit"
-//            text: i18n.tr("Manual")
-//            onTriggered: pageStack.push(Qt.resolvedUrl("AddDevicePage.qml"), { deviceClass: deviceClass })
-//        }
-//    ]
+    head.actions:[
+        Action {
+            id: manualConnectionAction
+            iconName: "edit"
+            text: i18n.tr("Manual")
+            onTriggered: pageStack.push(Qt.resolvedUrl("AddDevicePage.qml"), { deviceClass: deviceClass })
+        }
+    ]
+
+    WaitingOverlay {
+        anchors.fill: parent
+        enabled: root.waiting
+    }
 
     Component.onCompleted: {
         if (deviceClass.discoveryParamTypes.count() === 0) {
@@ -51,24 +57,10 @@ Page {
         }
     }
 
-    function discover() {
-        root.deviceDescriptors = []
-        print("Discover devices: " + paramRepeater.count)
-        var deviceParams = [];
-        for (var i = 0; i < paramRepeater.count; i ++) {
-            deviceParams.push({"name": paramRepeater.itemAt(i).paramName, "value": paramRepeater.itemAt(i).paramValue})
-            print("   " + paramRepeater.itemAt(i).paramName + ": " + paramRepeater.itemAt(i).paramValue)
-        }
-        root.waiting = true
-        root.discoverId = Core.jsonRpcClient.discoverDevices(deviceClass.id, deviceParams)
-    }
-
-
     Flickable {
         id: flickable
         anchors.fill: parent
         contentHeight: layout.height
-        enabled: height < contentHeight
 
         ColumnLayout {
             id: layout
@@ -84,6 +76,8 @@ Page {
                     id: paramRepeater
                     model: deviceClass.discoveryParamTypes
                     delegate: ParamInput {
+                        Layout.preferredHeight: implicitHeight
+                        Layout.fillWidth: true
                         paramType: model
                     }
                 }
@@ -91,14 +85,14 @@ Page {
                 ActivityIndicator {
                     id: searchingIndicator
                     anchors.horizontalCenter: parent.horizontalCenter
-                    running: root.waiting
-                    visible: root.waiting
+                    running: root.discovering
+                    visible: root.discovering
                 }
 
                 Repeater {
                     id: deviceDescriptorRepeater
                     model: deviceDescriptors
-                    visible: !root.waiting
+                    visible: !root.discovering
                     delegate: SingleValue {
                         text: deviceDescriptors[index]['title']
                         value: deviceDescriptors[index]['description']
@@ -106,6 +100,7 @@ Page {
                             switch (deviceClass.setupMethod) {
                             case DeviceClass.SetupMethodJustAdd:
                                 console.log("Setup: just add")
+                                waiting = true
                                 root.addId = Core.jsonRpcClient.addDiscoveredDevice(deviceClass.id, deviceDescriptors[index]['id'])
                                 break
                             case DeviceClass.SetupMethodDisplayPin:
@@ -128,17 +123,29 @@ Page {
             Button {
                 id: discoverButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: waiting ? i18n.tr("Searching...") : i18n.tr("Discover")
+                text: discovering ? i18n.tr("Searching...") : i18n.tr("Discover")
                 onClicked: discover()
             }
         }
+    }
+
+    function discover() {
+        root.deviceDescriptors = []
+        print("Discover devices: " + paramRepeater.count)
+        var deviceParams = [];
+        for (var i = 0; i < paramRepeater.count; i ++) {
+            deviceParams.push({"name": paramRepeater.itemAt(i).paramName, "value": paramRepeater.itemAt(i).paramValue})
+            print("   " + paramRepeater.itemAt(i).paramName + ": " + paramRepeater.itemAt(i).paramValue)
+        }
+        root.discovering = true
+        root.discoverId = Core.jsonRpcClient.discoverDevices(deviceClass.id, deviceParams)
     }
 
     Connections {
         target: Core.jsonRpcClient
         onResponseReceived: {
             if (commandId == discoverId) {
-                root.waiting = false
+                root.discovering = false
                 root.deviceDescriptors = response['deviceDescriptors']
             }
             if (commandId == addId) {

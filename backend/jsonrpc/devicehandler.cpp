@@ -27,6 +27,7 @@
 DeviceHandler::DeviceHandler(QObject *parent) :
     JsonHandler(parent)
 {
+
 }
 
 QString DeviceHandler::nameSpace() const
@@ -44,6 +45,17 @@ void DeviceHandler::processGetSupportedVendors(const QVariantMap &params)
         }
     }
     Core::instance()->jsonRpcClient()->getDeviceClasses();
+}
+
+void DeviceHandler::processGetPlugins(const QVariantMap &params)
+{
+    if (params.value("params").toMap().keys().contains("plugins")) {
+        QVariantList pluginList = params.value("params").toMap().value("plugins").toList();
+        foreach (QVariant pluginVariant, pluginList) {
+            Plugin *plugin = JsonTypes::unpackPlugin(pluginVariant.toMap(), Core::instance()->deviceManager()->plugins());
+            Core::instance()->deviceManager()->plugins()->addPlugin(plugin);
+        }
+    }
 }
 
 void DeviceHandler::processGetSupportedDevices(const QVariantMap &params)
@@ -106,7 +118,7 @@ void DeviceHandler::processAddConfiguredDevice(const QVariantMap &params)
 void DeviceHandler::processGetDiscoveredDevices(const QVariantMap &params)
 {
     // response handled in the ui
-    qDebug() << params;
+    Q_UNUSED(params);
 }
 
 void DeviceHandler::processDeviceRemoved(const QVariantMap &params)

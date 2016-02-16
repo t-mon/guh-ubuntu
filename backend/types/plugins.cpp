@@ -18,78 +18,83 @@
  *                                                                         *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-#include "actiontypes.h"
+#include "plugins.h"
 
-ActionTypes::ActionTypes(QObject *parent) :
+#include <QDebug>
+
+Plugins::Plugins(QObject *parent) :
     QAbstractListModel(parent)
 {
 
 }
 
-QList<ActionType *> ActionTypes::actionTypes()
+QList<Plugin *> Plugins::plugins()
 {
-    return m_actionTypes;
+    return m_plugins;
 }
 
-int ActionTypes::count() const
+int Plugins::count() const
 {
-    return m_actionTypes.count();
+    return m_plugins.count();
 }
 
-ActionType *ActionTypes::get(int index) const
+Plugin *Plugins::get(int index) const
 {
-    return m_actionTypes.at(index);
+    return m_plugins.at(index);
 }
 
-ActionType *ActionTypes::getActionType(const QUuid &actionTypeId) const
+Plugin *Plugins::getPlugin(const QUuid &pluginId) const
 {
-    foreach (ActionType *actionType, m_actionTypes) {
-        if (actionType->id() == actionTypeId) {
-            return actionType;
+    foreach (Plugin *plugin, m_plugins) {
+        if (plugin->pluginId() == pluginId) {
+            return plugin;
         }
     }
     return 0;
 }
 
-int ActionTypes::rowCount(const QModelIndex &parent) const
+int Plugins::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return m_actionTypes.count();
+    return m_plugins.count();
 }
 
-QVariant ActionTypes::data(const QModelIndex &index, int role) const
+QVariant Plugins::data(const QModelIndex &index, int role) const
 {
-    if (index.row() < 0 || index.row() >= m_actionTypes.count())
+    if (index.row() < 0 || index.row() >= m_plugins.count())
         return QVariant();
 
-    ActionType *actionType = m_actionTypes.at(index.row());
+    Plugin *plugin = m_plugins.at(index.row());
     if (role == NameRole) {
-        return actionType->name();
-    } else if (role == IdRole) {
-        return actionType->id().toString();
+        return plugin->name();
+    } else if (role == PluginIdRole) {
+        return plugin->pluginId();
     }
     return QVariant();
 }
 
-void ActionTypes::addActionType(ActionType *actionType)
+void Plugins::addPlugin(Plugin *plugin)
 {
-    beginInsertRows(QModelIndex(), m_actionTypes.count(), m_actionTypes.count());
-    //qDebug() << "ActionTypes: loaded actionType" << actionType->name();
-    m_actionTypes.append(actionType);
+    beginInsertRows(QModelIndex(), m_plugins.count(), m_plugins.count());
+    //qDebug() << "Plugin: loaded plugin" << plugin->name();
+    m_plugins.append(plugin);
     endInsertRows();
 }
 
-void ActionTypes::clearModel()
+void Plugins::clearModel()
 {
     beginResetModel();
-    m_actionTypes.clear();
+    qDebug() << "Plugins: delete all plugins";
+    qDeleteAll(m_plugins);
+    m_plugins.clear();
     endResetModel();
 }
 
-QHash<int, QByteArray> ActionTypes::roleNames() const
+QHash<int, QByteArray> Plugins::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles[NameRole] = "name";
-    roles[IdRole] = "id";
+    roles[PluginIdRole] = "pluginId";
     return roles;
 }
+

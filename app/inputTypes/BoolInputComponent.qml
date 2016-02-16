@@ -26,31 +26,37 @@ import Guh 1.0
 
 Item {
     id: root
-//    width: parent.width
-//    implicitHeight: units.gu(6)
 
-    Label {
-        id: nameLable
-        anchors.left: parent.left
-        anchors.leftMargin: units.gu(2)
-        anchors.verticalCenter: parent.verticalCenter
-        font.capitalization: Font.Capitalize
-        text: paramType.name
-    }
+    implicitHeight: column.implicitHeight
 
-    Switch {
-        id: boolSwitch
-        anchors.right: parent.right
-        anchors.rightMargin: units.gu(2)
-        anchors.verticalCenter: parent.verticalCenter
-        checked: false
-        onCheckedChanged: paramValue = checked
-        //Component.onCompleted: paramValue = checked
-    }
+    Column {
+        id: column
+        anchors.fill: parent
+        anchors.margins: units.gu(1)
+        spacing: units.gu(1)
 
-    ThinDivider {
-        width: parent.width
-        anchors.bottom: root.bottom
+        RowLayout {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            Label {
+                id: nameLable
+                Layout.alignment: Qt.AlignLeft
+                //anchors.leftMargin: units.gu(2)
+                font.capitalization: Font.Capitalize
+                text: paramType.name
+            }
+
+            Switch {
+                id: boolSwitch
+                Layout.alignment: Qt.AlignRight
+                //anchors.rightMargin: units.gu(2)
+                checked: false
+                onCheckedChanged: paramValue = checked
+                Component.onCompleted: paramValue = checked
+            }
+        }
+
+        ThinDivider { }
     }
 }
 

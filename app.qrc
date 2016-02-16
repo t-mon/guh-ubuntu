@@ -11,9 +11,14 @@
         <file>app/ParamInput.qml</file>
         <file>app/DeviceStates.qml</file>
         <file>app/DeviceActions.qml</file>
+        <file>app/WaitingOverlay.qml</file>
+        <file>app/ActionElement.qml</file>
         <file>app/inputTypes/StringInputComponent.qml</file>
         <file>app/inputTypes/BoolInputComponent.qml</file>
         <file>app/inputTypes/AllowedValuesInputComponent.qml</file>
         <file>app/inputTypes/NumberInputComponent.qml</file>
+        <file>app/actionTypes/ActionWithoutParams.qml</file>
+        <file>app/actionTypes/ActionIntParam.qml</file>
+        <file>app/actionTypes/ActionStringParam.qml</file>
     </qresource>
 </RCC>

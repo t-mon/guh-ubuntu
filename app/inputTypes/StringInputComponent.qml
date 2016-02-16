@@ -27,11 +27,14 @@ import Guh 1.0
 Item {
     id: root
 
+    implicitHeight: column.implicitHeight
+
     Component.onCompleted: {
         paramValue = ""
     }
 
     Column {
+        id: column
         anchors.fill: parent
         anchors.margins: units.gu(1)
         spacing: units.gu(1)
@@ -51,8 +54,10 @@ Item {
                 else
                     return ""
             }
+            placeholderText: paramType.defaultValue ? paramType.defaultValue : ""
             echoMode: paramType.inputType === Types.InputTypePassword ? TextInput.Password : TextInput.Normal
             onTextChanged: paramValue =  textField.text
+            Component.onCompleted: paramType.defaultValue ? paramType.defaultValue : ""
         }
 
         ThinDivider {}
