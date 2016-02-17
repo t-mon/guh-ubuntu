@@ -29,8 +29,9 @@ import "actionTypes"
 Item {
     id: root
 
+    property var device: null
     property var actionType: null
-    property var state: null
+    property var actionState: device.hasState(actionType.id) ? device.states.getState(actionType.id) : null
 
     signal executeAction(var actionTypeId, var params)
 
@@ -42,13 +43,12 @@ Item {
         anchors.fill: parent
         source: {
             var filename;
-            console.log("Create action element for " + actionType.name)
+
             if (actionType.paramTypes.count() === 0) {
                 filename = "actionTypes/ActionWithoutParams.qml";
             } else if (actionType.paramTypes.count() === 1) {
                 var paramType = actionType.paramTypes.get(0)
-                if (paramType.type === "Int") {
-                    console.log("Int paramType")
+                if (paramType.type === "Int" && paramType.minValue !== null && paramType.maxValue !== null) {
                     filename = "actionTypes/ActionIntParam.qml";
                 }
             } else {
@@ -60,7 +60,7 @@ Item {
 
         Connections {
             target: loader.item
-            onExecuteAction: executeAction(actionType.id, params)
+            onExecuteAction: root.executeAction(actionType.id, params)
         }
     }
 }

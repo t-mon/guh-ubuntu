@@ -48,9 +48,11 @@ public:
     // ui methods
     Q_INVOKABLE int addDevice(const QUuid &deviceClassId, const QVariantList &deviceParams);
     Q_INVOKABLE int addDiscoveredDevice(const QUuid &deviceClassId, const QUuid &deviceDescriptorId);
+    Q_INVOKABLE int pairDevice(const QUuid &deviceClassId, const QUuid &deviceDescriptorId);
+    Q_INVOKABLE int confirmPairing(const QUuid &pairingTransactionId, const QString &secret = QString());
     Q_INVOKABLE int removeDevice(const QUuid &deviceId);
     Q_INVOKABLE int discoverDevices(const QUuid &deviceClassId, const QVariantList &discoveryParams = QVariantList());
-    Q_INVOKABLE int executeAction(const QUuid &deviceId, const QUuid &actionTypeId, const QVariant &params = QVariant());
+    Q_INVOKABLE int executeAction(const QUuid &deviceId, const QUuid &actionTypeId, const QVariantList &params = QVariantList());
 
 private:
     int m_id;

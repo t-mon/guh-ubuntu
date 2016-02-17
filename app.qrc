@@ -20,5 +20,6 @@
         <file>app/actionTypes/ActionWithoutParams.qml</file>
         <file>app/actionTypes/ActionIntParam.qml</file>
         <file>app/actionTypes/ActionStringParam.qml</file>
+        <file>app/actionTypes/ActionBoolParam.qml</file>
     </qresource>
 </RCC>

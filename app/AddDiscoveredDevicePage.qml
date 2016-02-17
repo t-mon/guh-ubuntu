@@ -31,11 +31,19 @@ Page {
 
     property var deviceClass: null
     property var deviceDescriptors: []
+
     property int addId: 0
+    property int pairPushButtonId: 0
+    property int confirmPairingId: 0
     property int discoverId: 0
+
     property string deviceError
+    property string pairingTransactionId
+    property string message
+
     property bool waiting: false
     property bool discovering: false
+    property bool pairing: false
 
     head.actions:[
         Action {
@@ -72,6 +80,16 @@ Page {
                 anchors.left: parent.left
                 anchors.right: parent.right
 
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    fontSize: "large"
+                    visible: deviceClass.discoveryParamTypes.count() !== 0
+                    color: UbuntuColors.lightGrey
+                    text: i18n.tr("Parameters")
+                }
+
+                ThinDivider {}
+
                 Repeater {
                     id: paramRepeater
                     model: deviceClass.discoveryParamTypes
@@ -81,6 +99,14 @@ Page {
                         paramType: model
                     }
                 }
+
+                Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    fontSize: "large"
+                    color: UbuntuColors.lightGrey
+                    text: i18n.tr("Search results")
+                }
+                ThinDivider {}
 
                 ActivityIndicator {
                     id: searchingIndicator
@@ -101,13 +127,14 @@ Page {
                             case DeviceClass.SetupMethodJustAdd:
                                 console.log("Setup: just add")
                                 waiting = true
-                                root.addId = Core.jsonRpcClient.addDiscoveredDevice(deviceClass.id, deviceDescriptors[index]['id'])
+                                addId = Core.jsonRpcClient.addDiscoveredDevice(deviceClass.id, deviceDescriptors[index]['id'])
                                 break
                             case DeviceClass.SetupMethodDisplayPin:
                                 console.log("Setup: display pin")
                                 break
                             case DeviceClass.SetupMethodPushButton:
                                 console.log("Setup: push button")
+                                pairPushButtonId = Core.jsonRpcClient.pairDevice(deviceClass.id, deviceDescriptors[index]['id'])
                                 break
                             case DeviceClass.SetupMethodEnterPin:
                                 console.log("Setup: enter pin")
@@ -124,7 +151,54 @@ Page {
                 id: discoverButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: discovering ? i18n.tr("Searching...") : i18n.tr("Discover")
-                onClicked: discover()
+                onClicked: {
+                    if (!discovering) {
+                        discover()
+                    }
+                }
+            }
+        }
+    }
+
+
+    Connections {
+        target: Core.jsonRpcClient
+        onResponseReceived: {
+            if (commandId == discoverId) {
+                root.discovering = false
+                root.deviceDescriptors = response['deviceDescriptors']
+            } else if (commandId == addId) {
+                root.waiting = false
+                deviceError = response['deviceError']
+                if (deviceError !== "DeviceErrorNoError") {
+                    PopupUtils.open(deviceErrorComponent)
+                } else {
+                    pageStack.clear()
+                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
+                }
+            } else if (commandId == pairPushButtonId) {
+                root.waiting = false
+                deviceError = response['deviceError']
+                if (deviceError !== "DeviceErrorNoError") {
+                    PopupUtils.open(deviceErrorComponent)
+                } else {
+                    message = response['displayMessage']
+                    pairingTransactionId = response['pairingTransactionId']
+                    PopupUtils.open(pushButtonComponent)
+                }
+            } else if (commandId == confirmPairingId) {
+                pairing = false
+                deviceError = response['deviceError']
+                if (deviceError !== "DeviceErrorNoError") {
+                    deviceDescriptors = []
+                    PopupUtils.close(pushButtonDialog)
+                    PopupUtils.open(deviceErrorComponent)
+                } else {
+                    deviceDescriptors = []
+                    PopupUtils.close(pushButtonDialog)
+                    pageStack.clear()
+                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
+                }
             }
         }
     }
@@ -141,21 +215,30 @@ Page {
         root.discoverId = Core.jsonRpcClient.discoverDevices(deviceClass.id, deviceParams)
     }
 
-    Connections {
-        target: Core.jsonRpcClient
-        onResponseReceived: {
-            if (commandId == discoverId) {
-                root.discovering = false
-                root.deviceDescriptors = response['deviceDescriptors']
+    Component {
+        id: pushButtonComponent
+        Dialog {
+            id: pushButtonDialog
+            title: i18n.tr("Push button setup")
+            text: message
+
+            ActivityIndicator {
+                running: pairing
             }
-            if (commandId == addId) {
-                root.waiting = false
-                deviceError = response['deviceError']
-                if (deviceError !== "DeviceErrorNoError") {
-                    PopupUtils.open(deviceErrorComponent)
-                } else {
-                    pageStack.clear()
-                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
+
+            Button {
+                text: i18n.tr("Ok")
+                onClicked: {
+                    pairing = true
+                    confirmPairingId = Core.jsonRpcClient.confirmPairing(pairingTransactionId)
+                }
+            }
+
+            Button {
+                text: i18n.tr("Cancel")
+                onClicked: {
+                    deviceDescriptors = []
+                    PopupUtils.close(pushButtonDialog)
                 }
             }
         }
@@ -170,7 +253,9 @@ Page {
 
             Button {
                 text: i18n.tr("Cancel")
-                onClicked: PopupUtils.close(deviceErrorDialog)
+                onClicked: {
+                    PopupUtils.close(deviceErrorDialog)
+                }
             }
         }
     }

@@ -104,6 +104,30 @@ int JsonRpcClient::addDiscoveredDevice(const QUuid &deviceClassId, const QUuid &
     return reply->commandId();
 }
 
+int JsonRpcClient::pairDevice(const QUuid &deviceClassId, const QUuid &deviceDescriptorId)
+{
+    qDebug() << "JsonRpc: pair device " << deviceClassId.toString();
+    QVariantMap params;
+    params.insert("deviceClassId", deviceClassId.toString());
+    params.insert("deviceDescriptorId", deviceDescriptorId.toString());
+    JsonRpcReply *reply = createReply("Devices", "PairDevice", params);
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+    return reply->commandId();
+}
+
+int JsonRpcClient::confirmPairing(const QUuid &pairingTransactionId, const QString &secret)
+{
+    qDebug() << "JsonRpc: confirm pairing" << pairingTransactionId.toString();
+    QVariantMap params;
+    params.insert("pairingTransactionId", pairingTransactionId.toString());
+    params.insert("secret", secret);
+    JsonRpcReply *reply = createReply("Devices", "ConfirmPairing", params);
+    m_replies.insert(reply->commandId(), reply);
+    Core::instance()->interface()->sendRequest(reply->requestMap());
+    return reply->commandId();
+}
+
 int JsonRpcClient::removeDevice(const QUuid &deviceId)
 {
     qDebug() << "JsonRpc: delete device" << deviceId.toString();
@@ -130,13 +154,13 @@ int JsonRpcClient::discoverDevices(const QUuid &deviceClassId, const QVariantLis
     return reply->commandId();
 }
 
-int JsonRpcClient::executeAction(const QUuid &deviceId, const QUuid &actionTypeId, const QVariant &params)
+int JsonRpcClient::executeAction(const QUuid &deviceId, const QUuid &actionTypeId, const QVariantList &params)
 {
     qDebug() << "JsonRpc: execute action " << deviceId.toString() << actionTypeId.toString() << params;
     QVariantMap p;
     p.insert("deviceId", deviceId.toString());
     p.insert("actionTypeId", actionTypeId.toString());
-    if (!params.isNull()) {
+    if (!params.isEmpty()) {
         p.insert("params", params);
     }
 

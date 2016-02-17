@@ -41,5 +41,4 @@ Item {
         onSelectedIndexChanged: paramValue = values[selectedIndex]
         Component.onCompleted: paramValue = paramType.defaultValue ? paramType.defaultValue : values[selectedIndex]
     }
-
 }

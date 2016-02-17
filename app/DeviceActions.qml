@@ -64,6 +64,8 @@ Item {
                     id: action
                     Layout.preferredHeight: implicitHeight
                     Layout.fillWidth: true
+
+                    device: root.device
                     actionType: deviceClass.actionTypes.getActionType(model.id)
 
                     onExecuteAction: {

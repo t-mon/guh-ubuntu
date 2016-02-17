@@ -121,6 +121,18 @@ void DeviceHandler::processGetDiscoveredDevices(const QVariantMap &params)
     Q_UNUSED(params);
 }
 
+void DeviceHandler::processPairDevice(const QVariantMap &params)
+{
+    // response handled in the ui
+    Q_UNUSED(params);
+}
+
+void DeviceHandler::processConfirmPairing(const QVariantMap &params)
+{
+    // response handled in the ui
+    Q_UNUSED(params);
+}
+
 void DeviceHandler::processDeviceRemoved(const QVariantMap &params)
 {
     QUuid deviceId = params.value("params").toMap().value("deviceId").toUuid();

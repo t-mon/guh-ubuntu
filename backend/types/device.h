@@ -61,7 +61,7 @@ public:
     States *states() const;
     void setStates(States *states);
 
-    bool hasState(const QUuid &stateTypeId);
+    Q_INVOKABLE bool hasState(const QUuid &stateTypeId);
 
     Q_INVOKABLE QVariant stateValue(const QUuid &stateTypeId);
     void setStateValue(const QUuid &stateTypeId, const QVariant &value);
