@@ -34,14 +34,16 @@ class UpnpDiscovery : public QUdpSocket
 {
     Q_OBJECT
     Q_PROPERTY(bool discovering READ discovering NOTIFY discoveringChanged)
+    Q_PROPERTY(bool available READ available NOTIFY availableChanged)
     Q_PROPERTY(UpnpDiscoveryModel *discoveryModel READ discoveryModel NOTIFY discoveryModelChanged)
-
 
 public:
     explicit UpnpDiscovery(QObject *parent = 0);
 
     bool discovering() const;
     UpnpDiscoveryModel *discoveryModel();
+
+    bool available() const;
 
     Q_INVOKABLE void discover();
     Q_INVOKABLE void stopDiscovery();
@@ -57,13 +59,16 @@ private:
     UpnpDiscoveryModel *m_discoveryModel;
 
     bool m_discovering;
+    bool m_available;
     QHash<QNetworkReply *, UpnpDevice> m_runningReplies;
     QList<QUrl> m_foundDevices;
 
     void setDiscovering(const bool &discovering);
+    void setAvailable(const bool &available);
 
 signals:
     void discoveringChanged();
+    void availableChanged();
     void discoveryModelChanged();
 
 private slots:

@@ -19,60 +19,19 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
-import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
+import Ubuntu.Components.Popups 1.3
+import Ubuntu.Components.ListItems 1.3
 import Guh 1.0
 
-Item {
+Page {
     id: root
+    title: i18n.tr("Plugins")
 
-    implicitHeight: column.implicitHeight
-
-    property var paramType: actionType.paramTypes.get(0)
-    property bool changedFromState: false
-
-
-    signal executeAction(var params);
-
-    Column {
-        id: column
-        anchors.left: parent.left
-        anchors.right: parent.right
-        spacing: units.gu(1)
-
-        Label {
-            id: nameLable
-            anchors.left: parent.left
-            anchors.leftMargin: units.gu(2)
-            font.capitalization: Font.Capitalize
-            text: paramType.name + " ( " + Math.round(slider.value) + " " + paramType.unitString + " )"
-        }
-
-        Slider {
-            id: slider
-            anchors.left: parent.left
-            anchors.leftMargin: units.gu(2)
-            anchors.right: parent.right
-            anchors.rightMargin: units.gu(2)
-            maximumValue: root.paramType.maxValue
-            minimumValue: root.paramType.minValue
-            value: actionState.value
-            onValueChanged: {
-                if (!changedFromState) {
-                    root.executeAction([ { "name": paramType.name, "value": Math.round(slider.value) } ])
-                }
-                changedFromState = false
-            }
-
-            Connections {
-                target: actionState
-                onValueChanged: {
-                    console.log("State changed " + actionState.value)
-                    changedFromState = true
-                    slider.value = actionState.value
-                }
-            }
-        }
+    Label {
+        anchors.centerIn: parent
+        text: "Here will be the plugin list"
     }
+
 }
 

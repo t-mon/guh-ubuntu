@@ -48,6 +48,7 @@ signals:
     void connectedChanged();
     void disconnected();
     void dataReady(const QVariantMap &data);
+    void websocketError(const QString &errorString);
 
 private slots:
     void onConnected();

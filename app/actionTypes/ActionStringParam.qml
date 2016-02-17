@@ -39,12 +39,5 @@ Item {
         onClicked: executeAction(null)
     }
 
-    Repeater {
-        model: actionType.paramTypes
-        delegate: Label {
-            text: model.name
-        }
-    }
-
 }
 

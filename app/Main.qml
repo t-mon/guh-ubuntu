@@ -32,34 +32,72 @@ MainView {
     width: units.gu(40)
     height: units.gu(70)
 
+    property var currentStack
+
     property string orientation: width > height ? "landscape" : "portrait"
 
     Component.onCompleted: {
         i18n.domain = "guh-ubuntu.stuerz-simon"
         Theme.name = "Ubuntu.Components.Themes.SuruDark"
-        Core.discovery.discover()
     }
 
-    PageStack {
-        id: pageStack
+    Tabs {
+        id: tabs
         anchors.fill: parent
-        Component.onCompleted: push(Qt.resolvedUrl("ConnectionPage.qml"))
+        Component.onCompleted: selectedTabIndex = 3
 
-        Connections {
-            target: Core
-            onConnectedChanged: {
-                if (Core.connected) {
-                    console.log("connected")
-                    pageStack.clear()
-                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
-                } else {
-                    console.log("disconnected")
-                    Core.discovery.discover()
-                    pageStack.clear()
-                    pageStack.push(Qt.resolvedUrl("ConnectionPage.qml"))
-                }
+        Tab {
+            id: devicesTab
+            title: i18n.tr("Devices")
+            page: PageStack {
+                id: devicesStack
+                visible: Core.connected
+                anchors.fill: parent
+                Component.onCompleted: push(Qt.resolvedUrl("DevicesPage.qml"))
+            }
+        }
+
+        Tab {
+            id: rulesTab
+            title: i18n.tr("Rules")
+            page: PageStack {
+                id: rulesStack
+                visible: Core.connected
+                anchors.fill: parent
+                Component.onCompleted: push(Qt.resolvedUrl("RulesPage.qml"))
+            }
+        }
+
+        Tab {
+            id: pluginsTab
+            title: i18n.tr("Plugins")
+            page: PageStack {
+                id: pluginsStack
+                visible: Core.connected
+                anchors.fill: parent
+                Component.onCompleted: push(Qt.resolvedUrl("PluginsPage.qml"))
+            }
+        }
+
+        Tab {
+            id: connectionTab
+            title: i18n.tr("Connection")
+            page: ConnectionPage {
+                id: connectionPage
+                visible: !Core.connected
+                Component.onCompleted: Core.discovery.discover()
+            }
+        }
+    }
+
+    Connections {
+        target: Core
+        onConnectedChanged: {
+            if (Core.connected) {
+                tabs.selectedTabIndex = 0
+            } else {
+                tabs.selectedTabIndex = 3
             }
         }
     }
 }
-

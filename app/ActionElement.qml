@@ -50,6 +50,8 @@ Item {
                 var paramType = actionType.paramTypes.get(0)
                 if (paramType.type === "Int" && paramType.minValue !== null && paramType.maxValue !== null) {
                     filename = "actionTypes/ActionIntParam.qml";
+                } else if (paramType.type === "Bool") {
+                    filename = "actionTypes/ActionBoolParam.qml";
                 }
             } else {
                 filename = "actionTypes/ActionWithoutParams.qml";

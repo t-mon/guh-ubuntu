@@ -19,6 +19,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 import QtQuick 2.4
+import QtQuick.Layouts 1.1
 import Ubuntu.Components 1.3
 import Ubuntu.Components.Popups 1.3
 import Ubuntu.Components.ListItems 1.3
@@ -28,12 +29,15 @@ Page {
     id: root
     title: i18n.tr("Connection")
 
+    property string websocketError
+    property var popup
+
     head.actions:[
         Action {
             id: manualConnectionAction
             iconName: "edit"
             text: i18n.tr("Manual")
-            onTriggered: PopupUtils.open(manualConnectionComponent)
+            onTriggered: popup = PopupUtils.open(manualConnectionComponent)
         },
         Action {
             id: reloadAction
@@ -84,7 +88,7 @@ Page {
         ThinDivider {}
 
         Label {
-            text: "  " + i18n.tr("Discovered connections")
+            text: i18n.tr("Discovered connections")
             fontSize: "large"
             color: UbuntuColors.lightGrey
             anchors.horizontalCenter: parent.horizontalCenter
@@ -101,17 +105,50 @@ Page {
                 onClicked: Core.interface.connectGuh(model.webSocketUrl)
             }
         }
+
+        Text {
+            anchors.left: parent.left
+            anchors.leftMargin: units.gu(2)
+            anchors.right: parent.right
+            anchors.rightMargin: units.gu(2)
+            visible: !Core.discovery.available
+            wrapMode: Text.WordWrap
+            color: "white"
+            text: i18n.tr("UPnP discovery not available.\nMaybe another application is using the same discovery method (UDP port 1900).")
+        }
+
+        ActivityIndicator {
+            anchors.horizontalCenter: parent.horizontalCenter
+            id: activityIndicator
+            running: Core.discovery.discovering
+            visible: Core.discovery.discovering
+        }
     }
 
-    ActivityIndicator {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: units.gu(2)
-
-        id: activityIndicator
-        running: Core.discovery.discovering
+    Connections {
+        target: Core.interface
+        onWebsocketError: {
+            websocketError = errorString
+            PopupUtils.open(connectionErrorComponent)
+        }
     }
 
+    Component {
+        id: connectionErrorComponent
+        Dialog {
+            id: connectionErrorDialog
+            title: i18n.tr("Connection error")
+            text: i18n.tr(websocketError)
+
+            ThinDivider { }
+
+            Button {
+                id: closeButton
+                text: i18n.tr("Close")
+                onClicked: PopupUtils.close(connectionErrorDialog)
+            }
+        }
+    }
 
     Component {
         id: manualConnectionComponent
@@ -122,18 +159,11 @@ Page {
 
             ThinDivider { }
 
-            OptionSelector {
+            ValueSelector {
                 id: connectionTypeSelector
-                model: ["ws", "wss"]
+                text: i18n.tr("Connection type")
+                values: ["ws", "wss"]
                 selected: true
-                delegate: OptionSelectorDelegate {
-                    text: ""
-                    Label {
-                        anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: units.gu(2) }
-                        text: modelData
-                        color: "black"
-                    }
-                }
             }
 
             Label {
@@ -144,7 +174,6 @@ Page {
             TextField {
                 id: urlTextField
                 width: parent.width
-                text: "guh.local"
                 placeholderText: "guh.local"
             }
 
@@ -167,8 +196,7 @@ Page {
                 color: UbuntuColors.green
                 text: i18n.tr("Connect")
                 onClicked: {
-                    var webSocketUrl = connectionTypeSelector.model[connectionTypeSelector.selectedIndex] + "://" + urlTextField.text + ":" + portTextField.text
-                    print("Connecting to " + webSocketUrl)
+                    var webSocketUrl = connectionTypeSelector.values[connectionTypeSelector.selectedIndex] + "://" + urlTextField.text + ":" + portTextField.text
                     Core.interface.connectGuh(webSocketUrl)
                     PopupUtils.close(manualConnectionDialog)
                 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-17 10:44+0100\n"
+"POT-Creation-Date: 2016-02-17 21:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,90 +21,154 @@ msgstr ""
 msgid "Add "
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:102
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:251
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:105
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:198
-msgid "Error occured"
-msgstr ""
-
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:106
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:238
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:255
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:179
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:109
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:94
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:202
-msgid "Cancel"
-msgstr ""
-
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:52
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:35
-msgid "Manual"
-msgstr ""
-
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:88
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:56
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:81
 msgid "Parameters"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:107
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:113
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:279
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:111
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:201
+msgid "Error occured"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDevicePage.qml:117
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:237
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:266
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:282
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:207
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:115
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:94
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:205
+msgid "Cancel"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:54
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:39
+msgid "Manual"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:100
 msgid "Search results"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:153
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:148
 msgid "Searching..."
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:153
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:148
 msgid "Discover"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:222
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:223
 msgid "Push button setup"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:230
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:229
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:257
 msgid "Ok"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:252
-msgid "Could not add device"
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:250
+msgid "Display pin setup"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:29
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/AddDiscoveredDevicePage.qml:280
+msgid "Could not add device:"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:30
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/Main.qml:84
 msgid "Connection"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:41
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:45
 msgid "Reload"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:53
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:57
 msgid "Known connections"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:87
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:91
 msgid "Discovered connections"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:120
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:117
+msgid ""
+"UPnP discovery not available.\n"
+"Maybe another application is using the same discovery method (UDP port 1900)."
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:140
+msgid "Connection error"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:147
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:130
+msgid "Close"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:157
 msgid "Manual connection"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:121
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:158
 msgid "Please enter the connection data:"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:168
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:164
+msgid "Connection type"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/ConnectionPage.qml:197
 msgid "Connect"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:55
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:57
 msgid "Actions"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:82
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:65
 msgid "This device has no actions."
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:95
+msgid "Interface error"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceActions.qml:112
+msgid "Could not execute action:"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:29
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/Main.qml:51
+msgid "Devices"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:39
+msgid "Add device"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:72
+msgid "Remove device"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:73
+msgid "Are you sure you want to remove"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:85
+msgid "Remove"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:104
+msgid "Device parameters"
+msgstr ""
+
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DevicesPage.qml:202
+msgid "Could not remove device"
 msgstr ""
 
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/DeviceStates.qml:48
@@ -115,36 +179,18 @@ msgstr ""
 msgid "This device has no states."
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:29
-msgid "Devices"
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/Main.qml:62
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/RulesPage.qml:29
+msgid "Rules"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:38
-msgid "Add device"
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/Main.qml:73
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/PluginsPage.qml:29
+msgid "Plugins"
 msgstr ""
 
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:76
-msgid "Remove device"
-msgstr ""
-
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:77
-msgid "Are you sure you want to remove"
-msgstr ""
-
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:84
-msgid "Remove"
-msgstr ""
-
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:104
-msgid "Device parameters"
-msgstr ""
-
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:130
-msgid "Close"
-msgstr ""
-
-#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/MainMenuPage.qml:199
-msgid "Could not remove device"
+#: /home/timon/development/guh-ubuntu/guh-ubuntu/app/RulesPage.qml:34
+msgid "Add rule"
 msgstr ""
 
 #: /home/timon/development/guh-ubuntu/guh-ubuntu/app/VendorsPage.qml:28

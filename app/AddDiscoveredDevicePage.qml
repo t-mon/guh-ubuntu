@@ -31,9 +31,11 @@ Page {
 
     property var deviceClass: null
     property var deviceDescriptors: []
+    property var popup: null
 
     property int addId: 0
     property int pairPushButtonId: 0
+    property int pairDisplayPinId: 0
     property int confirmPairingId: 0
     property int discoverId: 0
 
@@ -54,16 +56,7 @@ Page {
         }
     ]
 
-    WaitingOverlay {
-        anchors.fill: parent
-        enabled: root.waiting
-    }
-
-    Component.onCompleted: {
-        if (deviceClass.discoveryParamTypes.count() === 0) {
-            discover()
-        }
-    }
+    Component.onCompleted: if (deviceClass.discoveryParamTypes.count() === 0) { discover() }
 
     Flickable {
         id: flickable
@@ -88,7 +81,7 @@ Page {
                     text: i18n.tr("Parameters")
                 }
 
-                ThinDivider {}
+                ThinDivider { }
 
                 Repeater {
                     id: paramRepeater
@@ -106,7 +99,8 @@ Page {
                     color: UbuntuColors.lightGrey
                     text: i18n.tr("Search results")
                 }
-                ThinDivider {}
+
+                ThinDivider { }
 
                 ActivityIndicator {
                     id: searchingIndicator
@@ -125,19 +119,20 @@ Page {
                         onClicked: {
                             switch (deviceClass.setupMethod) {
                             case DeviceClass.SetupMethodJustAdd:
-                                console.log("Setup: just add")
+                                console.log("SetupMethod: just add")
                                 waiting = true
                                 addId = Core.jsonRpcClient.addDiscoveredDevice(deviceClass.id, deviceDescriptors[index]['id'])
                                 break
                             case DeviceClass.SetupMethodDisplayPin:
-                                console.log("Setup: display pin")
+                                console.log("SetupMethod: display pin")
+                                pairDisplayPinId = Core.jsonRpcClient.pairDevice(deviceClass.id, deviceDescriptors[index]['id'])
                                 break
                             case DeviceClass.SetupMethodPushButton:
-                                console.log("Setup: push button")
+                                console.log("SetupMethod: push button")
                                 pairPushButtonId = Core.jsonRpcClient.pairDevice(deviceClass.id, deviceDescriptors[index]['id'])
                                 break
                             case DeviceClass.SetupMethodEnterPin:
-                                console.log("Setup: enter pin")
+                                console.log("SetupMethod: enter pin")
                                 break
                             }
                         }
@@ -145,17 +140,13 @@ Page {
                 }
             }
 
-            ThinDivider {}
+            ThinDivider { }
 
             Button {
                 id: discoverButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: discovering ? i18n.tr("Searching...") : i18n.tr("Discover")
-                onClicked: {
-                    if (!discovering) {
-                        discover()
-                    }
-                }
+                onClicked: if (!discovering) { discover() }
             }
         }
     }
@@ -171,49 +162,59 @@ Page {
                 root.waiting = false
                 deviceError = response['deviceError']
                 if (deviceError !== "DeviceErrorNoError") {
-                    PopupUtils.open(deviceErrorComponent)
+                    popup = PopupUtils.open(deviceErrorComponent)
                 } else {
                     pageStack.clear()
-                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
+                    pageStack.push(Qt.resolvedUrl("DevicesPage.qml"))
                 }
             } else if (commandId == pairPushButtonId) {
                 root.waiting = false
                 deviceError = response['deviceError']
                 if (deviceError !== "DeviceErrorNoError") {
-                    PopupUtils.open(deviceErrorComponent)
+                    popup = PopupUtils.open(deviceErrorComponent)
                 } else {
                     message = response['displayMessage']
                     pairingTransactionId = response['pairingTransactionId']
-                    PopupUtils.open(pushButtonComponent)
+                    popup = PopupUtils.open(pushButtonComponent)
+                }
+            } else if (commandId == pairDisplayPinId) {
+                root.waiting = false
+                deviceError = response['deviceError']
+                if (deviceError !== "DeviceErrorNoError") {
+                    popup = PopupUtils.open(deviceErrorComponent)
+                } else {
+                    message = response['displayMessage']
+                    pairingTransactionId = response['pairingTransactionId']
+                    popup = PopupUtils.open(displayPinComponent)
                 }
             } else if (commandId == confirmPairingId) {
                 pairing = false
                 deviceError = response['deviceError']
                 if (deviceError !== "DeviceErrorNoError") {
                     deviceDescriptors = []
-                    PopupUtils.close(pushButtonDialog)
-                    PopupUtils.open(deviceErrorComponent)
+                    PopupUtils.close(popup)
+                    popup = PopupUtils.open(deviceErrorComponent)
                 } else {
+                    PopupUtils.close(popup)
                     deviceDescriptors = []
-                    PopupUtils.close(pushButtonDialog)
                     pageStack.clear()
-                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
+                    pageStack.push(Qt.resolvedUrl("DevicesPage.qml"))
                 }
             }
         }
     }
 
+
     function discover() {
-        root.deviceDescriptors = []
-        print("Discover devices: " + paramRepeater.count)
+        deviceDescriptors = []
         var deviceParams = [];
         for (var i = 0; i < paramRepeater.count; i ++) {
             deviceParams.push({"name": paramRepeater.itemAt(i).paramName, "value": paramRepeater.itemAt(i).paramValue})
-            print("   " + paramRepeater.itemAt(i).paramName + ": " + paramRepeater.itemAt(i).paramValue)
         }
         root.discovering = true
         root.discoverId = Core.jsonRpcClient.discoverDevices(deviceClass.id, deviceParams)
     }
+
 
     Component {
         id: pushButtonComponent
@@ -222,9 +223,7 @@ Page {
             title: i18n.tr("Push button setup")
             text: message
 
-            ActivityIndicator {
-                running: pairing
-            }
+            ActivityIndicator { running: pairing }
 
             Button {
                 text: i18n.tr("Ok")
@@ -245,17 +244,43 @@ Page {
     }
 
     Component {
-        id: deviceErrorComponent
+        id: displayPinComponent
         Dialog {
-            id: deviceErrorDialog
-            title: i18n.tr("Error occured")
-            text: i18n.tr("Could not add device") + "\n" + deviceError
+            id: displayPinDialog
+            title: i18n.tr("Display pin setup")
+            text: message
+
+            TextField { id: secretText }
+            ActivityIndicator { running: pairing }
+
+            Button {
+                text: i18n.tr("Ok")
+                color: "green"
+                onClicked: {
+                    pairing = true
+                    confirmPairingId = Core.jsonRpcClient.confirmPairing(pairingTransactionId, secretText.text)
+                }
+            }
 
             Button {
                 text: i18n.tr("Cancel")
                 onClicked: {
-                    PopupUtils.close(deviceErrorDialog)
+                    deviceDescriptors = []
+                    PopupUtils.close(pushButtonDialog)
                 }
+            }
+        }
+    }
+
+    Component {
+        id: deviceErrorComponent
+        Dialog {
+            id: deviceErrorDialog
+            title: i18n.tr("Error occured")
+            text: i18n.tr("Could not add device:") + "\n" + deviceError
+            Button {
+                text: i18n.tr("Cancel")
+                onClicked: PopupUtils.close(deviceErrorDialog)
             }
         }
     }

@@ -29,19 +29,15 @@ Page {
     title: i18n.tr("Devices")
 
     property string deviceError
-    property int id
+    property int removeCommandId
     property bool waiting: false
+    property var popup
 
     head.actions: Action {
         id: addDeviceAction
         iconName: "add"
         text: i18n.tr("Add device")
         onTriggered: pageStack.push(Qt.resolvedUrl("VendorsPage.qml"))
-    }
-
-    WaitingOverlay {
-        anchors.fill: parent
-        enabled: root.waiting
     }
 
     ListView {
@@ -55,7 +51,7 @@ Page {
                 actions: [
                     Action {
                         iconName: "delete"
-                        onTriggered: PopupUtils.open(removeComponent)
+                        onTriggered: popup = PopupUtils.open(removeComponent)
                     }
                 ]
             }
@@ -80,13 +76,17 @@ Page {
 
                     ThinDivider {}
 
+                    ActivityIndicator {
+                        running: waiting
+                        visible: running
+                    }
+
                     Button {
                         text: i18n.tr("Remove")
                         color: UbuntuColors.red
                         onClicked: {
                             waiting = true
-                            root.id = Core.jsonRpcClient.removeDevice(model.id)
-                            PopupUtils.close(removeDialog)
+                            removeCommandId = Core.jsonRpcClient.removeDevice(model.id)
                         }
                     }
 
@@ -181,11 +181,14 @@ Page {
     Connections {
         target: Core.jsonRpcClient
         onResponseReceived: {
-            if (commandId == root.id) {
+            if (commandId == removeCommandId) {
                 waiting = false
                 deviceError = response['deviceError']
                 if (deviceError !== "DeviceErrorNoError") {
-                    PopupUtils.open(deviceErrorComponent)
+                    PopupUtils.close(popup)
+                    popup = PopupUtils.open(deviceErrorComponent)
+                } else {
+                    PopupUtils.close(popup)
                 }
             }
         }

@@ -37,28 +37,12 @@ Page {
             onClicked: {
                 var dc = Core.deviceManager.deviceClasses.getDeviceClass(model.id)
                 if (dc.createMethods.indexOf("CreateMethodDiscovery") !== -1) {
-                    console.log("Create: discovery")
+                    console.log("CreateMethod: discovery")
                     pageStack.push(Qt.resolvedUrl("AddDiscoveredDevicePage.qml"), { deviceClass: dc })
                 } else {
-                    console.log("Create: user")
+                    console.log("CreateMethod: user")
                     pageStack.push(Qt.resolvedUrl("AddDevicePage.qml"), { deviceClass: dc })
                 }
-
-                switch (dc.setupMethod) {
-                case DeviceClass.SetupMethodJustAdd:
-                    console.log("Setup: just add")
-                    break
-                case DeviceClass.SetupMethodDisplayPin:
-                    console.log("Setup: display pin")
-                    break
-                case DeviceClass.SetupMethodPushButton:
-                    console.log("Setup: push button")
-                    break
-                case DeviceClass.SetupMethodEnterPin:
-                    console.log("Setup: enter pin")
-                    break
-                }
-
             }
         }
     }

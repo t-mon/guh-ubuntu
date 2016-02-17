@@ -26,7 +26,8 @@
 #include <QJsonParseError>
 
 GuhInterface::GuhInterface(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_connected(false)
 {
     m_socket = new QWebSocket(QGuiApplication::applicationName(), QWebSocketProtocol::Version13, this);
 
@@ -39,6 +40,7 @@ GuhInterface::GuhInterface(QObject *parent) :
 void GuhInterface::connectGuh(const QString &urlString)
 {
     m_webSocketUrl = urlString;
+    qDebug() << "Connecting to" << QUrl(urlString).toString();
     m_socket->open(QUrl(urlString));
 }
 
@@ -59,8 +61,10 @@ bool GuhInterface::connected() const
 
 void GuhInterface::setConnected(const bool &connected)
 {
-    m_connected = connected;
-    emit connectedChanged();
+    if (m_connected != connected) {
+        m_connected = connected;
+        emit connectedChanged();
+    }
 }
 
 void GuhInterface::onConnected()
@@ -94,4 +98,5 @@ void GuhInterface::onTextMessageReceived(const QString &data)
 void GuhInterface::onError(QAbstractSocket::SocketError error)
 {
     qWarning() << "Websocket error:" << error << m_socket->errorString();
+    emit websocketError(m_socket->errorString());
 }

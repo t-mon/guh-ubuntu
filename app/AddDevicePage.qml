@@ -48,6 +48,17 @@ Page {
             id: paramColumn
             anchors.left: parent.left
             anchors.right: parent.right
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                fontSize: "large"
+                color: UbuntuColors.lightGrey
+                text: i18n.tr("Parameters")
+            }
+
+            ThinDivider { }
+
+
             Repeater {
                 id: paramRepeater
                 model: deviceClass.paramTypes
@@ -89,7 +100,7 @@ Page {
                     PopupUtils.open(deviceErrorComponent)
                 } else {
                     pageStack.clear()
-                    pageStack.push(Qt.resolvedUrl("MainMenuPage.qml"))
+                    pageStack.push(Qt.resolvedUrl("DevicesPage.qml"))
                 }
             }
         }

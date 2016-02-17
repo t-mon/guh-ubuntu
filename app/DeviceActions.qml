@@ -48,6 +48,8 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
 
+            spacing: units.gu(2)
+
             Label {
                 anchors.horizontalCenter: parent.horizontalCenter
                 fontSize: "large"
@@ -56,6 +58,12 @@ Item {
             }
 
             ThinDivider {}
+
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: deviceClass.actionTypes.count() === 0
+                text: i18n.tr("This device has no actions.")
+            }
 
             Repeater {
                 id: actionRepeater
@@ -69,19 +77,12 @@ Item {
                     actionType: deviceClass.actionTypes.getActionType(model.id)
 
                     onExecuteAction: {
-                        console.log(model.id + " -> " + params)
+                        //console.log(model.id + " -> " + params)
                         waiting = true
                         root.executeActionCommandId = Core.jsonRpcClient.executeAction(device.id, model.id, params)
                     }
                 }
             }
-
-            Label {
-                anchors.horizontalCenter: parent.horizontalCenter
-                visible: deviceClass.actionTypes.count() === 0
-                text: i18n.tr("This device has no actions.")
-            }
-
         }
     }
 
@@ -90,7 +91,12 @@ Item {
         onResponseReceived: {
             if (commandId == executeActionCommandId) {
                 root.waiting = false
-                deviceError = response['deviceError']
+                if (!response['deviceError']) {
+                    deviceError = i18n.tr("Interface error")
+                } else {
+                    deviceError = response['deviceError']
+                }
+
                 if (deviceError !== "DeviceErrorNoError") {
                     PopupUtils.open(deviceErrorComponent)
                 }
@@ -103,7 +109,7 @@ Item {
         Dialog {
             id: deviceErrorDialog
             title: i18n.tr("Error occured")
-            text: "Could not execute action\n" + deviceError
+            text: i18n.tr("Could not execute action:") + "\n" + deviceError
 
             Button {
                 text: i18n.tr("Cancel")

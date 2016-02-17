@@ -25,7 +25,9 @@
 #include <QXmlStreamReader>
 
 UpnpDiscovery::UpnpDiscovery(QObject *parent) :
-    QUdpSocket(parent)
+    QUdpSocket(parent),
+    m_discovering(false),
+    m_available(false)
 {
     m_networkAccessManager = new QNetworkAccessManager(this);
     connect(m_networkAccessManager, &QNetworkAccessManager::finished, this, &UpnpDiscovery::networkReplyFinished);
@@ -46,16 +48,19 @@ UpnpDiscovery::UpnpDiscovery(QObject *parent) :
 
     if(!bind(QHostAddress::AnyIPv4, m_port, QUdpSocket::ShareAddress)){
         qWarning() << "UPnP discovery could not bind to port" << m_port;
+        setAvailable(false);
         return;
     }
 
     if(!joinMulticastGroup(m_host)){
         qWarning() << "UPnP discovery could not join multicast group" << m_host;
+        setAvailable(false);
         return;
     }
 
     connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
     connect(this, &UpnpDiscovery::readyRead, this, &UpnpDiscovery::readData);
+    setAvailable(true);
 }
 
 bool UpnpDiscovery::discovering() const
@@ -68,8 +73,18 @@ UpnpDiscoveryModel *UpnpDiscovery::discoveryModel()
     return m_discoveryModel;
 }
 
+bool UpnpDiscovery::available() const
+{
+    return m_available;
+}
+
 void UpnpDiscovery::discover()
 {
+    if (!m_available) {
+        qWarning() << "Could not discover. UPnP not available.";
+        return;
+    }
+
     qDebug() << "start discovering...";
     m_timer->start();
     m_discoveryModel->clearModel();
@@ -100,6 +115,12 @@ void UpnpDiscovery::setDiscovering(const bool &discovering)
     emit discoveringChanged();
 }
 
+void UpnpDiscovery::setAvailable(const bool &available)
+{
+    m_available = available;
+    emit availableChanged();
+}
+
 void UpnpDiscovery::error(QAbstractSocket::SocketError error)
 {
     qWarning() << "UPnP socket error:" << error << errorString();
@@ -120,15 +141,17 @@ void UpnpDiscovery::readData()
     // if the data contains the HTTP OK header...
     if (data.contains("HTTP/1.1 200 OK")) {
         QUrl location;
-
         bool isGuh = false;
+
         const QStringList lines = QString(data).split("\r\n");
         foreach (const QString& line, lines) {
             int separatorIndex = line.indexOf(':');
             QString key = line.left(separatorIndex).toUpper();
             QString value = line.mid(separatorIndex+1).trimmed();
 
+
             if (key.contains("Server") || key.contains("SERVER")) {
+                qDebug() << " --> " << key << value;
                 if (value.contains("guh"))
                     isGuh = true;
             }

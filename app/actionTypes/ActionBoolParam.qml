@@ -32,38 +32,29 @@ Item {
 
     signal executeAction(var params);
 
+    function capitalize(s) {
+        return s && s[0].toUpperCase() + s.slice(1);
+    }
+
     Column {
         id: column
         anchors.left: parent.left
         anchors.right: parent.right
         spacing: units.gu(1)
 
-        Label {
-            id: nameLable
+        Button {
+            id: button
+            text: actionState.value ? capitalize(paramType.name) + " off" : capitalize(paramType.name) + " on"
             anchors.left: parent.left
-            anchors.leftMargin: units.gu(2)
-            font.capitalization: Font.Capitalize
-            text: paramType.name + " ( " + slider.value + " " + paramType.unitString + " )"
-        }
-
-        Slider {
-            id: slider
-            anchors.left: parent.left
-            anchors.leftMargin: units.gu(2)
+            anchors.leftMargin: units.gu(6)
             anchors.right: parent.right
-            anchors.rightMargin: units.gu(2)
-            maximumValue: root.paramType.maxValue
-            minimumValue: root.paramType.minValue
-            value: actionState.value
-            onValueChanged: root.executeAction([ { "name": paramType.name, "value": Math.round(slider.value) } ])
-
-            // Todo: create own slider to prevent execute action on state changed
+            anchors.rightMargin: units.gu(6)
+            onClicked: root.executeAction([ { "name": paramType.name, "value": !actionState.value } ])
 
             Connections {
                 target: actionState
                 onValueChanged: {
                     console.log("State changed " + actionState.value)
-                    slider.value = actionState.value
                 }
             }
         }

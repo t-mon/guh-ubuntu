@@ -1,7 +1,9 @@
 <RCC>
     <qresource prefix="">
         <file>app/Main.qml</file>
-        <file>app/MainMenuPage.qml</file>
+        <file>app/DevicesPage.qml</file>
+        <file>app/RulesPage.qml</file>
+        <file>app/PluginsPage.qml</file>
         <file>app/ConnectionPage.qml</file>
         <file>app/VendorsPage.qml</file>
         <file>app/DeviceClassesPage.qml</file>
