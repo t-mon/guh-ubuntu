@@ -31,7 +31,6 @@ Item {
     property var paramType: actionType.paramTypes.get(0)
     property bool changedFromState: false
 
-
     signal executeAction(var params);
 
     Column {

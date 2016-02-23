@@ -27,15 +27,15 @@ Item {
     id: root
     property bool enabled: false
 
-    Rectangle {
-        anchors.fill: parent
-        color: "#88888888"
-        visible: root.enabled
-        ActivityIndicator {
-            anchors.centerIn: parent
-            running: root.enabled
-        }
+    ActivityIndicator {
+        anchors.centerIn: parent
+        running: root.enabled
     }
 
-    MouseArea { anchors.fill: parent }
+    MouseArea {
+        anchors.fill: parent
+        preventStealing: true
+    }
+
+
 }

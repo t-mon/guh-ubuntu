@@ -56,6 +56,8 @@ void DeviceHandler::processGetPlugins(const QVariantMap &params)
             Core::instance()->deviceManager()->plugins()->addPlugin(plugin);
         }
     }
+    Core::instance()->jsonRpcClient()->getDevices();
+
 }
 
 void DeviceHandler::processGetSupportedDevices(const QVariantMap &params)
@@ -67,7 +69,7 @@ void DeviceHandler::processGetSupportedDevices(const QVariantMap &params)
             Core::instance()->deviceManager()->deviceClasses()->addDeviceClass(deviceClass);
         }
     }
-    Core::instance()->jsonRpcClient()->getDevices();
+    Core::instance()->jsonRpcClient()->getPlugins();
 }
 
 void DeviceHandler::processGetConfiguredDevices(const QVariantMap &params)
@@ -78,25 +80,16 @@ void DeviceHandler::processGetConfiguredDevices(const QVariantMap &params)
             Device *device = JsonTypes::unpackDevice(deviceVariant.toMap(), Core::instance()->deviceManager()->devices());
             Core::instance()->deviceManager()->devices()->addDevice(device);
 
-            // get state values
-            Core::instance()->jsonRpcClient()->getStateValues(device->id());
-        }
-    }
-}
+            // set initial state values
+            QVariantList stateVariantList = deviceVariant.toMap().value("states").toList();
+            foreach (const QVariant &stateMap, stateVariantList) {
+                QUuid stateTypeId = stateMap.toMap().value("stateTypeId").toUuid();
+                QVariant value = stateMap.toMap().value("value");
 
-void DeviceHandler::processGetStateValues(const QVariantMap &params)
-{
-    if (params.value("params").toMap().keys().contains("values")) {
-        QVariantList stateVariantList = params.value("params").toMap().value("values").toList();
-
-        foreach (const QVariant &stateMap, stateVariantList) {
-            QUuid stateTypeId = stateMap.toMap().value("stateTypeId").toUuid();
-            QVariant value = stateMap.toMap().value("value");
-
-            // TODO: get device more performant
-            foreach (Device *d, Core::instance()->deviceManager()->devices()->devices()) {
-                if (d->hasState(stateTypeId)) {
-                    d->setStateValue(stateTypeId, value);
+                foreach (Device *d, Core::instance()->deviceManager()->devices()->devices()) {
+                    if (d->hasState(stateTypeId)) {
+                        d->setStateValue(stateTypeId, value);
+                    }
                 }
             }
         }

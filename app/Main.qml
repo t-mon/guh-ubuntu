@@ -84,7 +84,6 @@ MainView {
             title: i18n.tr("Connection")
             page: ConnectionPage {
                 id: connectionPage
-                visible: !Core.connected
                 Component.onCompleted: Core.discovery.discover()
             }
         }
@@ -96,6 +95,12 @@ MainView {
             if (Core.connected) {
                 tabs.selectedTabIndex = 0
             } else {
+                devicesStack.clear()
+                devicesStack.push(Qt.resolvedUrl("DevicesPage.qml"))
+                rulesStack.clear()
+                rulesStack.push(Qt.resolvedUrl("RulesPage.qml"))
+                pluginsStack.clear()
+                pluginsStack.push(Qt.resolvedUrl("PluginsPage.qml"))
                 tabs.selectedTabIndex = 3
             }
         }

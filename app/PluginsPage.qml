@@ -28,10 +28,19 @@ Page {
     id: root
     title: i18n.tr("Plugins")
 
-    Label {
-        anchors.centerIn: parent
-        text: "Here will be the plugin list"
+    ListView {
+        id: deviceList
+        anchors.fill: parent
+        model: Core.deviceManager.pluginsProxy
+        clip: true
+        delegate: ListItem {
+
+            Label {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: units.gu(2)
+                text: model.name
+            }
+        }
     }
-
 }
-

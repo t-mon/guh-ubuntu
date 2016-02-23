@@ -34,11 +34,6 @@ Page {
     property string deviceError
     property bool waiting: false
 
-    WaitingOverlay {
-        anchors.fill: parent
-        enabled: root.waiting
-    }
-
     Flickable {
         id: flickable
         anchors.fill: parent
@@ -88,6 +83,12 @@ Page {
                 }
             }
         }
+    }
+
+    WaitingOverlay {
+        anchors.fill: parent
+        visible: root.waiting
+        enabled: root.waiting
     }
 
     Connections {

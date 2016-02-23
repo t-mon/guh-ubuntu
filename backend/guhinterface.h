@@ -27,13 +27,18 @@
 class GuhInterface : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString url READ url NOTIFY urlChanged)
+
 public:
     explicit GuhInterface(QObject *parent = 0);
 
     Q_INVOKABLE void connectGuh(const QString &urlString);
+    Q_INVOKABLE void disconnect();
 
     void sendData(const QByteArray &data);
     void sendRequest(const QVariantMap &request);
+
+    QString url() const;
 
     bool connected() const;
 
@@ -45,6 +50,7 @@ private:
     void setConnected(const bool &connected);
 
 signals:
+    void urlChanged();
     void connectedChanged();
     void disconnected();
     void dataReady(const QVariantMap &data);

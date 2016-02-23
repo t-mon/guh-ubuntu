@@ -93,6 +93,8 @@ Page {
                     }
                 }
 
+                ThinDivider { }
+
                 Label {
                     anchors.horizontalCenter: parent.horizontalCenter
                     fontSize: "large"
@@ -140,8 +142,6 @@ Page {
                 }
             }
 
-            ThinDivider { }
-
             Button {
                 id: discoverButton
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -151,6 +151,11 @@ Page {
         }
     }
 
+    WaitingOverlay {
+        anchors.fill: parent
+        visible: root.waiting
+        enabled: root.waiting
+    }
 
     Connections {
         target: Core.jsonRpcClient

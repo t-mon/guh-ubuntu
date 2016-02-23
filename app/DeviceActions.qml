@@ -34,11 +34,6 @@ Item {
     property string deviceError
     property int executeActionCommandId: 0
 
-    WaitingOverlay {
-        anchors.fill: parent
-        enabled: root.waiting
-    }
-
     Flickable {
         anchors.fill: parent
         contentHeight: actionsColumn.height
@@ -84,6 +79,12 @@ Item {
                 }
             }
         }
+    }
+
+    WaitingOverlay {
+        anchors.fill: parent
+        visible: root.waiting
+        enabled: root.waiting
     }
 
     Connections {

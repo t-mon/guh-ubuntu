@@ -59,12 +59,6 @@ private:
     static QPair<Types::Unit, QString> stringToUnit(const QString &unitString);
     static Types::InputType stringToInputType(const QString &inputTypeString);
 
-
-
-signals:
-
-public slots:
-
 };
 
 #endif // JSONTYPES_H

@@ -33,9 +33,13 @@ JsonRpcClient::JsonRpcClient(QObject *parent) :
 {
     m_deviceHandler = new DeviceHandler(this);
     m_actionHandler = new ActionHandler(this);
+    m_eventHandler = new EventHandler(this);
+    m_loggingHandler = new LoggingHandler(this);
 
     m_handlers.insert(m_deviceHandler->nameSpace(), m_deviceHandler);
     m_handlers.insert(m_actionHandler->nameSpace(), m_actionHandler);
+    m_handlers.insert(m_eventHandler->nameSpace(), m_eventHandler);
+    m_handlers.insert(m_loggingHandler->nameSpace(), m_loggingHandler);
 }
 
 void JsonRpcClient::getVendors()
@@ -66,16 +70,6 @@ void JsonRpcClient::getDeviceClasses()
 {
     qDebug() << "JsonRpc: get device classes";
     JsonRpcReply *reply = createReply("Devices", "GetSupportedDevices");
-    m_replies.insert(reply->commandId(), reply);
-    Core::instance()->interface()->sendRequest(reply->requestMap());
-}
-
-void JsonRpcClient::getStateValues(const QUuid &deviceId)
-{
-    qDebug() << "JsonRpc: get state values " << deviceId.toString();
-    QVariantMap params;
-    params.insert("deviceId", deviceId.toString());
-    JsonRpcReply *reply = createReply("Devices", "GetStateValues", params);
     m_replies.insert(reply->commandId(), reply);
     Core::instance()->interface()->sendRequest(reply->requestMap());
 }

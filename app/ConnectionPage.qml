@@ -47,83 +47,136 @@ Page {
         }
     ]
 
-    Column {
+    Flickable {
+        id: flickable
         anchors.fill: parent
-        spacing: units.gu(1)
+        contentHeight: paramColumn.height
 
-
-        ThinDivider {}
-        Label {
-            text: "  " + i18n.tr("Known connections")
-            fontSize: "large"
-            color: UbuntuColors.lightGrey
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        ThinDivider {}
-
-        Repeater {
-            id: connectionList
-            model: Core.connections;
-            delegate: ListItem {
-                leadingActions: ListItemActions {
-                    actions: [
-                        Action {
-                            iconName: "delete"
-                            onTriggered: Core.connections.removeConnection(Core.connections.get(model.webSocketUrl))
-                        }
-                    ]
-                }
-                height: units.gu(5)
-                Label {
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.left: parent.left
-                    anchors.leftMargin: units.gu(2)
-                    text: model.name + " (" + model.hostAddress + ")"
-                }
-                onClicked: Core.interface.connectGuh(model.webSocketUrl)
-            }
-        }
-
-        ThinDivider {}
-
-        Label {
-            text: i18n.tr("Discovered connections")
-            fontSize: "large"
-            color: UbuntuColors.lightGrey
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
-
-        ThinDivider {}
-
-        Repeater {
-            id: discoveryList
-            model: Core.discovery.discoveryModel;
-            delegate: SingleValue {
-                text: model.name + " (" + model.hostAddress + ")"
-                value: model.version
-                onClicked: Core.interface.connectGuh(model.webSocketUrl)
-            }
-        }
-
-        Text {
+        ColumnLayout {
+            id: paramColumn
             anchors.left: parent.left
-            anchors.leftMargin: units.gu(2)
             anchors.right: parent.right
-            anchors.rightMargin: units.gu(2)
-            visible: !Core.discovery.available
-            wrapMode: Text.WordWrap
-            color: "white"
-            text: i18n.tr("UPnP discovery not available.\nMaybe another application is using the same discovery method (UDP port 1900).")
-        }
 
-        ActivityIndicator {
-            anchors.horizontalCenter: parent.horizontalCenter
-            id: activityIndicator
-            running: Core.discovery.discovering
-            visible: Core.discovery.discovering
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: UbuntuColors.lightGrey
+                fontSize: "large"
+                text: i18n.tr("Connection status")
+            }
+
+            ThinDivider {}
+
+            Row {
+                anchors.left: parent.left
+                anchors.leftMargin: units.gu(2)
+                spacing: units.gu(2)
+
+                UbuntuShape {
+                    id: statusShape
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: units.gu(3)
+                    height: width
+                    backgroundColor: Core.connected ? "green" : "orange"
+                }
+
+                Text {
+                    id: connectionStatusText
+                    anchors.verticalCenter: parent.verticalCenter
+                    wrapMode: Text.WordWrap
+                    color: "white"
+                    text: {
+                        if (Core.connected) {
+                            i18n.tr("<u>" + Core.interface.url + "</u>")
+                        } else {
+                            i18n.tr("Disconnected")
+                        }
+                    }
+                }
+            }
+
+            Button {
+                id: disconnectButton
+                text: i18n.tr("Disconnect")
+                visible: Core.connected
+                anchors.horizontalCenter: parent.horizontalCenter
+                onClicked: Core.interface.disconnect()
+            }
+
+            ThinDivider {}
+
+            Label {
+                text: i18n.tr("Known connections")
+                fontSize: "large"
+                color: UbuntuColors.lightGrey
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            ThinDivider {}
+
+            Repeater {
+                id: connectionList
+                model: Core.connections;
+                delegate: ListItem {
+                    height: units.gu(3)
+                    leadingActions: ListItemActions {
+                        actions: [
+                            Action {
+                                iconName: "delete"
+                                onTriggered: Core.connections.removeConnection(Core.connections.get(model.webSocketUrl))
+                            }
+                        ]
+                    }
+
+                    Label {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: units.gu(2)
+                        text: model.name + " (" + model.hostAddress + ")"
+                    }
+                    onClicked: Core.interface.connectGuh(model.webSocketUrl)
+                }
+            }
+
+            //ThinDivider {}
+
+            Label {
+                text: i18n.tr("Discovered connections")
+                fontSize: "large"
+                color: UbuntuColors.lightGrey
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            ThinDivider {}
+
+            Repeater {
+                id: discoveryList
+                model: Core.discovery.discoveryModel;
+                delegate: SingleValue {
+                    text: model.name + " (" + model.hostAddress + ")"
+                    value: model.version
+                    onClicked: Core.interface.connectGuh(model.webSocketUrl)
+                }
+            }
+
+            Text {
+                Layout.fillWidth: true
+                Layout.maximumWidth: parent.width * 4 / 5
+                Layout.alignment: Qt.AlignHCenter
+                visible: !Core.discovery.available
+                wrapMode: Text.WordWrap
+                color: "white"
+                text: i18n.tr("UPnP discovery not available. Maybe another application is using the same discovery method (UDP port 1900).")
+            }
+
+            ActivityIndicator {
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: activityIndicator
+                running: Core.discovery.discovering
+                visible: Core.discovery.discovering
+            }
         }
     }
+
 
     Connections {
         target: Core.interface

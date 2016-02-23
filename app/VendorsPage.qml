@@ -27,7 +27,7 @@ Page {
     id: root
     title: i18n.tr("Vendors")
 
-    UbuntuListView {
+    ListView {
         id: vendorList
         anchors.fill: parent
         model: Core.deviceManager.vendorsProxy

@@ -33,7 +33,7 @@ Item {
     Flickable {
         anchors.fill: parent
         contentHeight: statesColumn.height
-        enabled: height < contentHeight
+        //enabled: height < contentHeight
 
         ColumnLayout {
             id: statesColumn
@@ -62,28 +62,38 @@ Item {
                 model: root.deviceClass.stateTypes
                 delegate: Item {
                     width: parent.width
-                    height: units.gu(3)
+                    height: units.gu(6)
 
                     property var stateValue: root.device.states.getState(model.id).value
 
-                    Label {
+                    Column {
                         anchors.left: parent.left
-                        anchors.leftMargin: units.gu(2)
-                        font.capitalization: Font.Capitalize
-                        text: model.name
-                    }
-
-                    Label {
                         anchors.right: parent.right
-                        anchors.rightMargin: units.gu(2)
-                        text: {
-                            if (model.unit === Types.UnitUnixTime) {
-                                var date = new Date(stateValue * 1000)
-                                print(stateValue + " = "+  date.toString("dd.MM.yyyy hh:mm"))
-                                return date.toLocaleString(Qt.locale(),"dd.MM.yyyy hh:mm")
-                            }
-                            return stateValue + " " + model.unitString
+                        anchors.verticalCenter: parent.verticalCenter
+                        spacing: units.gu(1)
+
+                        Label {
+                            anchors.left: parent.left
+                            anchors.leftMargin: units.gu(2)
+                            font.capitalization: Font.Capitalize
+                            text: model.name
+                            color: UbuntuColors.lightGrey
                         }
+
+                        Label {
+                            anchors.left: parent.left
+                            anchors.leftMargin: units.gu(2)
+                            text: {
+                                if (model.unit === Types.UnitUnixTime) {
+                                    var date = new Date(stateValue * 1000)
+                                    print(stateValue + " = "+  date.toString("dd.MM.yyyy hh:mm"))
+                                    return date.toLocaleString(Qt.locale(),"dd.MM.yyyy hh:mm")
+                                }
+                                return stateValue + " " + model.unitString
+                            }
+                        }
+
+                        ThinDivider { }
                     }
                 }
             }

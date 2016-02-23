@@ -67,7 +67,9 @@ HEADERS += backend/core.h \
     backend/jsonrpc/actionhandler.h \
     backend/types/plugin.h \
     backend/types/plugins.h \
-    backend/types/pluginsproxy.h
+    backend/types/pluginsproxy.h \
+    backend/jsonrpc/eventhandler.h \
+    backend/jsonrpc/logginghandler.h
 
 SOURCES += backend/main.cpp \
            backend/core.cpp \
@@ -106,7 +108,9 @@ SOURCES += backend/main.cpp \
     backend/jsonrpc/actionhandler.cpp \
     backend/types/plugin.cpp \
     backend/types/plugins.cpp \
-    backend/types/pluginsproxy.cpp
+    backend/types/pluginsproxy.cpp \
+    backend/jsonrpc/eventhandler.cpp \
+    backend/jsonrpc/logginghandler.cpp
 
 RESOURCES += app.qrc
 

@@ -15,9 +15,6 @@ public:
 
     Q_INVOKABLE void processExecuteAction(const QVariantMap &params);
 
-signals:
-
-public slots:
 };
 
 #endif // ACTIONHANDLER_H

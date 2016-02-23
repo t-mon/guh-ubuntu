@@ -95,7 +95,7 @@ void UpnpDiscovery::discover()
     QByteArray ssdpSearchMessage = QByteArray("M-SEARCH * HTTP/1.1\r\n"
                                               "HOST:239.255.255.250:1900\r\n"
                                               "MAN:\"ssdp:discover\"\r\n"
-                                              "MX:4\r\n"
+                                              "MX:2\r\n"
                                               "ST: ssdp:all\r\n\r\n");
 
     writeDatagram(ssdpSearchMessage, m_host, m_port);
@@ -151,9 +151,10 @@ void UpnpDiscovery::readData()
 
 
             if (key.contains("Server") || key.contains("SERVER")) {
-                qDebug() << " --> " << key << value;
-                if (value.contains("guh"))
+                if (value.contains("guh")) {
+                    qDebug() << " --> " << key << value;
                     isGuh = true;
+                }
             }
 
             // get location
@@ -233,7 +234,7 @@ void UpnpDiscovery::networkReplyFinished(QNetworkReply *reply)
         }
 
 
-        if (upnpDevice.friendlyName().contains("guhd")) {
+        if (upnpDevice.friendlyName().contains("guh")) {
             qDebug() << upnpDevice;
             m_discoveryModel->addDevice(upnpDevice);
         }

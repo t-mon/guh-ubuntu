@@ -32,6 +32,7 @@ Page {
     property int removeCommandId
     property bool waiting: false
     property var popup
+    property var currentDevice
 
     head.actions: Action {
         id: addDeviceAction
@@ -47,11 +48,15 @@ Page {
         clip: true
         delegate: ListItem {
             id: deviceItem
+            height: units.gu(8)
             leadingActions: ListItemActions {
                 actions: [
                     Action {
                         iconName: "delete"
-                        onTriggered: popup = PopupUtils.open(removeComponent)
+                        onTriggered: {
+                            currentDevice = Core.deviceManager.devices.getDevice(model.id)
+                            popup = PopupUtils.open(removeComponent)
+                        }
                     }
                 ]
             }
@@ -60,121 +65,60 @@ Page {
                 actions: [
                     Action {
                         iconName: "info"
-                        onTriggered: PopupUtils.open(deviceParamsComponent)
+                        onTriggered: {
+                            currentDevice = Core.deviceManager.devices.getDevice(model.id)
+                            PopupUtils.open(deviceParamsComponent)
+                        }
                     }
                 ]
             }
 
-            Component {
-                id: removeComponent
-                Dialog {
-                    id: removeDialog
-                    title: i18n.tr("Remove device")
-                    text: i18n.tr("Are you sure you want to remove") + " \"" + model.name + "\"?"
-
-                    property int commandId
-
-                    ThinDivider {}
-
-                    ActivityIndicator {
-                        running: waiting
-                        visible: running
-                    }
-
-                    Button {
-                        text: i18n.tr("Remove")
-                        color: UbuntuColors.red
-                        onClicked: {
-                            waiting = true
-                            removeCommandId = Core.jsonRpcClient.removeDevice(model.id)
-                        }
-                    }
-
-                    Button {
-                        text: i18n.tr("Cancel")
-                        onClicked: PopupUtils.close(removeDialog)
-                    }
+            UbuntuShape {
+                anchors.fill: parent
+                anchors.margins: units.gu(0.5)
+                Label {
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.left: parent.left
+                    anchors.leftMargin: units.gu(2)
+                    text: model.name
                 }
-            }
 
-            Component {
-                id: deviceParamsComponent
-                Dialog {
-                    id: deviceParamsDialog
-                    title: i18n.tr("Device parameters")
-
-                    Flickable {
-                        width: parent.width
-                        height: units.gu(35)
-
-                        contentHeight: paramsColumn.height
-
-                        Column {
-                            id: paramsColumn
-                            width: parent.width
-                            Repeater {
-                                id: paramRepeater
-                                model: deviceList.model.params
-                                delegate: SingleValue {
-                                    width: parent.width
-                                    height: units.gu(5)
-
-                                    text: model.name
-                                    value: model.value
-                                }
-                            }
-                        }
-                    }
-
-                    Button {
-                        text: i18n.tr("Close")
-                        onClicked: PopupUtils.close(deviceParamsDialog)
-                    }
+                Label {
+                    anchors.right: parent.right
+                    anchors.rightMargin: units.gu(2)
+                    anchors.top: parent.top
+                    anchors.topMargin: units.gu(1)
+                    text: model.deviceName
+                    color: UbuntuColors.lightGrey
                 }
-            }
 
-            Label {
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: units.gu(2)
-                text: model.name
-            }
-
-            Label {
-                anchors.right: parent.right
-                anchors.rightMargin: units.gu(2)
-                anchors.top: parent.top
-                anchors.topMargin: units.gu(1)
-                text: model.deviceName
-                color: UbuntuColors.lightGrey
-            }
-
-            Label {
-                anchors.right: parent.right
-                anchors.rightMargin: units.gu(2)
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: units.gu(1)
-                text: {
-                    var vendorId = Core.deviceManager.deviceClasses.getDeviceClass(model.deviceClassId).vendorId
-                    Core.deviceManager.vendors.getVendor(vendorId).name
+                Label {
+                    anchors.right: parent.right
+                    anchors.rightMargin: units.gu(2)
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: units.gu(1)
+                    text: {
+                        var vendorId = Core.deviceManager.deviceClasses.getDeviceClass(model.deviceClassId).vendorId
+                        Core.deviceManager.vendors.getVendor(vendorId).name
+                    }
+                    color: UbuntuColors.lightGrey
                 }
-                color: UbuntuColors.lightGrey
-            }
 
+            }
             onClicked: {
-                var d = Core.deviceManager.devices.getDevice(model.id)
-                pageStack.push(Qt.resolvedUrl("DeviceDetailsPage.qml"), { device: d } )
+                currentDevice = Core.deviceManager.devices.getDevice(model.id)
+                pageStack.push(Qt.resolvedUrl("DeviceDetailsPage.qml"), { device: currentDevice } )
             }
         }
 
         add: Transition {
-            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 300 }
-            NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 300 }
+            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 800 }
+            NumberAnimation { property: "height"; from: 0; to: units.gu(8); duration: 500 }
         }
 
         remove:  Transition {
-            NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 300 }
-            NumberAnimation { property: "scale"; from: 1.0; to: 0; duration: 300 }
+            NumberAnimation { property: "opacity"; from: 1.0; to: 0; duration: 800 }
+            NumberAnimation { property: "height"; from: units.gu(8); to: 0; duration: 500 }
         }
     }
 
@@ -204,6 +148,69 @@ Page {
             Button {
                 text: i18n.tr("Cancel")
                 onClicked: PopupUtils.close(deviceErrorDialog)
+            }
+        }
+    }
+
+    Component {
+        id: removeComponent
+        Dialog {
+            id: removeDialog
+            title: i18n.tr("Remove device")
+            text: i18n.tr("Are you sure you want to remove") + " \"" + currentDevice.name + "\"?"
+
+            ThinDivider {}
+
+            ActivityIndicator {
+                running: waiting
+                visible: running
+            }
+
+            Button {
+                text: i18n.tr("Remove")
+                color: UbuntuColors.red
+                onClicked: {
+                    waiting = true
+                    removeCommandId = Core.jsonRpcClient.removeDevice(currentDevice.id)
+                }
+            }
+
+            Button {
+                text: i18n.tr("Cancel")
+                onClicked: PopupUtils.close(removeDialog)
+            }
+        }
+    }
+
+    Component {
+        id: deviceParamsComponent
+        Dialog {
+            id: deviceParamsDialog
+            title: i18n.tr("Device parameters")
+
+            UbuntuListView {
+                Repeater {
+                    id: paramRepeater
+                    model: currentDevice.params
+                    delegate: ListItem {
+                        Column {
+                            anchors.fill: parent
+                            Label {
+                                text: model.name
+                                color: "black"
+                            }
+                            Label {
+                                text: model.value
+                                color: "black"
+                            }
+                        }
+                    }
+                }
+            }
+
+            Button {
+                text: i18n.tr("Close")
+                onClicked: PopupUtils.close(deviceParamsDialog)
             }
         }
     }

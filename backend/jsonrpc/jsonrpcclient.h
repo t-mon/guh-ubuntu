@@ -26,6 +26,8 @@
 
 #include "devicehandler.h"
 #include "actionhandler.h"
+#include "eventhandler.h"
+#include "logginghandler.h"
 
 class JsonRpcReply;
 class JsonHandler;
@@ -43,7 +45,6 @@ public:
     void getPlugins();
     void getDevices();
     void getDeviceClasses();
-    void getStateValues(const QUuid &deviceId);
 
     // ui methods
     Q_INVOKABLE int addDevice(const QUuid &deviceClassId, const QVariantList &deviceParams);
@@ -61,6 +62,8 @@ private:
 
     DeviceHandler *m_deviceHandler;
     ActionHandler *m_actionHandler;
+    EventHandler *m_eventHandler;
+    LoggingHandler *m_loggingHandler;
 
     JsonRpcReply *createReply(QString nameSpace, QString method, QVariantMap params = QVariantMap());
 

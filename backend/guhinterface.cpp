@@ -39,9 +39,18 @@ GuhInterface::GuhInterface(QObject *parent) :
 
 void GuhInterface::connectGuh(const QString &urlString)
 {
+    if (m_connected)
+        disconnect();
+
     m_webSocketUrl = urlString;
+    emit urlChanged();
     qDebug() << "Connecting to" << QUrl(urlString).toString();
     m_socket->open(QUrl(urlString));
+}
+
+void GuhInterface::disconnect()
+{
+    m_socket->close();
 }
 
 void GuhInterface::sendData(const QByteArray &data)
@@ -52,6 +61,11 @@ void GuhInterface::sendData(const QByteArray &data)
 void GuhInterface::sendRequest(const QVariantMap &request)
 {
     sendData(QJsonDocument::fromVariant(request).toJson());
+}
+
+QString GuhInterface::url() const
+{
+    return m_webSocketUrl;
 }
 
 bool GuhInterface::connected() const
@@ -74,7 +88,7 @@ void GuhInterface::onConnected()
 
     setConnected(true);
 
-    Core::instance()->connections()->addConnection("guhd", m_socket->peerAddress().toString(), m_webSocketUrl);
+    Core::instance()->connections()->addConnection("guhIO", m_socket->peerAddress().toString(), m_webSocketUrl);
     Core::instance()->jsonRpcClient()->getVendors();
 }
 
